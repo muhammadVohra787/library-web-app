@@ -1,0 +1,21 @@
+{
+   "compilerOptions": {
+      "checkJs": true,
+      "skipLibCheck": false,
+      "jsx": "react-jsx",
+      "target": "ES2022",
+      "moduleResolution": "bundler",
+      "module": "ESNext",
+      "lib": ["ES2022", "dom"],
+      "strictNullChecks": false,
+      "strict": false,
+      "noErrorTruncation": true,
+      "noUnusedLocals": false,
+      "baseUrl": ".",
+      "paths": {
+        "@/*": ["./src/*"],
+      },
+   },
+   "include": ["./src/**/*", "theme-config.js"],
+   "exclude": ["node_modules"]
+}
