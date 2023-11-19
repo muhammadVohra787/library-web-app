@@ -16,7 +16,9 @@ mongoose.connect( config.mongoUri, {
 } )
 
 mongoose.connection.on( 'error', () => {
-    throw new Error( `unable to connect to database: ${config.mongoUri}` )
+    console.log(config.mongoUri);
+    throw new Error( 'unable to connect to database: ${config.mongoUri}' )
+
 } )
 
 app.get( '/', ( req, res ) => {

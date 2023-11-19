@@ -6,7 +6,7 @@ import MainRouter from './main-router'
 function App() {
     return (
         <Container component="main" maxWidth="lg">
-            <Box p={ 4 }>
+            <Box p={ 3 }>
                 <MainRouter />
             </Box>
         </Container>

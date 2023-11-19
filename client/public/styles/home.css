@@ -1,0 +1,20 @@
+.titleBook{
+    font-weight: 600;
+    font-size: 2.5vh;
+
+}
+.bookAuthor{
+    font-weight: 500;
+    font-size: 1.8vh;
+}
+.bookStock{
+    font-weight: 600;
+    font-size: 1.7vh;
+    color: green;
+}
+
+.bookBlock{
+    width: 30%;
+    overflow: hidden;
+
+}
