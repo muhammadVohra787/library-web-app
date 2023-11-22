@@ -1,6 +1,6 @@
 import { Box, Container, Typography, Link } from '@mui/material'
 
-const BottomSticker = () => {
+const Footer = () => {
     return (
         <Box
             sx={ {
@@ -47,4 +47,4 @@ const BottomSticker = () => {
     )
 }
 
-export default BottomSticker
+export default Footer
