@@ -1,8 +1,8 @@
 import { Container } from '@mui/material'
 import MainRouter from './main-router'
-import Footer from '@/pages/Footer'
+import Footer from '@/components/Footer'
 import './App.css'
-import Header from '@/pages/Header'
+import Header from '@/components/Header'
 
 function App() {
     return (
