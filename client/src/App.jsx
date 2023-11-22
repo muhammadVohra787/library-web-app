@@ -8,7 +8,7 @@ function App() {
     return (
         <Container>
             <Header />
-            <MainRouter />
+                <MainRouter />
             <Footer />
         </Container>
     );
