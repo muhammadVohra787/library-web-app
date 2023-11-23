@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import 'bulma/css/bulma.min.css'
 
 const Navbar = () => {
     const [ isActive, setIsActive ] = useState( false )
