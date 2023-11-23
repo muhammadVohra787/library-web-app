@@ -13,7 +13,7 @@ const MainRouter = () => {
                 <Route path="/" element={ <Home /> } />
                 <Route path="/signin" element={ <SignIn /> } />
                 <Route path="/signup" element={ <SignUp /> } />
-                <Route path="/description" element={ <Book /> } />
+                <Route path="/book/:bookIdentifier" element={ <Book /> } />
                 <Route path="/explore" element={ <Explore /> } />
             </Routes>
         </BrowserRouter>
