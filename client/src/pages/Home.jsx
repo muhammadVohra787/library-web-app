@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { Box, Button, Typography } from '@mui/material'
 
-const ProductList = () => {
+const Home = () => {
     const imageFolder = '../../img/'
     // Categorize the books
     const fictionBooks = dataArray.filter( ( book ) => book.tags.includes( 'Fiction' ) ).slice( 0, 3 )
@@ -265,4 +265,4 @@ const ProductList = () => {
     )
 }
 
-export default ProductList
+export default Home
