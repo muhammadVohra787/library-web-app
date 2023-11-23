@@ -57,5 +57,8 @@ module.exports = {
         beforeSelfClosing: "always",
       },
     ],
-  },
+
+    //=== Javascript ===
+    'no-unused-vars': 'warn'
+  }
 };
