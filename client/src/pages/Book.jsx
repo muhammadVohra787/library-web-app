@@ -11,7 +11,7 @@ import {
     CardMedia,
 } from '@mui/material'
 
-const ProductPage = ( {
+const Book = ( {
     title,
     author,
     description,
@@ -82,4 +82,4 @@ const ProductPage = ( {
     )
 }
 
-export default ProductPage
+export default Book
