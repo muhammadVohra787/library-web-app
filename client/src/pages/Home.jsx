@@ -98,7 +98,7 @@ const Home = () => {
                             <img
                                 height={ 300 }
                                 width={ 230 }
-                                src={ imageFolder + book.selectedFile }
+                                src={ imageFolder + book.thumbnail }
                                 alt="bookImage"
                                 style={ {
                                     display: 'block',
@@ -156,7 +156,7 @@ const Home = () => {
                             <img
                                 height={ 300 }
                                 width={ 230 }
-                                src={ imageFolder + book.selectedFile }
+                                src={ imageFolder + book.thumbnail }
                                 alt="bookImage"
                                 style={ {
                                     display: 'block',
@@ -214,7 +214,7 @@ const Home = () => {
                             <img
                                 height={ 300 }
                                 width={ 230 }
-                                src={ imageFolder + book.selectedFile }
+                                src={ imageFolder + book.thumbnail }
                                 alt="bookImage"
                                 style={ {
                                     display: 'block',
