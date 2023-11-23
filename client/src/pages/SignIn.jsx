@@ -1,104 +1,112 @@
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import Link from '@mui/material/Link'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { useState } from 'react'
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useState } from "react";
 
-const defaultTheme = createTheme()
+const defaultTheme = createTheme();
 
 export default function SignIn() {
-    const [ formData, setFormData ] = useState( {
-        email: '',
-        password: '',
-    } )
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+    });
 
-    const [ errors, setErrors ] = useState( {
-        email: '',
-        password: '',
-    } )
+    const [errors, setErrors] = useState({
+        email: "",
+        password: "",
+    });
 
-    const validateInput = ( name, value ) => {
-        if ( name === 'email' ) {
-            const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/
+    const validateInput = (name, value) => {
+        if (name === "email") {
+            const emailPattern =
+                /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/;
             return {
-                isValid: emailPattern.test( value ),
-                errorMessage: 'Invalid email address',
-            }
+                isValid: emailPattern.test(value),
+                errorMessage: "Invalid email address",
+            };
         }
 
-        if ( name === 'password' ) {
+        if (name === "password") {
             return {
                 isValid: value.length >= 8,
-                errorMessage: 'Password must have at least 8 characters',
-            }
+                errorMessage: "Password must have at least 8 characters",
+            };
         }
 
-        return { isValid: true, errorMessage: '' }
-    }
+        return { isValid: true, errorMessage: "" };
+    };
 
-    const handleChange = ( e ) => {
-        const { name, value } = e.target
-        setFormData( ( prevData ) => ( {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
             ...prevData,
-            [ name ]: value,
-        } ) )
+            [name]: value,
+        }));
 
-        const { isValid, errorMessage } = validateInput( name, value )
-        setErrors( ( prevErrors ) => ( {
+        const { isValid, errorMessage } = validateInput(name, value);
+        setErrors((prevErrors) => ({
             ...prevErrors,
-            [ name ]: isValid ? '' : errorMessage,
-        } ) )
-    }
+            [name]: isValid ? "" : errorMessage,
+        }));
+    };
 
-    const handleSubmit = ( event ) => {
-        event.preventDefault()
+    const handleSubmit = (event) => {
+        event.preventDefault();
 
-        const { email, password } = formData
+        const { email, password } = formData;
 
-        const emailValidation = validateInput( 'email', email )
-        const passwordValidation = validateInput( 'password', password )
+        const emailValidation = validateInput("email", email);
+        const passwordValidation = validateInput("password", password);
 
-        setErrors( {
-            email: emailValidation.isValid ? '' : emailValidation.errorMessage,
-            password: passwordValidation.isValid ? '' : passwordValidation.errorMessage,
-        } )
+        setErrors({
+            email: emailValidation.isValid ? "" : emailValidation.errorMessage,
+            password: passwordValidation.isValid
+                ? ""
+                : passwordValidation.errorMessage,
+        });
 
-        if ( emailValidation.isValid && passwordValidation.isValid ) {
-            console.log( {
+        if (emailValidation.isValid && passwordValidation.isValid) {
+            console.log({
                 email,
                 password,
-            } )
+            });
         }
-    }
+    };
 
     return (
-        <ThemeProvider theme={ defaultTheme }>
+        <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
-                    sx={ {
+                    sx={{
                         marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    } }
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
                 >
-                    <Avatar sx={ { m: 1, bgcolor: 'secondary.main' } }>
+                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={ handleSubmit } noValidate sx={ { mt: 1 } }>
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        noValidate
+                        sx={{ mt: 1 }}
+                    >
                         <TextField
                             margin="normal"
                             required
@@ -108,10 +116,10 @@ export default function SignIn() {
                             name="email"
                             autoComplete="email"
                             autoFocus
-                            value={ formData.email }
-                            onChange={ handleChange }
-                            error={ !! errors.email }
-                            helperText={ errors.email }
+                            value={formData.email}
+                            onChange={handleChange}
+                            error={!!errors.email}
+                            helperText={errors.email}
                         />
                         <TextField
                             margin="normal"
@@ -122,20 +130,22 @@ export default function SignIn() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            value={ formData.password }
-                            onChange={ handleChange }
-                            error={ !! errors.password }
-                            helperText={ errors.password }
+                            value={formData.password}
+                            onChange={handleChange}
+                            error={!!errors.password}
+                            helperText={errors.password}
                         />
                         <FormControlLabel
-                            control={ <Checkbox value="remember" color="primary" /> }
+                            control={
+                                <Checkbox value="remember" color="primary" />
+                            }
                             label="Remember me"
                         />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={ { mt: 3, mb: 2 } }
+                            sx={{ mt: 3, mb: 2 }}
                         >
                             Sign In
                         </Button>
@@ -155,5 +165,5 @@ export default function SignIn() {
                 </Box>
             </Container>
         </ThemeProvider>
-    )
+    );
 }

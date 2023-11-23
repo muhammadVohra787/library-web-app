@@ -4,6 +4,7 @@ import Home from '@/pages/Home'
 import SignIn from '@/pages/SignIn.jsx'
 import SignUp from '@/pages/SignUp.jsx'
 import Explore from '@/pages/Explore.jsx'
+import Description from "@/pages/Description.jsx"
 
 const MainRouter = () => {
     return (
@@ -12,7 +13,7 @@ const MainRouter = () => {
                 <Route path="/" element={ <Home /> } />
                 <Route path="/signin" element={ <SignIn /> } />
                 <Route path="/signup" element={ <SignUp /> } />
-                { /* Use the Explore component when /signup is matched */ }
+                <Route path="/description" element={ < Description /> } />
                 <Route path="/explore" element={ <Explore /> } />
             </Routes>
         </BrowserRouter>

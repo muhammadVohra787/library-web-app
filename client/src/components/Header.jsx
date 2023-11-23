@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "bulma/css/bulma.min.css";
 
 const Navbar = () => {
