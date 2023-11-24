@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid'
 import { Box, Button, Typography } from '@mui/material'
 
 const Home = () => {
-    const imageFolder = '../../img/'
+    const imageFolder = '/book-cover/'
     // Categorize the books
     const fictionBooks = dataArray.filter( ( book ) => book.tags.includes( 'Fiction' ) ).slice( 0, 3 )
     const adventureBooks = dataArray.filter( ( book ) => book.tags.includes( 'Adventure' ) ).slice( 0, 3 )
