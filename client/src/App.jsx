@@ -9,7 +9,9 @@ function App() {
     return (
         <Container>
             <Header2 />
-            <Outlet />
+            <Container component="main" maxWidth="xl">
+                <Outlet />
+            </Container>
             <Footer />
         </Container>
     )
