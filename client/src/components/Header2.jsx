@@ -1,11 +1,23 @@
-import { Box, Link, Stack } from '@mui/material'
+import { Box, Link, Stack, Typography } from '@mui/material'
 import { NavBar } from './NavBar'
+import EtherealLogo from '@/assets/ethereal_logo_with_text.png'
+import { useLocation } from 'react-router-dom'
 
 export default function Header2() {
+    const location = useLocation()
+
     return (
         <Stack>
-            <Stack direction="row" spacing={ 10 }>
-                <Box><h1>Ethereal</h1></Box>
+            <Stack direction="row" spacing={ 10 } p={ 2 }>
+                <Box width={ 200 }>
+                    { /* Visually hidden header for screen readers */ }
+                    <Box component={ location.pathname === '/' ? 'h1' : 'span' } className='visuallyhidden'>Ethereral</Box>
+                    <img
+                        src={ EtherealLogo }
+                        alt="Ethereral"
+                    />
+                    <Typography textAlign="center">E-book Library</Typography>
+                </Box>
                 <NavBar />
             </Stack>
         </Stack>
