@@ -55,7 +55,8 @@ const Book = () => {
         thumbnail,
     } = bookRecord.current
 
-    const thumbnailUrl = `/img/${ thumbnail}`
+    const imgFolder = '/book-cover'
+    const thumbnailUrl = `/${imgFolder}/${ thumbnail}`
 
     return (
         <Container style={ { marginTop: '20px' } }>

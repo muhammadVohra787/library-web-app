@@ -21,7 +21,7 @@ const ExplorePage = () => {
     const [ sortType, setSortType ] = useState( 'title' ) // Default sorting type is title
 
     // Image folder is relative to /public
-    const imageFolder = '/img/'
+    const imageFolder = '/book-cover/'
 
     const options = dataArray.flatMap( ( book ) => [ book.title, book.author ] )
 
