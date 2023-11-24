@@ -22,7 +22,6 @@ const Footer = () => {
                 <img
                     src={ EtherealLogo }
                     alt="Ethereral Logo"
-                    style={ { width: '100%', height: '95%' } }
                 />
             </Box>
             <Container maxWidth="md">
@@ -41,7 +40,6 @@ const Footer = () => {
                 <img
                     src={ EtherealLogo }
                     alt="Ethereral Logo"
-                    style={ { width: '100%', height: '95%' } }
                 />
             </Box>
         </Box>
