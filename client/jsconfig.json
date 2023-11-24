@@ -4,7 +4,7 @@
       "skipLibCheck": false,
       "jsx": "react-jsx",
       "target": "ES2022",
-      "moduleResolution": "bundler",
+      "moduleResolution": "node",
       "module": "ESNext",
       "lib": ["ES2022", "dom"],
       "strictNullChecks": false,
