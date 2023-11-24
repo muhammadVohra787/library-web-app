@@ -3,12 +3,14 @@ import MainRouter from './main-router'
 import Footer from '@/components/Footer'
 import './App.css'
 import Header from '@/components/Header'
+import Header2 from './components/Header2'
+import { Outlet } from 'react-router-dom'
 
 function App() {
     return (
         <Container>
-            <Header />
-            <MainRouter />
+            <Header2 />
+            <Outlet />
             <Footer />
         </Container>
     )
