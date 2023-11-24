@@ -19,7 +19,9 @@ const ExplorePage = () => {
     const [ searchValue, setSearchValue ] = useState( '' )
     const [ sortOrder, setSortOrder ] = useState( 'asc' ) // Default sorting order is ascending
     const [ sortType, setSortType ] = useState( 'title' ) // Default sorting type is title
-    const imageFolder = '../../img/'
+
+    // Image folder is relative to /public
+    const imageFolder = '/img/'
 
     const options = dataArray.flatMap( ( book ) => [ book.title, book.author ] )
 
@@ -129,7 +131,7 @@ const ExplorePage = () => {
                                     }
                                     height={ 300 }
                                     width={ 230 }
-                                    src={ imageFolder + item.selectedFile }
+                                    src={ imageFolder + item.thumbnail }
                                     alt="bookImage"
                                     style={ {
                                         display: 'block',
