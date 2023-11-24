@@ -5,10 +5,12 @@ import SignUp from '@/pages/SignUp.jsx'
 import Explore from '@/pages/Explore.jsx'
 import Book from '@/pages/Book.jsx'
 import App from './App'
+import Error from './pages/Error'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route element={ <App /> }>
+            <Route path='*' element={ <Error /> } />
             <Route path="/" element={ <Home /> } />
             <Route path="/signin" element={ <SignIn /> } />
             <Route path="/signup" element={ <SignUp /> } />
