@@ -1,5 +1,5 @@
 import { Box, Container, Typography, Link } from '@mui/material'
-import EtherealLogo from '@/assets/logo.png'
+import EtherealLogo from '@/assets/ethereal_logo_with_text.png'
 
 const Footer = () => {
     return (
@@ -20,9 +20,9 @@ const Footer = () => {
         >
             <Box sx={ { width: '15vh', height: '13vh' } }>
                 <img
-                    src="../../public/img/library.jpg"
-                    alt="Logo"
-                    style={ { width: '100%', height: '100%' } }
+                    src={ EtherealLogo }
+                    alt="Ethereral Logo"
+                    style={ { width: '100%', height: '95%' } }
                 />
             </Box>
             <Container maxWidth="md">
