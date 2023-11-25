@@ -13,7 +13,6 @@ import {
     MenuItem,
 } from '@mui/material'
 import dataArray from '../assets/dummydata.js'
-import onDescription from '@/pages/Book.jsx'
 
 const ExplorePage = () => {
     const [ searchValue, setSearchValue ] = useState( '' )
