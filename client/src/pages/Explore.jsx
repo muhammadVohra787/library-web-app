@@ -140,6 +140,20 @@ const ExplorePage = () => {
                                         marginBottom: "15px",
                                     }}
                                 />
+                                <a href={ `/book/${ item.slug}` }>
+                                    <img
+                                        height={ 400 }
+                                        width={ 180 }
+                                        src={ imageFolder + item.thumbnail }
+                                        alt="bookImage"
+                                        style={ {
+                                            display: 'block',
+                                            margin: 'auto',
+                                            marginTop: '15px',
+                                            marginBottom: '15px',
+                                        } }
+                                    />
+                                </a>
                                 <Typography
                                     variant="body2"
                                     className="bookAuthor"

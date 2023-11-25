@@ -15,6 +15,7 @@ module.exports = {
     'no-case-declarations': 'off',
     'no-console': 'off',
     'no-nested-ternary': 'off',
+    'linebreak-style': 'off',
 
     // === Other ===
     'array-bracket-spacing': [ 'warn', 'always' ],
@@ -52,7 +53,7 @@ module.exports = {
           after: true,
        },
     ],
-    'linebreak-style': [ 'error', 'unix' ],
+    // 'linebreak-style': [ 'error', 'unix' ],
     'lines-around-comment': 'off',
     'no-alert': 'error',
     'no-bitwise': 'error',
