@@ -15,9 +15,9 @@ import {
 import dataArray from '../assets/dummydata.js'
 
 const ExplorePage = () => {
-    const [searchValue, setSearchValue] = useState("");
-    const [sortOrder, setSortOrder] = useState("asc"); // Default sorting order is ascending
-    const [sortType, setSortType] = useState("title"); // Default sorting type is title
+    const [ searchValue, setSearchValue ] = useState( '' )
+    const [ sortOrder, setSortOrder ] = useState( 'asc' ) // Default sorting order is ascending
+    const [ sortType, setSortType ] = useState( 'title' ) // Default sorting type is title
 
     // Image folder is relative to /public
     const imageFolder = '/book-cover/'
@@ -62,18 +62,18 @@ const ExplorePage = () => {
     }
 
     return (
-        <Container style={{ marginTop: "20px" }}>
-            <Container style={{ display: "flex", alignItems: "center" }}>
+        <Container style={ { marginTop: '20px' } }>
+            <Container style={ { display: 'flex', alignItems: 'center' } }>
                 <Autocomplete
                     style={ { flex: 1 } }
                     disablePortal
                     id="combo-box-demo"
-                    options={options}
-                    sx={{ width: 400 }}
-                    value={searchValue}
+                    options={ options }
+                    sx={ { width: 400 } }
+                    value={ searchValue }
                     freeSolo // Add the freeSolo prop
-                    onChange={(event, newValue) => setSearchValue(newValue)}
-                    renderInput={(params) => (
+                    onChange={ ( event, newValue ) => setSearchValue( newValue ) }
+                    renderInput={ ( params ) => (
                         <TextField
                             { ...params }
                             label="Search by Author Or Title"
@@ -101,11 +101,11 @@ const ExplorePage = () => {
             <Container>
                 <Grid
                     container
-                    spacing={4}
-                    columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                    spacing={ 4 }
+                    columnSpacing={ { xs: 1, sm: 2, md: 3 } }
                 >
-                    {sortedBooks.map((item, index) => (
-                        <Grid item xs={12} sm={6} md={4} key={index}>
+                    { sortedBooks.map( ( item, index ) => (
+                        <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
                             <Paper
                                 className="bookBlock"
                                 elevation={ 3 }
@@ -135,13 +135,13 @@ const ExplorePage = () => {
                                     variant="body2"
                                     className="bookAuthor"
                                 >
-                                    Author: {item.author}
+                                    Author: { item.author }
                                 </Typography>
                                 <Typography
                                     variant="body2"
                                     className="bookStock"
                                 >
-                                    Available: {item.stock}
+                                    Available: { item.stock }
                                 </Typography>
                             </Paper>
                         </Grid>
