@@ -1,5 +1,7 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import dataArray from '@/assets/dummydata.js'
+
+const endpointUrl = 'http://localhost:3000/api'
 
 /**
  * Fake Fetch API for testing
@@ -25,13 +27,20 @@ async function getDataFromJsonAsync( url ) {
     }
 }
 
-window.fetch = getDataFromJsonAsync
+// window.fetch = getDataFromJsonAsync
 
 export default function useFetch() {
     /** @type {[Record<string, any>, (prev) => prev ]} */
     const [ results, setResults ] = useState()
-    const [ refetchSignal, setRefetchSignal ] = useState( 0 )
-    const [ url, setUrl ] = useState( '' )
+    const [ fetchSignal, setFetchSignal ] = useState( 0 )
+    // const [ url, setUrl ] = useState( '' )
+
+    const requestData = useRef( {
+        url: '',
+        query: {},
+        body: {},
+        options: {},
+    } )
 
     const initial = { isFetching: false, isComplete: false, isError: false }
 
@@ -62,27 +71,63 @@ export default function useFetch() {
     /** @type {[any,any]} */
     const [ fetchStatus, updateFetchStatus ] = useReducer( reducer, initial )
 
+    const triggerFetch = () => setFetchSignal( ( prev ) => ++prev )
+
+    console.log( 'useFetch', { fetchSignal } )
+
     useEffect( () => {
-        if ( ! url ) {
+        if ( ! requestData.current.url ) {
             return
         }
 
         const fetchData = async() => {
+            const options = {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                // body: JSON.stringify( data ), // body data type must match "Content-Type" header
+            }
+
+            requestData.current.options = {
+                referrerPolicy: 'no-referrer',
+            }
+
+            const query = new URLSearchParams( requestData.current.query )
+            const queryString = query.size ? `?${ new URLSearchParams( requestData.current.query )}` : ''
+            const requestUrl = endpointUrl + requestData.current.url + queryString
+
+            console.log( 'Fetching URL:', requestUrl )
             updateFetchStatus( { status: 'isFetching' } )
-            await new Promise( ( r ) =>{
-                setTimeout( () => r(), 3000 )
-            } )
-            const request = await fetch( url )
-            const json = await request.json()
 
+            // await new Promise( ( r ) =>{
+            //     setTimeout( () => r(), 3000 )
+            // } )
+
+            try {
+                const request = await fetch( requestUrl, requestData.current.options )
+                const json = await request.json()
+
+                console.log( 'json', json )
+                setResults( json )
+            }
+            catch ( e ) {
+                console.error( `FETCH ERROR:\n\n${ e}` )
+                updateFetchStatus( { status: 'isError' } )
+
+                return
+            }
             updateFetchStatus( { status: 'isComplete' } )
-
-            console.log( 'json', json )
-            setResults( json )
         }
 
         fetchData()
-    }, [ url, refetchSignal ] )
+    }, [ fetchSignal ] )
 
     return {
         get data() {
@@ -97,11 +142,18 @@ export default function useFetch() {
         get isError() {
             return fetchStatus.isError
         },
-        fetch( fetchUrl ) {
-            setUrl( fetchUrl )
+        fetch( fetchUrl, params = {} ) {
+            // setUrl( fetchUrl )
+            requestData.current = {
+                url: fetchUrl,
+                options: params.options,
+                body: params.body,
+                query: params.query,
+            }
+            triggerFetch()
         },
         refetch() {
-            setRefetchSignal( ( prev ) => prev++ )
+            triggerFetch()
         },
     }
 }
