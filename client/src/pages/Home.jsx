@@ -96,8 +96,8 @@ const Home = () => {
                                 { book.title }
                             </Typography>
                             <img
-                                height={ 300 }
-                                width={ 230 }
+                                height={ 400 }
+                                width={ 180 }
                                 src={ imageFolder + book.thumbnail }
                                 alt="bookImage"
                                 style={ {
@@ -154,8 +154,8 @@ const Home = () => {
                                 { book.title }
                             </Typography>
                             <img
-                                height={ 300 }
-                                width={ 230 }
+                                height={ 400 }
+                                width={ 180 }
                                 src={ imageFolder + book.thumbnail }
                                 alt="bookImage"
                                 style={ {
@@ -212,8 +212,8 @@ const Home = () => {
                                 { book.title }
                             </Typography>
                             <img
-                                height={ 300 }
-                                width={ 230 }
+                                height={ 400 }
+                                width={ 180 }
                                 src={ imageFolder + book.thumbnail }
                                 alt="bookImage"
                                 style={ {

@@ -129,8 +129,8 @@ const ExplorePage = () => {
                                             item.selectedFile,
                                         )()
                                     }
-                                    height={ 300 }
-                                    width={ 230 }
+                                    height={ 400 }
+                                    width={ 180 }
                                     src={ imageFolder + item.thumbnail }
                                     alt="bookImage"
                                     style={ {
