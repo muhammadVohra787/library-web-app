@@ -10,7 +10,7 @@ const dummyLibraryData = [
     },
     {
         title: '1984',
-        slug: '',
+        slug: '1984',
         description: 'A dystopian novel by George Orwell',
         author: 'George Orwell',
         stock: 8,
@@ -127,7 +127,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Diary of the Wimpy Kid',
-        slug: '',
+        slug: 'diary-of-the-wimpy-kid',
         description: 'A Humor novel by Jeff Kinney',
         author: 'Jeff Kinney',
         stock: 0,
@@ -145,7 +145,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Blood, Sweat, and Pixels',
-        slug: '',
+        slug: 'blood-sweat-and-pixels',
         description: 'A Gaming novel by Jason Schreier',
         author: 'Jason Schreier',
         stock: 13,
@@ -163,7 +163,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Dune',
-        slug: '',
+        slug: 'dune',
         description: 'A science fiction novel by Frank Herbert',
         author: 'Frank Herbert',
         stock: 9,
