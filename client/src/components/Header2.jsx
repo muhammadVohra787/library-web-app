@@ -16,7 +16,6 @@ export default function Header2() {
                         src={ EtherealLogo }
                         alt="Ethereral"
                     />
-                    <Typography textAlign="center">E-book Library</Typography>
                 </Box>
                 <NavBar />
             </Stack>
