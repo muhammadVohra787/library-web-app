@@ -25,7 +25,7 @@ const Home = () => {
             <img
                 src={welcomeImage}
                 alt="Hero Section"
-                style={{ width: "100%", height: "auto" }}
+                style={{ width: "100%", height: "auto", marginBottom: "20px" }}
             />
 
             {/* Library Introduction Section */}
@@ -36,6 +36,7 @@ const Home = () => {
                     borderRadius: "2rem",
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                     mt: "2rem",
+                    marginBottom: "20px",
                 }}
             >
                 <Typography variant="h6" gutterBottom>
@@ -51,7 +52,7 @@ const Home = () => {
             <img
                 src={heroImage}
                 alt="Hero Section"
-                style={{ width: "100%", height: "auto", mt: "2rem" }}
+                style={{ width: "100%", height: "auto", marginTop: "20px", marginBottom: "20px" }}
             />
             <Typography variant="h4" gutterBottom>
                 <span role="img" aria-label="Fiction Emoji">
@@ -70,7 +71,7 @@ const Home = () => {
                                     width={"auto"}
                                     src={imageFolder + book.thumbnail}
                                     alt="bookImage"
-                                    style={{ display: "block", margin: "auto", mt: "15px", mb: "15px" }}
+                                    style={{ display: "block", margin: "auto", marginTop: "15px", marginBottom: "15px" }}
                                 />
                             </a>
                             <Typography variant="body2">Author: {book.author}</Typography>
@@ -84,7 +85,7 @@ const Home = () => {
             <img
                 src={adventureSectionImage}
                 alt="Adventure Section"
-                style={{ width: "100%", height: "auto", mt: "2rem" }}
+                style={{ width: "100%", height: "auto", marginTop: "20px", marginBottom: "20px" }}
             />
             <Typography variant="h4" gutterBottom>
                 <span role="img" aria-label="Adventure Emoji">
@@ -103,7 +104,7 @@ const Home = () => {
                                     width={"auto"}
                                     src={imageFolder + book.thumbnail}
                                     alt="bookImage"
-                                    style={{ display: "block", margin: "auto", mt: "15px", mb: "15px" }}
+                                    style={{ display: "block", margin: "auto", marginTop: "15px", marginBottom: "15px" }}
                                 />
                             </a>
                             <Typography variant="body2">Author: {book.author}</Typography>
@@ -117,7 +118,7 @@ const Home = () => {
             <img
                 src={fantasySectionImage}
                 alt="Fantasy Section"
-                style={{ width: "100%", height: "auto", mt: "2rem" }}
+                style={{ width: "100%", height: "auto", marginTop: "20px", marginBottom: "20px" }}
             />
             <Typography variant="h4" gutterBottom>
                 <span role="img" aria-label="Fantasy Emoji">
@@ -136,7 +137,7 @@ const Home = () => {
                                     width={"auto"}
                                     src={imageFolder + book.thumbnail}
                                     alt="bookImage"
-                                    style={{ display: "block", margin: "auto", mt: "15px", mb: "15px" }}
+                                    style={{ display: "block", margin: "auto", marginTop: "15px", marginBottom: "15px" }}
                                 />
                             </a>
                             <Typography variant="body2">Author: {book.author}</Typography>
@@ -147,7 +148,7 @@ const Home = () => {
             </Grid>
 
             {/* Find More Section */}
-            <div style={{ position: "relative", width: "100%" }}>
+            <div style={{ position: "relative", width: "100%", marginTop: "20px", marginBottom: "20px" }}>
                 <img
                     className="forMoreImg"
                     height={"300vh"}
