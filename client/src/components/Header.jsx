@@ -3,7 +3,7 @@ import { NavBar } from './NavBar'
 import EtherealLogo from '@/assets/ethereal_logo_with_text.png'
 import { useLocation } from 'react-router-dom'
 
-export default function Header2() {
+export default function Header() {
     const location = useLocation()
 
     return (
