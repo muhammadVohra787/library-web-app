@@ -16,7 +16,6 @@ export const getBooks = async(req, res) => {
         if (year) filter.year = year;
         if (tags) filter.tags = { $in: tags.split(',') };
 
-        console.log(tags);
         const books = await Book.find(filter);
         res.json(books);
     } catch (error) {
@@ -61,5 +60,5 @@ export const updateBook = async (req, res) => {
 export const deleteBook = async(req, res) => {
     const book = await Book.findByIdAndDelete(req.params.bookid);
     if(!book) return res.status(404).json({message: "Book not found"});
-    res.json(book);
+    res.status(200).json({message: "Book deleted"});
 };
