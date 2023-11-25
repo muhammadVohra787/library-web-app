@@ -1,7 +1,7 @@
 const dummyLibraryData = [
     {
         title: 'To Kill a Mockingbird',
-        id: 'to-kill-a-mockingbird',
+        slug: 'to-kill-a-mockingbird',
         description: 'A classic novel by Harper Lee',
         author: 'Harper Lee',
         stock: 10,
@@ -10,7 +10,7 @@ const dummyLibraryData = [
     },
     {
         title: '1984',
-        id: '',
+        slug: '',
         description: 'A dystopian novel by George Orwell',
         author: 'George Orwell',
         stock: 8,
@@ -19,7 +19,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Great Gatsby',
-        id: '',
+        slug: '',
         description: 'A novel by F. Scott Fitzgerald',
         author: 'F. Scott Fitzgerald',
         stock: 12,
@@ -28,7 +28,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Pride and Prejudice',
-        id: '',
+        slug: '',
         description: 'A romantic novel by Jane Austen',
         author: 'Jane Austen',
         stock: 15,
@@ -37,7 +37,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Catcher in the Rye',
-        id: '',
+        slug: '',
         description: 'A novel by J.D. Salinger',
         author: 'J.D. Salinger',
         stock: 7,
@@ -46,7 +46,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Hobbit',
-        id: '',
+        slug: '',
         description: 'A fantasy novel by J.R.R. Tolkien',
         author: 'J.R.R. Tolkien',
         stock: 9,
@@ -55,7 +55,7 @@ const dummyLibraryData = [
     },
     {
         title: "Harry Potter & Sorcerer's Stone",
-        id: '',
+        slug: '',
         description: 'A fantasy novel by J.K. Rowling',
         author: 'J.K. Rowling',
         stock: 20,
@@ -64,7 +64,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Lord of the Rings',
-        id: '',
+        slug: '',
         description: 'A fantasy novel by J.R.R. Tolkien',
         author: 'J.R.R. Tolkien',
         stock: 18,
@@ -73,7 +73,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Da Vinci Code',
-        id: '',
+        slug: '',
         description: 'A mystery thriller by Dan Brown',
         author: 'Dan Brown',
         stock: 14,
@@ -82,7 +82,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Shining',
-        id: '',
+        slug: '',
         description: 'A horror novel by Stephen King',
         author: 'Stephen King',
         stock: 6,
@@ -91,7 +91,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Hunger Games ',
-        id: '',
+        slug: '',
         description: 'A thriller novel by Suzanne Collins',
         author: 'Suzanne Collins',
         stock: 8,
@@ -100,7 +100,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Star wars Ashoka',
-        id: '',
+        slug: '',
         description: 'A Sci-fi novel by E.K. Johnston',
         author: 'E.K. Johnston',
         stock: 12,
@@ -109,7 +109,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Shadow and Bones',
-        id: '',
+        slug: '',
         description: 'A Fantasy Fiction novel by Leigh Bardugo',
         author: 'Leigh Bardugo',
         stock: 6,
@@ -118,7 +118,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Hatchet',
-        id: '',
+        slug: '',
         description: 'An Adventure novel by Gary Paulsen',
         author: 'Gary Paulsen',
         stock: 4,
@@ -127,7 +127,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Diary of the Wimpy Kid',
-        id: '',
+        slug: '',
         description: 'A Humor novel by Jeff Kinney',
         author: 'Jeff Kinney',
         stock: 0,
@@ -136,7 +136,7 @@ const dummyLibraryData = [
     },
     {
         title: 'FullMetal Alchemist',
-        id: '',
+        slug: '',
         description: 'A Manga novel by Hiromu Arakawa',
         author: 'Hiromu Arakawa',
         stock: 8,
@@ -145,7 +145,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Blood, Sweat, and Pixels',
-        id: '',
+        slug: '',
         description: 'A Gaming novel by Jason Schreier',
         author: 'Jason Schreier',
         stock: 13,
@@ -154,7 +154,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Alchemist',
-        id: '',
+        slug: '',
         description: 'A philosophical novel by Paulo Coelho',
         author: 'Paulo Coelho',
         stock: 11,
@@ -163,7 +163,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Dune',
-        id: '',
+        slug: '',
         description: 'A science fiction novel by Frank Herbert',
         author: 'Frank Herbert',
         stock: 9,
