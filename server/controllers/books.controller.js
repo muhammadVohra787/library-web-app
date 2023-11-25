@@ -2,7 +2,7 @@ import Book from '../models/book.model.js'
 
 export const getBooks = async(req, res) => {
     try {
-        const { title, author, year, tags} = req.query;
+        const { title, author, slug, year, tags} = req.query;
 
         // We need to build the filter dynamically depending on the selected query parameters
         const filter = {};
@@ -13,6 +13,7 @@ export const getBooks = async(req, res) => {
 
         if (title) filter.title = { $regex: new RegExp(title, 'i') }; 
         if (author) filter.author = { $regex: new RegExp(author, 'i') };
+        if (slug) filter.slug = { $regex: new RegExp(slug, 'i') };
         if (year) filter.year = year;
         if (tags) filter.tags = { $in: tags.split(',') };
 
@@ -31,12 +32,13 @@ export const getBookByID = async(req, res) => {
 };
 
 export const createBook = async (req, res) => {
-    const { title, author, description, year, stock, thumbnail, tags} = req.body;
+    const { title, author, description, slug, year, stock, thumbnail, tags} = req.body;
     try {
         const newBook = new Book({
             title,
             author,
             description,
+            slug,
             year,
             stock,
             thumbnail,
