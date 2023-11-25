@@ -54,7 +54,7 @@ const dummyLibraryData = [
         thumbnail: 'the_hobbit.jpg',
     },
     {
-        title: "Harry Potter & Sorcerer's Stone",
+        title: "Harry Potter-Sorcerer's Stone",
         slug: 'harry_potter',
         description: 'A fantasy novel by J.K. Rowling',
         author: 'J.K. Rowling',

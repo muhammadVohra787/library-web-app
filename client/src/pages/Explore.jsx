@@ -17,8 +17,8 @@ import onDescription from "@/pages/Book.jsx";
 
 const ExplorePage = () => {
     const [searchValue, setSearchValue] = useState("");
-    const [sortOrder, setSortOrder] = useState("asc"); // Default sorting order is ascending
-    const [sortType, setSortType] = useState("title"); // Default sorting type is title
+    const [sortOrder, setSortOrder] = useState("asc");
+    const [sortType, setSortType] = useState("title");
 
     // Image folder is relative to /public
     const imageFolder = "/book-cover/";
@@ -64,7 +64,7 @@ const ExplorePage = () => {
 
     return (
         <Container style={{ marginTop: "20px" }}>
-            <Container style={{ display: "flex", alignItems: "center" }}>
+            <Container style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
                 <Autocomplete
                     style={{ flex: 1 }}
                     disablePortal
@@ -72,7 +72,7 @@ const ExplorePage = () => {
                     options={options}
                     sx={{ width: 400 }}
                     value={searchValue}
-                    freeSolo // Add the freeSolo prop
+                    freeSolo 
                     onChange={(event, newValue) => setSearchValue(newValue)}
                     renderInput={(params) => (
                         <TextField
@@ -100,11 +100,7 @@ const ExplorePage = () => {
             </Container>
 
             <Container>
-                <Grid
-                    container
-                    spacing={4}
-                    columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                >
+                <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     {sortedBooks.map((item, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
                             <Paper
@@ -118,52 +114,25 @@ const ExplorePage = () => {
                                 <Typography variant="h6" className="titleBook">
                                     {item.title}
                                 </Typography>
-                                <img
-                                    onClick={() =>
-                                        onDescription(
-                                            item.title,
-                                            item.author,
-                                            item.description,
-                                            item.tags,
-                                            item.stock,
-                                            item.selectedFile
-                                        )()
-                                    }
-                                    height={"100%"}
-                                    width={"auto"}
-                                    src={imageFolder + item.thumbnail}
-                                    alt="bookImage"
-                                    style={{
-                                        display: "block",
-                                        margin: "auto",
-                                        marginTop: "15px",
-                                        marginBottom: "15px",
-                                    }}
-                                />
-                                <a href={ `/book/${ item.slug}` }>
+                                <a href={`/book/${item.slug}`}>
                                     <img
-                                        height={ 400 }
-                                        width={ 180 }
-                                        src={ imageFolder + item.thumbnail }
+                                        height={400}
+                                        width={180}
+                                        src={imageFolder + item.thumbnail}
                                         alt="bookImage"
-                                        style={ {
-                                            display: 'block',
-                                            margin: 'auto',
-                                            marginTop: '15px',
-                                            marginBottom: '15px',
-                                        } }
+                                        style={{
+                                            display: "block",
+                                            margin: "auto",
+                                            marginTop: "15px",
+                                            marginBottom: "15px",
+                                            objectFit: "cover",
+                                        }}
                                     />
                                 </a>
-                                <Typography
-                                    variant="body2"
-                                    className="bookAuthor"
-                                >
+                                <Typography variant="body2" className="bookAuthor">
                                     Author: {item.author}
                                 </Typography>
-                                <Typography
-                                    variant="body2"
-                                    className="bookStock"
-                                >
+                                <Typography variant="body2" className="bookStock">
                                     Available: {item.stock}
                                 </Typography>
                             </Paper>

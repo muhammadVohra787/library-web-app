@@ -1,12 +1,10 @@
+// Home page
 import dataArray from "../assets/dummydata.js";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 
 const Home = () => {
     const imageFolder = "/book-cover/";
-    // Categorize the books
+
     const fictionBooks = dataArray
         .filter((book) => book.tags.includes("Fiction"))
         .slice(0, 3);
@@ -17,50 +15,33 @@ const Home = () => {
         .filter((book) => book.tags.includes("Fantasy"))
         .slice(0, 3);
     const welcomeImage = `${imageFolder}landing1.png`;
-    const heroImage = `${imageFolder}fiction.jpg`; // Placeholder image
-    const adventureSectionImage = `${imageFolder}adventure.jpg`; // Placeholder image
-    const fantasySectionImage = `${imageFolder}fantasy.jpg`; // Placeholder image
+    const heroImage = `${imageFolder}fiction.jpg`;
+    const adventureSectionImage = `${imageFolder}adventure.jpg`;
+    const fantasySectionImage = `${imageFolder}fantasy.jpg`;
 
     return (
         <div>
-            {/* Hero Section */}
-
+            {/* Welcome Section */}
             <img
                 src={welcomeImage}
                 alt="Hero Section"
                 style={{ width: "100%", height: "auto" }}
             />
-            {/* Welcome Section */}
+
+            {/* Library Introduction Section */}
             <Box
-                style={{
+                sx={{
                     backgroundColor: "#f5f5f5",
                     padding: "2rem",
                     borderRadius: "2rem",
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                    mt: "2rem",
                 }}
             >
-                <Typography
-                    variant="h6"
-                    component="div"
-                    gutterBottom
-                    style={{
-                        fontFamily: "Bebas Neue",
-                        fontSize: "1rem",
-                        fontWeight: "bold",
-                        color: "#3e3e3e",
-                    }}
-                >
+                <Typography variant="h6" gutterBottom>
                     WELCOME TO OUR LIBRARY
                 </Typography>
-                <Typography
-                    variant="body1"
-                    component="div"
-                    style={{
-                        fontFamily: "Bebas Neue",
-                        fontSize: "1rem",
-                        color: "#555",
-                    }}
-                >
+                <Typography variant="body1">
                     Explore a vast collection of books and borrow your favorites
                     today.
                 </Typography>
@@ -70,55 +51,30 @@ const Home = () => {
             <img
                 src={heroImage}
                 alt="Hero Section"
-                style={{ width: "100%", height: "auto" }}
+                style={{ width: "100%", height: "auto", mt: "2rem" }}
             />
-            <Typography
-                variant="h4"
-                component="div"
-                gutterBottom
-                style={{
-                    fontFamily: "Bebas Neue",
-                    fontSize: "2rem",
-                    fontWeight: "bold",
-                    color: "#3e3e3e",
-                    marginTop: "2rem",
-                }}
-            >
+            <Typography variant="h4" gutterBottom>
                 <span role="img" aria-label="Fiction Emoji">
                     📚
                 </span>{" "}
                 Fiction Favorites
             </Typography>
-            <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid container spacing={4}>
                 {fictionBooks.map((book, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
-                        {/* Render Fiction Books */}
-                        <Paper
-                            className="bookBlock"
-                            elevation={3}
-                            style={{ padding: "20px", borderRadius: "10px" }}
-                        >
-                            <Typography variant="h6" className="titleBook">
-                                {book.title}
-                            </Typography>
-                            <img
-                                height={"100%"}
-                                width={"auto"}
-                                src={imageFolder + book.thumbnail}
-                                alt="bookImage"
-                                style={{
-                                    display: "block",
-                                    margin: "auto",
-                                    marginTop: "15px",
-                                    marginBottom: "15px",
-                                }}
-                            />
-                            <Typography variant="body2" className="bookAuthor">
-                                Author: {book.author}
-                            </Typography>
-                            <Typography variant="body2" className="bookStock">
-                                Available: {book.stock}
-                            </Typography>
+                        <Paper elevation={3} sx={{ p: "20px", borderRadius: "10px" }}>
+                            <Typography variant="h6">{book.title}</Typography>
+                            <a href={`/book/${book.slug}`}>
+                                <img
+                                    height={"100%"}
+                                    width={"auto"}
+                                    src={imageFolder + book.thumbnail}
+                                    alt="bookImage"
+                                    style={{ display: "block", margin: "auto", mt: "15px", mb: "15px" }}
+                                />
+                            </a>
+                            <Typography variant="body2">Author: {book.author}</Typography>
+                            <Typography variant="body2">Available: {book.stock}</Typography>
                         </Paper>
                     </Grid>
                 ))}
@@ -128,55 +84,30 @@ const Home = () => {
             <img
                 src={adventureSectionImage}
                 alt="Adventure Section"
-                style={{ width: "100%", height: "auto", marginTop: "2rem" }}
+                style={{ width: "100%", height: "auto", mt: "2rem" }}
             />
-            <Typography
-                variant="h4"
-                component="div"
-                gutterBottom
-                style={{
-                    fontFamily: "Bebas Neue",
-                    fontSize: "2rem",
-                    fontWeight: "bold",
-                    color: "#3e3e3e",
-                    marginTop: "2rem",
-                }}
-            >
+            <Typography variant="h4" gutterBottom>
                 <span role="img" aria-label="Adventure Emoji">
                     🚀
                 </span>{" "}
                 Adventure Escapes
             </Typography>
-            <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid container spacing={4}>
                 {adventureBooks.map((book, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
-                        {/* Render Adventure Books */}
-                        <Paper
-                            className="bookBlock"
-                            elevation={3}
-                            style={{ padding: "20px", borderRadius: "10px" }}
-                        >
-                            <Typography variant="h6" className="titleBook">
-                                {book.title}
-                            </Typography>
-                            <img
-                                height={"100%"}
-                                width={"auto"}
-                                src={imageFolder + book.thumbnail}
-                                alt="bookImage"
-                                style={{
-                                    display: "block",
-                                    margin: "auto",
-                                    marginTop: "15px",
-                                    marginBottom: "15px",
-                                }}
-                            />
-                            <Typography variant="body2" className="bookAuthor">
-                                Author: {book.author}
-                            </Typography>
-                            <Typography variant="body2" className="bookStock">
-                                Available: {book.stock}
-                            </Typography>
+                        <Paper elevation={3} sx={{ p: "20px", borderRadius: "10px" }}>
+                            <Typography variant="h6">{book.title}</Typography>
+                            <a href={`/book/${book.slug}`}>
+                                <img
+                                    height={"100%"}
+                                    width={"auto"}
+                                    src={imageFolder + book.thumbnail}
+                                    alt="bookImage"
+                                    style={{ display: "block", margin: "auto", mt: "15px", mb: "15px" }}
+                                />
+                            </a>
+                            <Typography variant="body2">Author: {book.author}</Typography>
+                            <Typography variant="body2">Available: {book.stock}</Typography>
                         </Paper>
                     </Grid>
                 ))}
@@ -186,55 +117,30 @@ const Home = () => {
             <img
                 src={fantasySectionImage}
                 alt="Fantasy Section"
-                style={{ width: "100%", height: "auto", marginTop: "2rem" }}
+                style={{ width: "100%", height: "auto", mt: "2rem" }}
             />
-            <Typography
-                variant="h4"
-                component="div"
-                gutterBottom
-                style={{
-                    fontFamily: "Bebas Neue",
-                    fontSize: "2rem",
-                    fontWeight: "bold",
-                    color: "#3e3e3e",
-                    marginTop: "2rem",
-                }}
-            >
+            <Typography variant="h4" gutterBottom>
                 <span role="img" aria-label="Fantasy Emoji">
                     🧙‍♂️
                 </span>{" "}
                 Fantasy Favorites
             </Typography>
-            <Grid container spacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid container spacing={4}>
                 {fantasyBooks.map((book, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
-                        {/* Render Fantasy Books */}
-                        <Paper
-                            className="bookBlock"
-                            elevation={3}
-                            style={{ padding: "20px", borderRadius: "10px" }}
-                        >
-                            <Typography variant="h6" className="titleBook">
-                                {book.title}
-                            </Typography>
-                            <img
-                                height={"100%"}
-                                width={"auto"}
-                                src={imageFolder + book.thumbnail}
-                                alt="bookImage"
-                                style={{
-                                    display: "block",
-                                    margin: "auto",
-                                    marginTop: "15px",
-                                    marginBottom: "15px",
-                                }}
-                            />
-                            <Typography variant="body2" className="bookAuthor">
-                                Author: {book.author}
-                            </Typography>
-                            <Typography variant="body2" className="bookStock">
-                                Available: {book.stock}
-                            </Typography>
+                        <Paper elevation={3} sx={{ p: "20px", borderRadius: "10px" }}>
+                            <Typography variant="h6">{book.title}</Typography>
+                            <a href={`/book/${book.slug}`}>
+                                <img
+                                    height={"100%"}
+                                    width={"auto"}
+                                    src={imageFolder + book.thumbnail}
+                                    alt="bookImage"
+                                    style={{ display: "block", margin: "auto", mt: "15px", mb: "15px" }}
+                                />
+                            </a>
+                            <Typography variant="body2">Author: {book.author}</Typography>
+                            <Typography variant="body2">Available: {book.stock}</Typography>
                         </Paper>
                     </Grid>
                 ))}
@@ -257,12 +163,7 @@ const Home = () => {
                         transform: "translate(-50%, -50%)",
                     }}
                 >
-                    <Button
-                        className="findMoreButton"
-                        variant="contained"
-                        color="success"
-                        style={{ outline: "none" }}
-                    >
+                    <Button variant="contained" color="success">
                         Find More
                     </Button>
                 </div>
