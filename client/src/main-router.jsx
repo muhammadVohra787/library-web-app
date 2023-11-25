@@ -6,6 +6,7 @@ import Explore from '@/pages/Explore.jsx'
 import Book from '@/pages/Book.jsx'
 import App from './App'
 import Error from './pages/Error'
+import Account from './pages/Account'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
             <Route path="/signup" element={ <SignUp /> } />
             <Route path="/book/:bookIdentifier" element={ <Book /> } />
             <Route path="/explore" element={ <Explore /> } />
+            <Route path="/account" element={ <Account /> } />
         </Route>,
     ),
 )

@@ -9,7 +9,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 
 // ### Import routes here ###
-// import userRoutes from './routes/user.routes.js'
+import userRoutes from './routes/user.routes.js'
 
 const app = express()
 app.use( express.json() )
@@ -17,6 +17,7 @@ app.use( express.urlencoded( { extended: true } ) )
 
 // ### Route handlers ###
 // app.use( '/', userRoutes )
+app.use('/api', userRoutes);
 
 app.use( bodyParser.json() )
 app.use( bodyParser.urlencoded( { extended: true } ) )
