@@ -17,7 +17,7 @@ import dummyLibraryData from '@/assets/dummydata'
 
 // Temporary solution in lieu of a database API
 function getBookFromJson( bookId ) {
-    return dummyLibraryData.find( ( b ) => b.id === bookId )
+    return dummyLibraryData.find( ( b ) => b.slug === bookId )
 }
 
 const Book = () => {
@@ -56,7 +56,7 @@ const Book = () => {
     } = bookRecord.current
 
     const imgFolder = '/book-cover'
-    const thumbnailUrl = `/${imgFolder}/${ thumbnail}`
+    const thumbnailUrl = `${imgFolder}/${ thumbnail}`
 
     return (
         <Container style={ { marginTop: '20px' } }>
