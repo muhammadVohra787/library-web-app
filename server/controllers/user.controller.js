@@ -1,3 +1,4 @@
+//user.controller.js
 import User from '../models/user.model.js'
 
 export const getUsers = async( req, res ) => {
@@ -22,6 +23,7 @@ export const getUserByID = async( req, res ) => {
 }
 
 export const createUser = async( req, res ) => {
+    console.log("User routes accessed");
     const { name, email, password } = req.body
     try {
         const newUser = new User( {
@@ -31,11 +33,14 @@ export const createUser = async( req, res ) => {
         } )
         const userSaved = await newUser.save()
         res.json( userSaved )
+        console.log('user-reached controller')
     }
     catch ( error ) {
         console.log( error )
+        console.log('user-reached controller- Unsuccessful')
+        res.status(500).json({ error: error.message })
     }
-}
+ }
 
 export const updateUser = async( req, res ) => {
     const user = await User.findByIdAndUpdate( req.params.userid, req.body, {
