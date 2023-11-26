@@ -7,15 +7,15 @@ const useAccount = () => {
 
     const createAccount = async (userData) => {
         try {
-            const response = await fetch("/user", {
+            const response = await fetch('http://localhost:3000/api/user', {
 
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(userData),
-            });
 
+            });
             if (!response.ok) {
                 throw new Error("Failed to create account");
             }
