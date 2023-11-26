@@ -11,6 +11,7 @@ import helmet from 'helmet'
 // ### Import routes here ###
 import userRoutes from './routes/user.routes.js'
 import booksRoutes from './routes/books.routes.js'
+import loanRoutes from './routes/loan.routes.js'
 
 const app = express()
 app.use( express.json() )
@@ -27,6 +28,7 @@ app.use( cors() )
 // app.use( '/', userRoutes )
 app.use( '/api', userRoutes )
 app.use( '/api', booksRoutes )
+app.use('/api', loanRoutes);
 
 app.use( ( err, req, res, next ) => {
     if ( err.name === 'UnauthorizedError' ) {
