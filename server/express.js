@@ -16,7 +16,6 @@ import loanRoutes from './routes/loan.routes.js'
 const app = express()
 app.use( express.json() )
 app.use( express.urlencoded( { extended: true } ) )
-app.use('/api', loanRoutes);
 
 app.use( bodyParser.json() )
 app.use( bodyParser.urlencoded( { extended: true } ) )
@@ -29,6 +28,7 @@ app.use( cors() )
 // app.use( '/', userRoutes )
 app.use( '/api', userRoutes )
 app.use( '/api', booksRoutes )
+app.use('/api', loanRoutes);
 
 app.use( ( err, req, res, next ) => {
     if ( err.name === 'UnauthorizedError' ) {
