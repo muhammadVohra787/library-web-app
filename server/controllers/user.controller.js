@@ -1,11 +1,11 @@
 import User from '../models/user.model.js'
 
 export const getUsers = async( req, res ) => {
-    const name = req.query.name
+    const { email } = req.query
 
-    if ( name ) {
-        const userByName = await User.find( { name: name } )
-        res.json( userByName )
+    if ( email ) {
+        const userByEmail = await User.find( { email } )
+        res.json( userByEmail )
     }
     else {
         const users = await User.find()
