@@ -92,9 +92,15 @@ export function NavBar() {
                         </Link>
                     )}
                     {/* Added the Sign in/out link outside the dropdown for larger screens */}
-                    <Link href="/signin" variant="body2">
-                        Sign in
-                    </Link>
+                    {isLoggedIn ? (
+                        <Link href="/signin" variant="body2">
+                            Sign In
+                        </Link>
+                    ) : (
+                        <Link href="/signin" variant="body2">
+                            Sign Out
+                        </Link>
+                    )}
                 </Stack>
             )}
             {/* Removed the separate stack for the Sign in/out link for mobile view */}

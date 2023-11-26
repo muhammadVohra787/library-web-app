@@ -41,8 +41,9 @@ const useAccount = () => {
                 }
             );
 
-            const responseText = await response.text(); // Add this line to log the response text
-            console.log("Sign In Response:", responseText);
+            // Clone the response before logging
+            const responseClone = response.clone();
+            console.log("Sign In Response:", responseClone);
 
             if (!response.ok) {
                 throw new Error("Failed to sign in");
