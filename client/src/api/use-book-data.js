@@ -14,6 +14,14 @@ export default function useBookData() {
         get firstItem() {
             return bookData?.data?.length ? bookData.data[ 0 ] : {}
         },
+        getBookBySlug( slug ) {
+            const query = {
+                filter: {
+                    slug,
+                },
+            }
+            bookData.fetch( `/books`, { query } )
+        },
         getBookById( bookId ) {
             bookData.fetch( `/books/id/${ bookId}` )
         },
