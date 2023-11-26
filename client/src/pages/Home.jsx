@@ -1,6 +1,8 @@
 // Home page
 import dataArray from '../assets/dummydata.js'
-import { Box, Button, Grid, Paper, Typography } from '@mui/material'
+import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material'
+
+import HeroImg from '@/assets/hero_img.jpg'
 
 const Home = () => {
     const imageFolder = '/book-cover/'
@@ -20,13 +22,29 @@ const Home = () => {
     const fantasySectionImage = `${imageFolder}fantasy.jpg`
 
     return (
-        <div>
+        <Stack spacing={ 5 } mt={ 10 }>
             { /* Welcome Section */ }
-            <img
-                src={ welcomeImage }
-                alt="Hero Section"
-                style={ { width: '100%', height: 'auto', marginBottom: '20px' } }
-            />
+            <Box className='hero-container'>
+                <img
+                    src={ HeroImg }
+                    alt="Hero Section"
+                    style={ { width: '100%', height: 'auto' } }
+                />
+                <Grid container
+                    className="hero-content"
+                    spacing={ 0 }
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <Stack alignItems="center" spacing={ 1 }>
+                        <Typography className="hero-title" component="h2">
+                            Welcome to the Ethereal e-book library
+                        </Typography>
+                        <Typography className="hero-cta" >Start reading today</Typography>
+                        <Button className="hero-button" href="/signup">Sign up now!</Button>
+                    </Stack>
+                </Grid>
+            </Box>
 
             { /* Library Introduction Section */ }
             <Box
@@ -169,7 +187,7 @@ const Home = () => {
                     </Button>
                 </div>
             </div>
-        </div>
+        </Stack>
     )
 }
 
