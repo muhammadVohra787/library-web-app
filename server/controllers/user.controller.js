@@ -23,26 +23,28 @@ export const getUserByID = async( req, res ) => {
     res.json( user )
 }
 
-export const createUser = async( req, res ) => {
-    const { name, email, password } = req.body
-    console.log(req.body)
+export const createUser = async (req, res) => {
+    const { name, email, password } = req.body;
+
     try {
-        const newUser = new User( {
+        // Hash the password before saving it to the database
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = new User({
             name,
             email,
-            password,
-        } )
-        const userSaved = await newUser.save()
-        res.json( userSaved )
-        console.log('user-reached controller')
-    }
-    catch ( error ) {
-        console.log( error )
-        console.log('user-reached controller- Unsuccessful')
-        res.status(500).json({ error: error.message })
-    }
- }
+            password: hashedPassword, // Save the hashed password
+        });
 
+        const userSaved = await newUser.save();
+        res.json(userSaved);
+        console.log('user-reached controller');
+    } catch (error) {
+        console.log(error);
+        console.log('user-reached controller- Unsuccessful');
+        res.status(500).json({ error: error.message });
+    }
+};
 export const updateUser = async( req, res ) => {
     const user = await User.findByIdAndUpdate( req.params.userid, req.body, {
         new: true,
