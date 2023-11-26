@@ -85,9 +85,6 @@ export default function Account() {
                 <Typography variant="h4" component="h2">
                     User Account
                 </Typography>
-                {
-                    user.isSignedIn && <Button variant="outlined" onClick={ () => user.signOut() }>Sign out</Button>
-                }
             </Stack>
 
             <Authorized>
