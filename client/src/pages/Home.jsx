@@ -3,23 +3,36 @@ import dataArray from '../assets/dummydata.js'
 import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material'
 
 import HeroImg from '@/assets/hero_img.jpg'
+import useBookData from '@/api/use-book-data.js'
+import useFetch from '@/api/use-fetch.js'
+import { useEffect } from 'react'
 
 const Home = () => {
     const imageFolder = '/book-cover/'
-
-    const fictionBooks = dataArray
-        .filter( ( book ) => book.tags.includes( 'Fiction' ) )
-        .slice( 0, 3 )
-    const adventureBooks = dataArray
-        .filter( ( book ) => book.tags.includes( 'Adventure' ) )
-        .slice( 0, 3 )
-    const fantasyBooks = dataArray
-        .filter( ( book ) => book.tags.includes( 'Fantasy' ) )
-        .slice( 0, 3 )
-    const welcomeImage = `${imageFolder}landing1.png`
     const heroImage = `${imageFolder}fiction.jpg`
     const adventureSectionImage = `${imageFolder}adventure.jpg`
     const fantasySectionImage = `${imageFolder}fantasy.jpg`
+
+    // const fictionBooks = dataArray
+    //     .filter( ( book ) => book.tags.includes( 'Fiction' ) )
+    //     .slice( 0, 3 )
+    // const adventureBooks = dataArray
+    //     .filter( ( book ) => book.tags.includes( 'Adventure' ) )
+    //     .slice( 0, 3 )
+    // const fantasyBooks = dataArray
+    //     .filter( ( book ) => book.tags.includes( 'Fantasy' ) )
+    //     .slice( 0, 3 )
+    // const welcomeImage = `${imageFolder}landing1.png`
+
+    const fictonBooks = useBookData()
+    const fantasyBooks = useBookData()
+    const adventureBooks = useBookData()
+
+    useEffect( () => {
+        fictonBooks.getBooks( { filter: { tags: 'Fiction' }, limit: 3 } )
+        fantasyBooks.getBooks( { filter: { tags: 'Fantasy' }, limit: 3 } )
+        adventureBooks.getBooks( { filter: { tags: 'Adventure' }, limit: 3 } )
+    }, [] )
 
     return (
         <Stack spacing={ 5 } mt={ 10 }>
@@ -79,7 +92,7 @@ const Home = () => {
                 Fiction Favorites
             </Typography>
             <Grid container spacing={ 4 }>
-                { fictionBooks.map( ( book, index ) => (
+                { Array.isArray( fictonBooks.data ) && fictonBooks.data.map( ( book, index ) => (
                     <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
                         <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
                             <Typography variant="h6">{ book.title }</Typography>
@@ -112,7 +125,7 @@ const Home = () => {
                 Adventure Escapes
             </Typography>
             <Grid container spacing={ 4 }>
-                { adventureBooks.map( ( book, index ) => (
+                { Array.isArray( adventureBooks.data ) && adventureBooks.data.map( ( book, index ) => (
                     <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
                         <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
                             <Typography variant="h6">{ book.title }</Typography>
@@ -145,7 +158,7 @@ const Home = () => {
                 Fantasy Favorites
             </Typography>
             <Grid container spacing={ 4 }>
-                { fantasyBooks.map( ( book, index ) => (
+                { Array.isArray( fantasyBooks.data ) && fantasyBooks.data.map( ( book, index ) => (
                     <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
                         <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
                             <Typography variant="h6">{ book.title }</Typography>
