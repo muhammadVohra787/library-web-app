@@ -13,3 +13,11 @@ export const connectDB = async() => {
         console.log("unable to connect to database: ${config.mongoUri}");
     }
 };
+
+export const closeDBConnection = async() => {
+    try {
+        await mongoose.connection.close();
+        console.log('Close DB connection successful.');
+    } catch (error) {
+        console.error(error);
+    }};

@@ -13,7 +13,8 @@
     "client:build": "cd client && npx vite",
     "client:preview": "cd client && npx vite preview",
     "server:dev": "nodemon server.js",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "postinstall": "node ./server/scripts/import-books.js"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
