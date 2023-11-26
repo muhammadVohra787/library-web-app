@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 
 import dummyLibraryData from '@/assets/dummydata'
+import useBookData from '@/api/use-book-data'
 
 // Temporary solution in lieu of a database API
 function getBookFromJson( bookId ) {
@@ -27,19 +28,31 @@ const Book = () => {
     // Get the dynamic part of the URL from the router
     const { bookIdentifier } = useParams()
 
+    const bookRequest = useBookData( { slug: bookIdentifier } )
+
     if ( ! isMounted.current ) {
         isMounted.current = true
-        bookRecord.current = getBookFromJson( bookIdentifier )
+        // bookRecord.current = getBookFromJson( bookIdentifier )
+    }
+
+    if ( bookRequest.status.isFetching ) {
+        return (
+            <Container style={ { marginTop: '20px', marginBottom: '20px' } }>
+                <Paper><Box p={ 3 }>Loading...</Box></Paper>
+            </Container>
+        )
     }
 
     // Abort here if the book is not found
-    if ( ! bookRecord.current ) {
+    if ( bookRequest.status.isError ) {
         return (
             <Container style={ { marginTop: '20px', marginBottom: '20px' } }>
                 <Paper><Box p={ 3 }>Book not found.</Box></Paper>
             </Container>
         )
     }
+
+    const book = bookRequest.firstItem
 
     const handleBuyNow = () => {
         // Add your logic for handling the "Buy Now" action
@@ -53,7 +66,7 @@ const Book = () => {
         tags = [],
         stock,
         thumbnail,
-    } = bookRecord.current
+    } = book
 
     const imgFolder = '/book-cover'
     const thumbnailUrl = `${imgFolder}/${ thumbnail}`
@@ -65,8 +78,8 @@ const Book = () => {
                     <Card>
                         <CardMedia
                             component="img"
-                            height={"750px"}
-                            width={"auto"}
+                            height={ '750px' }
+                            width={ 'auto' }
                             image={ thumbnailUrl }
                             alt={ title }
                         />
