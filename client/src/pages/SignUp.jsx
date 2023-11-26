@@ -11,10 +11,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import useAccount from '../api/use-account'
 import useAuthentication from '../api/use-authentication'
 import authContext from '../api/auth-context'
+import { Alert, Stack } from '@mui/material'
 
 export default function SignUp() {
     const letters = /^[A-Za-z\s]+$/
@@ -28,6 +29,16 @@ export default function SignUp() {
         email: '',
         // password: '',
     } )
+
+    const [ account, setAccount ] = useState()
+    const [ error, setError ] = useState()
+    const accounts = useAccount()
+
+    useEffect( () => {
+        if ( accounts.data ) {
+            setAccount( accounts.data )
+        }
+    }, [ accounts.status.isComplete ] )
 
     const validateInput = ( name, value ) => {
         if ( name === 'firstname' ) {
@@ -98,91 +109,109 @@ export default function SignUp() {
             // passwordValidation.isValid &&
             nameValidation.isValid
         ) {
-
+            accounts.createAccount( { name: formData.name, email: formData.email } )
         }
     }
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box
-                sx={ {
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                } }
-            >
-                <Avatar sx={ { m: 1, bgcolor: 'secondary.main' } }>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign up
-                </Typography>
-                <Box
-                    component="form"
-                    noValidate
-                    onSubmit={ handleSubmit }
-                    sx={ { mt: 3 } }
+            {
+                error && <Alert severity="error">Something went wrong.</Alert>
+            }
+            {
+                account && <Stack
+                    alignItems='center'
+                    spacing={ 4 }
+                    mt={ 10 }
+                    mb={ 10 }
                 >
-                    <Grid container spacing={ 2 }>
-                        <Grid item xs={ 12 }>
-                            <TextField
-                                required
-                                fullWidth
-                                id="name"
-                                label="Name"
-                                name="name"
-                                autoComplete="name"
-                                value={ formData.name }
-                                onChange={ handleChange }
-                                error={ !! errors.name }
-                                helperText={ errors.name }
-                            />
-                        </Grid>
-                        <Grid item xs={ 12 }>
-                            <TextField
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                value={ formData.email }
-                                onChange={ handleChange }
-                                error={ !! errors.email }
-                                helperText={ errors.email }
-                            />
-                        </Grid>
-                        <Grid item xs={ 12 }>
-                            <TextField
-                                fullWidth
-                                name="password"
-                                label="Password (not implemented)"
-                                type="password"
-                                id="password"
-                                autoComplete="new-password"
-                            />
-                        </Grid>
-                        <Grid item xs={ 12 }></Grid>
-                    </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={ { mt: 3, mb: 2 } }
+                    <Alert severity="success">
+                        <Typography fontSize="1.5rem">Account created!</Typography>
+                    </Alert>
+                    <Button variant="contained" href="/signin">Sign in</Button>
+                </Stack>
+            }
+            {
+                ! account && <Box
+                    sx={ {
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    } }
+                >
+                    <Avatar sx={ { m: 1, bgcolor: 'secondary.main' } }>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign up
+                    </Typography>
+                    <Box
+                        component="form"
+                        noValidate
+                        onSubmit={ handleSubmit }
+                        sx={ { mt: 3 } }
                     >
-                        Sign Up
-                    </Button>
-                    <Grid container justifyContent="flex-end">
-                        <Grid item>
-                            <Link href="/signin" variant="body2">
-                                Already have an account? Sign in
-                            </Link>
+                        <Grid container spacing={ 2 }>
+                            <Grid item xs={ 12 }>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="name"
+                                    label="Name"
+                                    name="name"
+                                    autoComplete="name"
+                                    value={ formData.name }
+                                    onChange={ handleChange }
+                                    error={ !! errors.name }
+                                    helperText={ errors.name }
+                                />
+                            </Grid>
+                            <Grid item xs={ 12 }>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    value={ formData.email }
+                                    onChange={ handleChange }
+                                    error={ !! errors.email }
+                                    helperText={ errors.email }
+                                />
+                            </Grid>
+                            <Grid item xs={ 12 }>
+                                <TextField
+                                    fullWidth
+                                    name="password"
+                                    label="Password (not implemented)"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="new-password"
+                                />
+                            </Grid>
+                            <Grid item xs={ 12 }></Grid>
                         </Grid>
-                    </Grid>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={ { mt: 3, mb: 2 } }
+                        >
+                            Sign Up
+                        </Button>
+                        <Grid container justifyContent="flex-end">
+                            <Grid item>
+                                <Link href="/signin" variant="body2">
+                                    Already have an account? Sign in
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </Box>
-            </Box>
+            }
+
         </Container>
     )
 }
