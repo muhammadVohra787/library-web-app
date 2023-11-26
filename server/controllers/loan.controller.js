@@ -1,3 +1,4 @@
+//loan.controller.js
 import loan from '../models/loan.model.js';
 
 export const getLoans = async (req, res) => {
