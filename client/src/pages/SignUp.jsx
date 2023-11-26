@@ -12,9 +12,9 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useContext, useEffect, useRef, useState } from 'react'
-import useAccount from '../api/use-account'
-import useAuthentication from '../api/use-authentication'
-import authContext from '../api/auth-context'
+// import useAccount from '../api/use-account'
+// import useAuthentication from '../api/use-authentication'
+// import authContext from '../api/auth-context'
 import { Alert, Stack } from '@mui/material'
 
 export default function SignUp() {
