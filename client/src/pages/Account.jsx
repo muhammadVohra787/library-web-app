@@ -84,7 +84,7 @@ export default function Account() {
                         </Grid>
                         <Stack direction="row" spacing={ 3 }>
                             <Button variant='contained' onClick={ saveHandler }>Save </Button>
-                            <Button onClick={ ResetHandler }> Reset </Button>
+                            <Button onClick={ resetHandler }> Reset </Button>
                         </Stack>
 
                     </Box>

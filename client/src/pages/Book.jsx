@@ -65,7 +65,8 @@ const Book = () => {
                     <Card>
                         <CardMedia
                             component="img"
-                            height="400"
+                            height={"750px"}
+                            width={"auto"}
                             image={ thumbnailUrl }
                             alt={ title }
                         />
