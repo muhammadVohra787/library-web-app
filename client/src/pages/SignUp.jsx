@@ -204,6 +204,7 @@ export default function SignUp() {
                             <Grid item xs={12}>
                                 <TextField
                                     fullWidth
+                                    required
                                     name="password"
                                     label="Password (not implemented)"
                                     type="password"

@@ -1,6 +1,7 @@
 //user.controller.js
 import User from '../models/user.model.js'
-
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 export const getUsers = async( req, res ) => {
     const { email } = req.query
 
@@ -59,3 +60,31 @@ export const deleteUser = async( req, res ) => {
     }
     res.json( user )
 }
+
+
+
+export const signIn = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid email' });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: 'Invalid password' });
+        }
+        const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
+            expiresIn: '1h',
+        });
+
+        res.json({ success: true, token });
+    } catch (error) {
+        console.error('Error signing in:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+};

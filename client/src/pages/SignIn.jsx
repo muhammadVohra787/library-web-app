@@ -12,10 +12,11 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useState } from 'react'
-
+import useAccount from "../api/use-account";
 const defaultTheme = createTheme()
 
 export default function SignIn() {
+    const { signIn, data, error } = useAccount();
     const [ formData, setFormData ] = useState( {
         email: '',
         password: '',
@@ -60,7 +61,7 @@ export default function SignIn() {
         } ) )
     }
 
-    const handleSubmit = ( event ) => {
+    const handleSubmit = async ( event ) => {
         event.preventDefault()
 
         const { email, password } = formData
@@ -76,10 +77,7 @@ export default function SignIn() {
         } )
 
         if ( emailValidation.isValid && passwordValidation.isValid ) {
-            console.log( {
-                email,
-                password,
-            } )
+            await signIn({ email, password });
         }
     }
 
