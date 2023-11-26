@@ -33,7 +33,7 @@ export default function useFetch() {
     /** @type {[Record<string, any>, (prev) => prev ]} */
     const [ results, setResults ] = useState()
     const [ fetchSignal, setFetchSignal ] = useState( 0 )
-    // const [ url, setUrl ] = useState( '' )
+    const prevQuery = useRef( '' )
 
     const requestData = useRef( {
         url: '',
@@ -42,36 +42,47 @@ export default function useFetch() {
         options: {},
     } )
 
-    const initial = { isFetching: false, isComplete: false, isError: false }
+    const initial = { isFetching: false, isComplete: false, isError: false, isInitialized: false }
 
-    const reducer = ( state, action ) => {
+    const updateFetchStatusReducer = ( state, action = {} ) => {
         switch ( action.status ) {
             case 'isComplete':
                 return {
                     isFetching: false,
                     isComplete: true,
                     isError: false,
+                    isInitialized: true,
                 }
             case 'isError':
                 return {
                     isFetching: false,
                     isComplete: false,
                     isError: true,
+                    isInitialized: true,
                 }
             case 'isFetching':
                 return {
                     isFetching: true,
                     isComplete: false,
                     isError: false,
+                    isInitialized: true,
+                }
+            default:
+                return {
+                    isFetching: false,
+                    isComplete: false,
+                    isError: false,
+                    isInitialized: true,
                 }
         }
-        return state
     }
 
     /** @type {[any,any]} */
-    const [ fetchStatus, updateFetchStatus ] = useReducer( reducer, initial )
+    const [ fetchStatus, updateFetchStatus ] = useReducer( updateFetchStatusReducer, initial )
 
-    const triggerFetch = () => setFetchSignal( ( prev ) => ++prev )
+    useEffect( () => {
+        updateFetchStatus()
+    }, [] )
 
     useEffect( () => {
         if ( ! requestData.current.url ) {
@@ -79,6 +90,10 @@ export default function useFetch() {
         }
 
         const fetchData = async() => {
+            if ( fetchStatus.isFetching ) {
+                return
+            }
+
             const query = { ...requestData.current.query }
 
             if ( query.filter ) {
@@ -88,6 +103,14 @@ export default function useFetch() {
             const queryParams = new URLSearchParams( query )
             const queryString = queryParams.size ? `?${ queryParams }` : ''
             const requestUrl = endpointUrl + requestData.current.url + queryString
+
+            const stringifiedQuery = JSON.stringify( requestData.current )
+
+            // Extra check if query has changed, not sure if needed
+            if ( prevQuery.current === stringifiedQuery ) {
+                return
+            }
+            prevQuery.current = stringifiedQuery
 
             console.log( 'Fetching URL:', requestUrl, queryString )
 
@@ -112,6 +135,8 @@ export default function useFetch() {
         fetchData()
     }, [ fetchSignal ] )
 
+    const triggerFetch = () => setFetchSignal( ( prev ) => ++prev )
+
     return {
         get data() {
             return results
@@ -125,6 +150,9 @@ export default function useFetch() {
         get isError() {
             return fetchStatus.isError
         },
+        get isInitialized() {
+            return fetchStatus.isInitialized
+        },
         fetch( fetchUrl, params = {} ) {
             // setUrl( fetchUrl )
             requestData.current = {
@@ -137,6 +165,10 @@ export default function useFetch() {
         },
         refetch() {
             triggerFetch()
+        },
+        reset() {
+            setResults( undefined )
+            updateFetchStatus()
         },
     }
 }
