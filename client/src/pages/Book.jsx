@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import {
     Box,
@@ -22,18 +22,13 @@ function getBookFromJson( bookId ) {
 }
 
 const Book = () => {
-    const isMounted = useRef( false )
-    const bookRecord = useRef( {} )
-
     // Get the dynamic part of the URL from the router
-    const { bookIdentifier } = useParams()
+    const { slug } = useParams()
+    const bookRequest = useBookData()
 
-    const bookRequest = useBookData( { slug: bookIdentifier } )
-
-    if ( ! isMounted.current ) {
-        isMounted.current = true
-        // bookRecord.current = getBookFromJson( bookIdentifier )
-    }
+    useEffect( () => {
+        bookRequest.getBookBySlug( slug )
+    }, [] )
 
     if ( bookRequest.status.isFetching ) {
         return (
