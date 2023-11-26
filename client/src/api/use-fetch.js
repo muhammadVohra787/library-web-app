@@ -73,42 +73,25 @@ export default function useFetch() {
 
     const triggerFetch = () => setFetchSignal( ( prev ) => ++prev )
 
-    console.log( 'useFetch', { fetchSignal } )
-
     useEffect( () => {
         if ( ! requestData.current.url ) {
             return
         }
 
         const fetchData = async() => {
-            const options = {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json',
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                // body: JSON.stringify( data ), // body data type must match "Content-Type" header
+            const query = { ...requestData.current.query }
+
+            if ( query.filter ) {
+                query.filter = JSON.stringify( requestData.current.query.filter )
             }
 
-            requestData.current.options = {
-                referrerPolicy: 'no-referrer',
-            }
-
-            const query = new URLSearchParams( requestData.current.query )
-            const queryString = query.size ? `?${ new URLSearchParams( requestData.current.query )}` : ''
+            const queryParams = new URLSearchParams( query )
+            const queryString = queryParams.size ? `?${ queryParams }` : ''
             const requestUrl = endpointUrl + requestData.current.url + queryString
 
-            console.log( 'Fetching URL:', requestUrl )
-            updateFetchStatus( { status: 'isFetching' } )
+            console.log( 'Fetching URL:', requestUrl, queryString )
 
-            // await new Promise( ( r ) =>{
-            //     setTimeout( () => r(), 3000 )
-            // } )
+            updateFetchStatus( { status: 'isFetching' } )
 
             try {
                 const request = await fetch( requestUrl, requestData.current.options )
