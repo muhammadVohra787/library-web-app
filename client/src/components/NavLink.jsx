@@ -1,13 +1,15 @@
-import { useLocation } from 'react-router-dom'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { Link } from '@mui/material'
 
-export default function NavLink( { href, children } ) {
+export default function NavLink( props ) {
+    const { href = undefined, ...rest } = props
     const location = useLocation()
-    const isActive = location.pathname === href ? 'is-active' : ''
+
+    rest.to = href ? href : rest.to
+    const isActive = location.pathname === rest.to ? 'is-active' : ''
+    rest.className += ` ${ isActive}`
 
     return (
-        <Link href={ href } variant="body2" className={ isActive }>
-            { children }
-        </Link>
+        <Link { ...rest } component={ RouterLink } />
     )
 }
