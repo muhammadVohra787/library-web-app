@@ -7,18 +7,16 @@ export default function Header() {
     const location = useLocation()
 
     return (
-        <Stack>
-            <Stack direction="row" spacing={ 10 } p={ 2 }>
-                <Box width={ 200 }>
-                    { /* Visually hidden header for screen readers */ }
-                    <Box component={ location.pathname === '/' ? 'h1' : 'span' } className='visuallyhidden'>Ethereral</Box>
-                    <img
-                        src={ EtherealLogo }
-                        alt="Ethereral"
-                    />
-                </Box>
-                <NavBar />
-            </Stack>
+        <Stack direction="row" spacing={ 10 } p={ 2 } mb={ 10 } alignItems="end">
+            <Box width={ 200 }>
+                { /* Visually hidden header for screen readers */ }
+                <Box component={ location.pathname === '/' ? 'h1' : 'span' } className='visuallyhidden'>Ethereral</Box>
+                <img
+                    src={ EtherealLogo }
+                    alt="Ethereral"
+                />
+            </Box>
+            <Stack direction="row" pb={ 1 } flexGrow="1"><NavBar /></Stack>
         </Stack>
     )
 }
