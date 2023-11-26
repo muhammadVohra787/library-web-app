@@ -1,23 +1,44 @@
+/* eslint-disable */
 import Book from '../models/book.model.js'
 
 export const getBooks = async(req, res) => {
     try {
-        const { title, author, year, tags} = req.query;
+        const { filter, limit, sortBy, sortOrder = '' } = req.query;
+        const { id, title, author, slug, year, tags} = filter ? JSON.parse(filter) : {};
 
         // We need to build the filter dynamically depending on the selected query parameters
-        const filter = {};
+        const dbFilter = {};
         /** Mongoose supports regular expressions in search conditions.
             $regex is used to specify a regular expression on text fields.
-            new RegExp(title, 'i') is used to create a regular expression 
+            new RegExp(title, 'i') is used to create a regular expression
             that searches for the string title in a case-insensitive manner. **/
 
-        if (title) filter.title = { $regex: new RegExp(title, 'i') }; 
-        if (author) filter.author = { $regex: new RegExp(author, 'i') };
-        if (year) filter.year = year;
-        if (tags) filter.tags = { $in: tags.split(',') };
+        if (id) dbFilter.id = { $in: id.split(',') };
+        if (title) dbFilter.title = { $regex: new RegExp(title, 'i') };
+        if (author) dbFilter.author = { $regex: new RegExp(author, 'i') };
+        if (slug) dbFilter.slug = { $regex: new RegExp(slug, 'i') };
+        if (year) dbFilter.year = year;
+        if (tags) dbFilter.tags = { $in: tags.split(',') };
 
-        const books = await Book.find(filter);
-        res.json(books);
+        const books = Book.find(dbFilter);
+
+        if (limit !== undefined) {
+            books.limit(limit)
+        }
+
+        if(sortBy || sortOrder) {
+            let _sortOrder = '+'
+            if(sortOrder === 'desc') {
+                _sortOrder = '-'
+            }
+
+            const _sortBy = sortBy ? sortBy : 'title'
+            books.sort(_sortOrder + _sortBy)
+        }
+
+        const results = await books
+
+        res.json(results);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -31,12 +52,16 @@ export const getBookByID = async(req, res) => {
 };
 
 export const createBook = async (req, res) => {
-    const { title, author, description, year, stock, thumbnail, tags} = req.body;
+    const { title, author, description, slug, year, stock, thumbnail, tags} = req.body;
+
+    console.log(req.body)
+
     try {
         const newBook = new Book({
             title,
             author,
             description,
+            slug,
             year,
             stock,
             thumbnail,

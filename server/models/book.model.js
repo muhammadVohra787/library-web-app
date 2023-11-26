@@ -10,6 +10,9 @@ const bookSchema = new mongoose.Schema({
     description: {
         type: String,
     },
+    slug: {
+        type: String,
+    },
     year: {
         type: String,
     },
