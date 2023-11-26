@@ -27,9 +27,13 @@ export const getBooks = async(req, res) => {
         }
 
         if(sortBy || sortOrder) {
-            sortOrder = sortOrder !== '' && sortOrder !== '-' && sortOrder !== '+' ? '+' : sortOrder
-            sortBy ??= 'title'
-            books.sort(sortOrder + sortBy)
+            let _sortOrder = '+'
+            if(sortOrder === 'desc') {
+                _sortOrder = '-'
+            }
+
+            const _sortBy = sortBy ? sortBy : 'title'
+            books.sort(_sortOrder + _sortBy)
         }
 
         const results = await books
