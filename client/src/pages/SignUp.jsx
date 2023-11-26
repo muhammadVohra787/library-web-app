@@ -11,22 +11,23 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { useRef, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
+import useAccount from '../api/use-account'
+import useAuthentication from '../api/use-authentication'
+import authContext from '../api/auth-context'
 const defaultTheme = createTheme()
 
 export default function SignUp() {
     const letters = /^[A-Za-z\s]+$/
     const [ formData, setFormData ] = useState( {
-        firstname: '',
-        lastname: '',
+        name: '',
         email: '',
-        password: '',
+        // password: '',
     } )
     const [ errors, setErrors ] = useState( {
-        firstname: '',
-        lastname: '',
+        name: '',
         email: '',
-        password: '',
+        // password: '',
     } )
 
     const validateInput = ( name, value ) => {
@@ -36,7 +37,7 @@ export default function SignUp() {
                 errorMessage: 'names may only contain letters',
             }
         }
-        if ( name === 'lastname' ) {
+        if ( name === 'name' ) {
             return {
                 isValid: letters.test( value ),
                 errorMessage: 'names may only contain letters',
@@ -77,38 +78,28 @@ export default function SignUp() {
     const handleSubmit = ( event ) => {
         event.preventDefault()
 
-        const { firstname, lastname, email, password } = formData
+        const { name, email } = formData
 
-        const firstnameValidation = validateInput( 'firstname', firstname )
-        const lastnameValidation = validateInput( 'lastname', lastname )
+        const nameValidation = validateInput( 'name', name )
         const emailValidation = validateInput( 'email', email )
-        const passwordValidation = validateInput( 'password', password )
+        // const passwordValidation = validateInput( 'password', password )
 
         setErrors( {
-            firstname: firstnameValidation.isValid
+            name: nameValidation.isValid
                 ? ''
-                : firstnameValidation.errorMessage,
-            lastname: lastnameValidation.isValid
-                ? ''
-                : lastnameValidation.errorMessage,
+                : nameValidation.errorMessage,
             email: emailValidation.isValid ? '' : emailValidation.errorMessage,
-            password: passwordValidation.isValid
-                ? ''
-                : passwordValidation.errorMessage,
+            // password: passwordValidation.isValid
+            //     ? ''
+            //     : passwordValidation.errorMessage,
         } )
 
         if (
             emailValidation.isValid &&
-            passwordValidation.isValid &&
-            firstnameValidation.isValid &&
-            lastnameValidation.isValid
+            // passwordValidation.isValid &&
+            nameValidation.isValid
         ) {
-            console.log( {
-                firstname,
-                lastname,
-                email,
-                password,
-            } )
+
         }
     }
 
@@ -137,33 +128,18 @@ export default function SignUp() {
                         sx={ { mt: 3 } }
                     >
                         <Grid container spacing={ 2 }>
-                            <Grid item xs={ 12 } sm={ 6 }>
-                                <TextField
-                                    autoComplete="given-name"
-                                    name="firstname"
-                                    required
-                                    fullWidth
-                                    id="firstname"
-                                    label="First Name"
-                                    autoFocus
-                                    value={ formData.firstname }
-                                    onChange={ handleChange }
-                                    error={ !! errors.firstname }
-                                    helperText={ errors.firstname }
-                                />
-                            </Grid>
-                            <Grid item xs={ 12 } sm={ 6 }>
+                            <Grid item xs={ 12 }>
                                 <TextField
                                     required
                                     fullWidth
-                                    id="lastname"
-                                    label="Last Name"
-                                    name="lastname"
-                                    autoComplete="family-name"
-                                    value={ formData.lastname }
+                                    id="name"
+                                    label="Name"
+                                    name="name"
+                                    autoComplete="name"
+                                    value={ formData.name }
                                     onChange={ handleChange }
-                                    error={ !! errors.lastname }
-                                    helperText={ errors.lastname }
+                                    error={ !! errors.name }
+                                    helperText={ errors.name }
                                 />
                             </Grid>
                             <Grid item xs={ 12 }>
@@ -182,17 +158,12 @@ export default function SignUp() {
                             </Grid>
                             <Grid item xs={ 12 }>
                                 <TextField
-                                    required
                                     fullWidth
                                     name="password"
-                                    label="Password"
+                                    label="Password (not implemented)"
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
-                                    value={ formData.password }
-                                    onChange={ handleChange }
-                                    error={ !! errors.password }
-                                    helperText={ errors.password }
                                 />
                             </Grid>
                             <Grid item xs={ 12 }></Grid>
