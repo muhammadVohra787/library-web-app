@@ -1,10 +1,7 @@
-// Home page
-import dataArray from '../assets/dummydata.js'
 import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material'
 
 import HeroImg from '@/assets/hero_img.jpg'
 import useBookData from '@/api/use-book-data.js'
-import useFetch from '@/api/use-fetch.js'
 import { useEffect } from 'react'
 
 const Home = () => {
@@ -12,17 +9,6 @@ const Home = () => {
     const heroImage = `${imageFolder}fiction.jpg`
     const adventureSectionImage = `${imageFolder}adventure.jpg`
     const fantasySectionImage = `${imageFolder}fantasy.jpg`
-
-    // const fictionBooks = dataArray
-    //     .filter( ( book ) => book.tags.includes( 'Fiction' ) )
-    //     .slice( 0, 3 )
-    // const adventureBooks = dataArray
-    //     .filter( ( book ) => book.tags.includes( 'Adventure' ) )
-    //     .slice( 0, 3 )
-    // const fantasyBooks = dataArray
-    //     .filter( ( book ) => book.tags.includes( 'Fantasy' ) )
-    //     .slice( 0, 3 )
-    // const welcomeImage = `${imageFolder}landing1.png`
 
     const fictonBooks = useBookData()
     const fantasyBooks = useBookData()
@@ -79,12 +65,6 @@ const Home = () => {
                 </Typography>
             </Box>
 
-            { /* Fiction Books Section */ }
-            <img
-                src={ heroImage }
-                alt="Hero Section"
-                style={ { width: '100%', height: 'auto', marginTop: '20px', marginBottom: '20px' } }
-            />
             <Typography variant="h4" gutterBottom>
                 <span role="img" aria-label="Fiction Emoji">
                     📚
