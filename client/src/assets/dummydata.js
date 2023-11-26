@@ -1,7 +1,7 @@
 const dummyLibraryData = [
     {
         title: 'To Kill a Mockingbird',
-        slug: 'mockingbird',
+        slug: 'to-kill-a-mockingbird',
         description: 'A classic novel by Harper Lee',
         author: 'Harper Lee',
         stock: 10,
@@ -19,7 +19,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Great Gatsby',
-        slug: 'gatsby',
+        slug: 'the-great-gatsby',
         description: 'A novel by F. Scott Fitzgerald',
         author: 'F. Scott Fitzgerald',
         stock: 12,
@@ -28,7 +28,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Pride and Prejudice',
-        slug: 'pride',
+        slug: 'pride-and-prejudice',
         description: 'A romantic novel by Jane Austen',
         author: 'Jane Austen',
         stock: 15,
@@ -37,7 +37,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Catcher in the Rye',
-        slug: 'catcher',
+        slug: 'the-catcher-in-the-rye',
         description: 'A novel by J.D. Salinger',
         author: 'J.D. Salinger',
         stock: 7,
@@ -46,7 +46,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Hobbit',
-        slug: 'hobbit',
+        slug: 'the-hobbit',
         description: 'A fantasy novel by J.R.R. Tolkien',
         author: 'J.R.R. Tolkien',
         stock: 9,
@@ -54,8 +54,8 @@ const dummyLibraryData = [
         thumbnail: 'the_hobbit.jpg',
     },
     {
-        title: "Harry Potter-Sorcerer's Stone",
-        slug: 'harry_potter',
+        title: "Harry Potter & Sorcerer's Stone",
+        slug: 'harry-potter-sorcerers-stone',
         description: 'A fantasy novel by J.K. Rowling',
         author: 'J.K. Rowling',
         stock: 20,
@@ -64,7 +64,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Lord of the Rings',
-        slug: 'lotr',
+        slug: 'the-lord-of-the-rings',
         description: 'A fantasy novel by J.R.R. Tolkien',
         author: 'J.R.R. Tolkien',
         stock: 18,
@@ -73,7 +73,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Da Vinci Code',
-        slug: 'da_vinci',
+        slug: 'the-da_vinci-code',
         description: 'A mystery thriller by Dan Brown',
         author: 'Dan Brown',
         stock: 14,
@@ -82,7 +82,7 @@ const dummyLibraryData = [
     },
     {
         title: 'The Shining',
-        slug: 'shining',
+        slug: 'the-shining',
         description: 'A horror novel by Stephen King',
         author: 'Stephen King',
         stock: 6,
@@ -100,7 +100,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Star Wars: Ashoka',
-        slug: 'ashoka',
+        slug: 'star-wars-:-ashoka',
         description: 'A Sci-fi novel by E.K. Johnston',
         author: 'E.K. Johnston',
         stock: 12,
@@ -109,7 +109,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Shadow and Bone',
-        slug: 'shadow_bone',
+        slug: 'shadow_and-bone',
         description: 'A Fantasy Fiction novel by Leigh Bardugo',
         author: 'Leigh Bardugo',
         stock: 6,
@@ -127,7 +127,7 @@ const dummyLibraryData = [
     },
     {
         title: 'Diary of the Wimpy Kid',
-        slug: 'wimpy_kid',
+        slug: 'diary-of-the-wimpy_kid',
         description: 'A Humor novel by Jeff Kinney',
         author: 'Jeff Kinney',
         stock: 0,
@@ -136,7 +136,7 @@ const dummyLibraryData = [
     },
     {
         title: 'FullMetal Alchemist',
-        slug: 'fullmetal',
+        slug: 'fullmetal-alchemist',
         description: 'A Manga novel by Hiromu Arakawa',
         author: 'Hiromu Arakawa',
         stock: 8,
@@ -145,16 +145,16 @@ const dummyLibraryData = [
     },
     {
         title: 'Blood, Sweat, and Pixels',
-        slug: 'blood_pixels',
+        slug: 'blood-sweat-and-pixels',
         description: 'A Gaming novel by Jason Schreier',
         author: 'Jason Schreier',
         stock: 13,
-        tags: ['Cooking'],
+        tags: ['Gaming'],
         thumbnail: 'Games.jpg',
     },
     {
         title: 'The Alchemist',
-        slug: 'alchemist',
+        slug: 'the-alchemist',
         description: 'A philosophical novel by Paulo Coelho',
         author: 'Paulo Coelho',
         stock: 11,
