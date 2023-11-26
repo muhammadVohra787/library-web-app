@@ -4,7 +4,7 @@ import Book from '../models/book.model.js'
 export const getBooks = async(req, res) => {
     try {
         const { filter, limit, sortBy, sortOrder = '' } = req.query;
-        const { id, title, author, slug, year, tags} = req.query;
+        const { id, title, author, slug, year, tags} = filter ? JSON.parse(filter) : {};
 
         // We need to build the filter dynamically depending on the selected query parameters
         const dbFilter = {};
