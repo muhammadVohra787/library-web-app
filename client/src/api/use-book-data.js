@@ -40,6 +40,10 @@ export default function useBookData() {
                 query.sortOrder = sortOrder
             }
 
+            if ( limit ) {
+                query.limit = limit
+            }
+
             bookData.fetch( '/books', { query } )
         },
     }
