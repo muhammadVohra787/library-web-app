@@ -116,7 +116,7 @@ const Book = () => {
                             onClick={ handleBuyNow }
                             style={ { marginTop: '20px' } }
                         >
-                            Buy Now
+                            Borrow
                         </Button>
                     </Paper>
                 </Grid>
