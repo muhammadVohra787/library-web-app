@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import useFetch from './use-fetch'
 
 export default function useLibrary( userId ) {
-    const [ currentBookBorrowStatus, setCurrentBookBorrowStatus ] = useState( false )
+    const [ isCheckedOutByUser, setIsCheckedOutByUser ] = useState( false )
     const loanHistory = useFetch()
-    const loanDetails = useFetch()
+    const loanStatus = useFetch()
     const loanControl = useFetch()
 
     useEffect( () => {
@@ -20,11 +20,11 @@ export default function useLibrary( userId ) {
     }, [ loanControl.isComplete ] )
 
     useEffect( () => {
-        if ( loanDetails.isComplete ) {
-            loanDetails.data.returnDate
-            setCurrentBookBorrowStatus( ! loanDetails.data.returnDate )
+        if ( loanStatus.isComplete ) {
+            // console.log( 'loanDetails.data.returnDate ', ! loanStatus.data.returnDate, !! loanStatus.data.returnDate )
+            setIsCheckedOutByUser( !! loanStatus.data.length )
         }
-    }, [ loanDetails.isComplete ] )
+    }, [ loanStatus.isComplete ] )
 
     return {
         request: {},
@@ -32,15 +32,15 @@ export default function useLibrary( userId ) {
             return ( loanHistory.isInitialized && loanHistory.data && [ ...loanHistory.data ].reverse() ) || []
         },
 
-        get currentBookBorrowStatus() {
-            return currentBookBorrowStatus
+        get isCheckedOutByUser() {
+            return isCheckedOutByUser
         },
 
         getLoans() {
             loanHistory.fetch( '/loans', { query: { userId } } )
         },
-        getBorrowStatus( loanId ) {
-            loanDetails.fetch( `/loans/${ loanId}` )
+        getBorrowStatus( bookId ) {
+            loanStatus.fetch( `/loans`, { query: { userId, bookId } } )
         },
         borrow( bookId ) {
             const dueDate = new Date()
