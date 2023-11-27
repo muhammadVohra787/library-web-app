@@ -14,11 +14,14 @@ import {
 } from '@mui/material'
 
 import useBookData from '@/api/use-book-data'
+import BorrowControl from '@/components/BorrowControl'
+import useAuthentication from '@/api/use-authentication'
 
 const Book = () => {
     // Get the dynamic part of the URL from the router
     const { slug } = useParams()
     const bookRequest = useBookData()
+    const user = useAuthentication()
 
     useEffect( () => {
         bookRequest.getBookBySlug( slug )
@@ -43,12 +46,8 @@ const Book = () => {
 
     const book = bookRequest.firstItem
 
-    const handleBuyNow = () => {
-        // Add your logic for handling the "Buy Now" action
-        console.log( 'Buy Now clicked' )
-    }
-
     const {
+        _id,
         title,
         author,
         description,
@@ -104,14 +103,7 @@ const Book = () => {
                         <Typography variant="subtitle1" gutterBottom>
                             Stock: { stock }
                         </Typography>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={ handleBuyNow }
-                            style={ { marginTop: '20px' } }
-                        >
-                            Borrow
-                        </Button>
+                        <BorrowControl bookId={ _id } isSignedIn={ user.isSignedIn } isAvailable={ !! stock } />
                     </Paper>
                 </Grid>
             </Grid>
