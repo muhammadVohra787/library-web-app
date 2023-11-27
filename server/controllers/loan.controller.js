@@ -1,5 +1,6 @@
 // loan.controller.js
 import loan from '../models/loan.model.js'
+import { findBookById } from './books.controller.js'
 
 export const getLoans = async( req, res ) => {
     try {
@@ -11,8 +12,16 @@ export const getLoans = async( req, res ) => {
             findParams.userId = userId
         }
 
-        const loans = await loan.find( findParams )
-        res.json( loans )
+        const loans = await loan.find( findParams ).lean()
+
+        const loanData = []
+        for ( const l of loans ) {
+            // Todo: get populate() to work
+            // await l.populate( 'bookId' )
+            const book = await findBookById( l.bookId.toString() )
+            loanData.push( { ...l, book } )
+        }
+        res.json( loanData )
     }
     catch ( error ) {
         console.error( error )
