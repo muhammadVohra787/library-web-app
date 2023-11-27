@@ -1,7 +1,7 @@
 import { Alert, Button, Link, Stack, Typography } from '@mui/material'
 import useLibrary from '@/api/use-library'
 import useAuthentication from '@/api/use-authentication'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import NavLink from './NavLink'
 
 /**
@@ -16,6 +16,12 @@ export default function BorrowControl( { bookId, isAvailable } ) {
         library.borrow( bookId )
     }
 
+    useEffect( () => {
+        if ( auth.userId && bookId ) {
+            library.getBorrowStatus( bookId )
+        }
+    }, [ auth.userId, bookId ] )
+
     return (
         <Stack direction="row" spacing={ 5 } alignItems="center" mt={ 3 }>
             {
@@ -24,12 +30,12 @@ export default function BorrowControl( { bookId, isAvailable } ) {
                 </>
             }
             {
-                ! library.currentBookBorrowStatus && <>
+                library.isCheckedOutByUser && <>
                     <Alert severity='info' >Currently checked out</Alert>
                 </>
             }
             {
-                ! library.currentBookBorrowStatus && isAvailable && <>
+                ! library.isCheckedOutByUser && isAvailable && <>
                     <Button
                         variant="contained"
                         color="primary"
