@@ -12,6 +12,7 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    Stack,
 } from '@mui/material'
 import dataArray from '../assets/dummydata.js'
 import useBookData from '@/api/use-book-data.js'
@@ -60,44 +61,45 @@ const ExplorePage = () => {
     }
 
     return (
-        <Container style={ { marginTop: '20px' } }>
+        <Container>
             {
                 Array.isArray( bookRequest.data ) && <>
-                    <Container style={ { display: 'flex', alignItems: 'center' } }>
-                        <Autocomplete
-                            style={ { flex: 1 } }
-                            disablePortal
-                            id="combo-box-demo"
-                            options={ options }
-                            sx={ { width: 400 } }
-                            value={ searchValue }
-                            freeSolo // Add the freeSolo prop
-                            onChange={ ( event, newValue ) => setSearchValue( newValue ) }
-                            renderInput={ ( params ) => (
-                                <TextField
-                                    { ...params }
-                                    label="Search by Author Or Title"
-                                />
-                            ) }
-                        />
-                        <Button onClick={ handleSortToggle } sx={ { marginLeft: '20px' } }>
-                            { sortOrder === 'asc' ? 'Sort Descending' : 'Sort Ascending' }
-                        </Button>
-                        <FormControl sx={ { marginLeft: '10px', minWidth: '120px' } }>
-                            <InputLabel id="sort-type-label">Sort Type</InputLabel>
-                            <Select
-                                labelId="sort-type-label"
-                                id="sort-type"
-                                value={ sortBy }
-                                label="Sort Type"
-                                onChange={ handleSortTypeChange }
-                            >
-                                <MenuItem value="title">Title</MenuItem>
-                                <MenuItem value="author">Author</MenuItem>
-                            </Select>
-                        </FormControl>
+                    <Container>
+                        <Stack direction="row" alignItems='center' mb={ 5 }>
+                            <Autocomplete
+                                style={ { flex: 1 } }
+                                disablePortal
+                                id="combo-box-demo"
+                                options={ options }
+                                sx={ { width: 400 } }
+                                value={ searchValue }
+                                freeSolo // Add the freeSolo prop
+                                onChange={ ( event, newValue ) => setSearchValue( newValue ) }
+                                renderInput={ ( params ) => (
+                                    <TextField
+                                        { ...params }
+                                        label="Search by Author Or Title"
+                                    />
+                                ) }
+                            />
+                            <Button onClick={ handleSortToggle } sx={ { marginLeft: '20px' } }>
+                                { sortOrder === 'asc' ? 'Sort Descending' : 'Sort Ascending' }
+                            </Button>
+                            <FormControl sx={ { marginLeft: '10px', minWidth: '120px' } }>
+                                <InputLabel id="sort-type-label">Sort Type</InputLabel>
+                                <Select
+                                    labelId="sort-type-label"
+                                    id="sort-type"
+                                    value={ sortBy }
+                                    label="Sort Type"
+                                    onChange={ handleSortTypeChange }
+                                >
+                                    <MenuItem value="title">Title</MenuItem>
+                                    <MenuItem value="author">Author</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Stack>
                     </Container>
-
                     <Container>
                         <Grid
                             container
