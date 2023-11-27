@@ -63,10 +63,10 @@ export default function useAuthentication() {
             return userData.status.isFetching || ! userData.status.isInitialized
         },
         get userId() {
-            return userData.data._id
+            return user.userId
         },
         get userData() {
-            return userData.data
+            return userData?.data
         },
         refresh() {
             userData.refetch()
