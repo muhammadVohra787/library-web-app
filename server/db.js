@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import config from './config/config.js'
 
-import addBooksToDatabase from './Initializers/books.initializer.js'
+// import addBooksToDatabase from './Initializers/books.initializer.js';
 
 export const connectDB = async() => {
     try {
@@ -10,7 +10,7 @@ export const connectDB = async() => {
             // useCreateIndex: true,
             useUnifiedTopology: true,
         } )
-        await addBooksToDatabase()
+        // await addBooksToDatabase();
         console.log( 'Connected to the database!' )
     }
     catch ( error ) {
