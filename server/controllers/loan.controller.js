@@ -5,11 +5,15 @@ import { findBookById } from './books.controller.js'
 export const getLoans = async( req, res ) => {
     try {
         // Implementation for fetching loans
-        const { userId } = req.query
+        const { userId, bookId } = req.query
         const findParams = {}
 
         if ( userId ) {
             findParams.userId = userId
+        }
+
+        if ( bookId ) {
+            findParams.bookId = bookId
         }
 
         const loans = await loan.find( findParams ).lean()
