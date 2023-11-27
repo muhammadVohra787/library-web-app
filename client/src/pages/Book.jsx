@@ -100,10 +100,8 @@ const Book = () => {
                                 />
                             ) ) }
                         </div>
-                        <Typography variant="subtitle1" gutterBottom>
-                            Stock: { stock }
-                        </Typography>
-                        <BorrowControl bookId={ _id } isSignedIn={ user.isSignedIn } isAvailable={ !! stock } />
+
+                        <BorrowControl bookId={ _id } isSignedIn={ user.isSignedIn } isAvailable={ stock > 0 } />
                     </Paper>
                 </Grid>
             </Grid>
