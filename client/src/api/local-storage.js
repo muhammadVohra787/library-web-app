@@ -20,7 +20,6 @@ export const useLocalStorage = ( key, defaultValue ) => {
 
     useEffect( () => {
         if ( value !== defaultValue && value !== undefined ) {
-            console.log( 'localStorage.setItem', value )
             localStorage.setItem( key, JSON.stringify( value ) )
         }
         isMounted.current = true

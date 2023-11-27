@@ -10,7 +10,6 @@ export default function useAuthentication() {
 
     useEffect( () => {
         if ( persistedUserId && ! user.userId ) {
-            console.log( '=== first render ===', persistedUserId )
             user.setUserId( persistedUserId )
             userData.getUserById( persistedUserId )
         }
@@ -18,7 +17,6 @@ export default function useAuthentication() {
 
     useEffect( () => {
         if ( user.userId && user.userId !== persistedUserId ) {
-            console.log( '=== user.userId ===', persistedUserId )
             setPersistedUserId( user.userId )
 
             if ( ! userData.data ) {
@@ -29,8 +27,6 @@ export default function useAuthentication() {
 
     useEffect( () => {
         if ( userData.status.isComplete && ! user.userId ) {
-            console.log( '##### SIGN IN REQUEST COMPLETE!! ######', userData.data )
-
             if ( userData.data ) {
                 user.setUserId( userData.data._id )
             }
@@ -39,7 +35,6 @@ export default function useAuthentication() {
 
     useEffect( () => {
         if ( userData.status.isError ) {
-            console.log( '##### userData.status.isError!! ######', userData.data )
             user.setUserId( null )
         }
     }, [ userData.status.isError ] )
