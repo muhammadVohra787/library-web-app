@@ -17,9 +17,9 @@ export default function BorrowControl( { bookId, isAvailable } ) {
         library.borrow( bookId )
     }
 
-    useEffect( () => {
+    // useEffect( () => {
 
-    }, [ library.request.isComplete ] )
+    // }, [ library.request.isComplete ] )
 
     console.log( 'BorrowControl =================>', auth )
 
@@ -31,12 +31,12 @@ export default function BorrowControl( { bookId, isAvailable } ) {
                 </>
             }
             {
-                isCheckedOut && <>
+                ! library.currentBookBorrowStatus && <>
                     <Alert severity='info' >Currently checked out</Alert>
                 </>
             }
             {
-                ! isCheckedOut && isAvailable && <>
+                ! library.currentBookBorrowStatus && isAvailable && <>
                     <Button
                         variant="contained"
                         color="primary"
