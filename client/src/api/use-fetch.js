@@ -80,9 +80,8 @@ export default function useFetch() {
     /** @type {[any,any]} */
     const [ fetchStatus, updateFetchStatus ] = useReducer( updateFetchStatusReducer, initial )
 
-    useEffect( () => {
-        updateFetchStatus()
-    }, [] )
+    // useEffect( () => {
+    // }, [] )
 
     useEffect( () => {
         if ( ! requestData.current.url ) {
@@ -154,7 +153,8 @@ export default function useFetch() {
             return fetchStatus.isInitialized
         },
         fetch( fetchUrl, params = {} ) {
-            // setUrl( fetchUrl )
+            updateFetchStatus()
+
             requestData.current = {
                 url: fetchUrl,
                 options: params.options,
