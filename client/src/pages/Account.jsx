@@ -9,21 +9,16 @@ import {
     Chip,
     Card,
     CardContent,
-    CardMedia,
     Stack,
     TextField,
-    FormControlLabel,
     InputLabel,
     FormHelperText,
     Alert,
     CircularProgress,
     List,
-    ListItem,
-    IconButton,
     ListItemText,
 } from '@mui/material'
-import FolderIcon from '@mui/icons-material/Folder'
-import DeleteIcon from '@mui/icons-material/Delete'
+
 import InputIcon from '@mui/icons-material/Input'
 
 import useAuthentication from '@/api/use-authentication'
@@ -196,7 +191,13 @@ export default function Account() {
                                     }
                                     <List>
                                         { library.loans.map( ( item ) =>
-                                            <BookHistoryItem item={ item } key={ item._id } />,
+                                            <BookHistoryItem
+                                                item={ item }
+                                                key={ item._id }
+                                                returnHandler={ () => {
+                                                    library.return( item._id )
+                                                } }
+                                            />,
                                         ) }
 
                                     </List>
@@ -211,7 +212,7 @@ export default function Account() {
     )
 }
 
-function BookHistoryItem( { item } ) {
+function BookHistoryItem( { item, returnHandler } ) {
     const loanDateInt = Date.parse( item.loanDate )
     const loanDate = new Date( loanDateInt ).toDateString()
     const dueDateInt = Date.parse( item.dueDate )
@@ -224,42 +225,52 @@ function BookHistoryItem( { item } ) {
     const statusColour = returnDateInt ? 'info' : ( isOverdue ? 'error' : `success` )
 
     return (
-        <ListItem
+        <Card
             key={ item._id }
+            variant="outlined"
             sx={ {
                 background: '#eee',
                 marginBottom: '10px',
             } }
-            secondaryAction={
-                ! returnDateInt && <Button variant="contained" endIcon={ <InputIcon /> }>
-                    Return
-                </Button>
-            }
         >
-            <Stack spacing={ 1 } alignContent="stretch">
-                <Chip label={ status } color={ statusColour } size="small" />
-                <Stack>
-                    <ListItemText
-                        primary={ <NavLink to={ `/book/${ item.book?.slug}` }>{ item.book?.title }</NavLink> }
-                    />
-
-                    <ListItemText
-                        secondary={ `Borrowed: ${ loanDate }` }
-                    />
-                    {
-                        !! returnDateInt &&
-                            <ListItemText
-                                secondary={ `Returned: ${ returnDate }` }
-                            />
-                    }
-                    {
-                        ! returnDateInt &&
-                            <ListItemText
-                                secondary={ `Due: ${ dueDate }` }
-                            />
-                    }
+            <CardContent>
+                <Stack direction="row" spacing={ 2 } mb={ 2 }>
+                    <Box flex="1">
+                        <Typography component="h4" variant="h6">
+                            <NavLink underline="hover" to={ `/book/${ item.book?.slug}` } >{ item.book?.title }</NavLink>
+                        </Typography>
+                    </Box>
+                    <Box>
+                        <Chip label={ status } color={ statusColour } size="small" />
+                    </Box>
                 </Stack>
-            </Stack>
-        </ListItem>
+                <Stack direction="row">
+                    <Stack flexGrow="1">
+                        {
+                            ! returnDateInt &&
+                                <ListItemText
+                                    secondary={ `Due: ${ dueDate }` }
+                                />
+                        }
+                        {
+                            !! returnDateInt &&
+                                <ListItemText
+                                    secondary={ `Returned: ${ returnDate }` }
+                                />
+                        }
+                        <ListItemText
+                            secondary={ `Borrowed: ${ loanDate }` }
+                        />
+                    </Stack>
+                    <Box>
+                        {
+                            ! returnDateInt && <Button variant="outlined" endIcon={ <InputIcon /> } onClick={ returnHandler }>
+                                Return now
+                            </Button>
+                        }
+                    </Box>
+                </Stack>
+            </CardContent>
+        </Card>
     )
 }
