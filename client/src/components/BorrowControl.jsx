@@ -1,6 +1,5 @@
 import { Alert, Box, Button, Link, Stack, Typography } from '@mui/material'
 import useLibrary from '@/api/use-library'
-import useAuthentication from '@/api/use-authentication'
 import { useEffect, useState } from 'react'
 import NavLink from './NavLink'
 
@@ -8,8 +7,7 @@ import NavLink from './NavLink'
  * @param {*} props
  */
 export default function BorrowControl( { book, user } ) {
-    const auth = useAuthentication()
-    const library = useLibrary( auth.userId )
+    const library = useLibrary( user.userId )
     const [ availableCopies, setAvailableCopies ] = useState( -1 )
 
     const handleBorrow = () => {
@@ -17,10 +15,10 @@ export default function BorrowControl( { book, user } ) {
     }
 
     useEffect( () => {
-        if ( auth.userId && book._id ) {
+        if ( user.userId && book._id ) {
             library.getBorrowStatus( book._id )
         }
-    }, [ auth.userId, book._id ] )
+    }, [ user.userId, book._id ] )
 
     return (
         <Stack>
@@ -47,11 +45,11 @@ export default function BorrowControl( { book, user } ) {
                             color="primary"
                             onClick={ handleBorrow }
                             size="large"
-                            { ...{ disabled: ! auth.isSignedIn } }
+                            { ...{ disabled: ! user.isSignedIn } }
                         >
                             Borrow this book
                         </Button>
-                        { ! auth.isSignedIn && <>
+                        { ! user.isSignedIn && <>
                             <Typography fontSize="0.9em important">
                                 <NavLink to="/signin">Sign in</NavLink> or <NavLink to="/signup">sign up</NavLink> to borrow this book.
                             </Typography>
