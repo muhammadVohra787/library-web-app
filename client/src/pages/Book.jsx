@@ -23,6 +23,8 @@ const Book = () => {
     const bookRequest = useBookData()
     const user = useAuthentication()
 
+    console.log( '#### BOOK USER ####', user )
+
     useEffect( () => {
         bookRequest.getBookBySlug( slug )
     }, [] )
@@ -47,12 +49,10 @@ const Book = () => {
     const book = bookRequest.firstItem
 
     const {
-        _id,
         title,
         author,
         description,
         tags = [],
-        stock,
         thumbnail,
     } = book
 
@@ -101,7 +101,7 @@ const Book = () => {
                             ) ) }
                         </div>
 
-                        <BorrowControl bookId={ _id } isSignedIn={ user.isSignedIn } isAvailable={ stock > 0 } />
+                        <BorrowControl book={ book } userId={ user.userId } isSignedIn={ user.isSignedIn } />
                     </Paper>
                 </Grid>
             </Grid>
