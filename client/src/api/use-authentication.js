@@ -4,11 +4,15 @@ import useAccount from './use-account'
 import { useContext, useEffect, useState } from 'react'
 
 export default function useAuthentication() {
+    const [ isMounted, setIsMounted ] = useState( false )
+
     const user = useContext( authContext )
     const userData = useAccount()
     const [ persistedUserId, setPersistedUserId ] = useLocalStorage( 'userId', '' )
 
     useEffect( () => {
+        setIsMounted( true )
+
         if ( persistedUserId && ! user.userId ) {
             user.setUserId( persistedUserId )
             userData.getUserById( persistedUserId )
@@ -57,7 +61,7 @@ export default function useAuthentication() {
             return userData.status.isComplete && ( ! userData.data || ! Object.keys( userData.data ).length )
         },
         get isGettingStatus() {
-            return userData.status.isFetching || ! userData.status.isInitialized
+            return userData.status.isFetching || ! isMounted
         },
         get userId() {
             return user.userId
