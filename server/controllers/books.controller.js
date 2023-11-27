@@ -45,8 +45,13 @@ export const getBooks = async(req, res) => {
       }
 };
 
+export async function findBookById(bookid) {
+    const book = await Book.findById(bookid);
+    return book;
+}
+
 export const getBookByID = async(req, res) => {
-    const book = await Book.findById(req.params.bookid);
+    const book = await Book.findById(req.params.bookid); //findBookById(req.params.bookid);
     if(!book) return res.status(404).json({message: "Book not found"});
     res.json(book);
 };
