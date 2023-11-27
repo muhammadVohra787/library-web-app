@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import {
     Autocomplete,
     Container,
@@ -13,24 +13,30 @@ import {
     Select,
     MenuItem,
     Stack,
+    CircularProgress,
 } from '@mui/material'
 import dataArray from '../assets/dummydata.js'
 import useBookData from '@/api/use-book-data.js'
 import NavLink from '@/components/NavLink.jsx'
 
 const ExplorePage = () => {
+    // Image folder is relative to /public
+    const imageFolder = '/book-cover/'
+
     const [ searchValue, setSearchValue ] = useState( '' )
     const [ sortOrder, setSortOrder ] = useState( 'asc' ) // Default sorting order is ascending
     const [ sortBy, setSortBy ] = useState( 'title' ) // Default sorting type is title
 
+    const [ isLoading, setIsLoading ] = useState( true )
+
     const bookRequest = useBookData()
 
-    useEffect( () => {
+    useLayoutEffect( () => {
         bookRequest.getBooks( { sortBy, sortOrder } )
+        console.log( 'bookRequest', bookRequest )
     }, [ sortBy, sortOrder, searchValue ] )
 
-    // Image folder is relative to /public
-    const imageFolder = '/book-cover/'
+    console.log( ' bookRequest.status.isFetching', bookRequest.status.isFetching )
 
     const options = dataArray.flatMap( ( book ) => [ book.title, book.author ] )
 
@@ -43,27 +49,26 @@ const ExplorePage = () => {
         setSortBy( event.target.value )
     }
 
-    if ( bookRequest.status.isFetching ) {
-        return (
-            <Container style={ { marginTop: '20px', marginBottom: '20px' } }>
-                <Paper><Box p={ 3 }>Loading...</Box></Paper>
-            </Container>
-        )
-    }
-
-    // Abort here if the book is not found
-    if ( bookRequest.status.isError ) {
-        return (
-            <Container style={ { marginTop: '20px', marginBottom: '20px' } }>
-                <Paper><Box p={ 3 }>Book not found.</Box></Paper>
-            </Container>
-        )
-    }
+    useEffect( () => {
+        if ( bookRequest.status.isComplete || bookRequest.status.isError ) {
+            setIsLoading( false )
+        }
+    }, [ bookRequest.status.isComplete ] )
 
     return (
         <Container>
+            <Box>
+                <h1>Explore</h1>
+            </Box>
             {
-                Array.isArray( bookRequest.data ) && <>
+                isLoading && <CircularProgress />
+            }
+            {
+                bookRequest.status.isError &&
+                    <Paper><Box p={ 3 }>Book not found.</Box></Paper>
+            }
+            {
+                ! isLoading && ! bookRequest.status.isError && Array.isArray( bookRequest.data ) && <>
                     <Container>
                         <Stack direction="row" alignItems='center' mb={ 5 }>
                             <Autocomplete
