@@ -4,6 +4,7 @@ import BottomPicture from '@/assets/library.jpg'
 const Footer = () => {
     return (
         <Box
+            mt={ 20 }
             sx={ {
                 position: 'relative',
                 bottom: 0,
