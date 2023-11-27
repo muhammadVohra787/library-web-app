@@ -15,6 +15,7 @@ import {
 } from '@mui/material'
 import dataArray from '../assets/dummydata.js'
 import useBookData from '@/api/use-book-data.js'
+import NavLink from '@/components/NavLink.jsx'
 
 const ExplorePage = () => {
     const [ searchValue, setSearchValue ] = useState( '' )
@@ -116,7 +117,7 @@ const ExplorePage = () => {
                                         <Typography variant="h6" className="titleBook">
                                             { item.title }
                                         </Typography>
-                                        <a href={ `/book/${ item.slug}` }>
+                                        <NavLink to={ `/book/${ item.slug}` }>
                                             <img
                                                 height={ 400 }
                                                 width={ 180 }
@@ -129,7 +130,7 @@ const ExplorePage = () => {
                                                     marginBottom: '15px',
                                                 } }
                                             />
-                                        </a>
+                                        </NavLink>
                                         <Typography
                                             variant="body2"
                                             className="bookAuthor"
