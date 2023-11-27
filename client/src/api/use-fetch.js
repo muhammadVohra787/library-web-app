@@ -3,6 +3,10 @@ import { useEffect, useReducer, useRef, useState } from 'react'
 // TODO: Get endpoint from configuration/env
 const endpointUrl = 'http://localhost:3000/api'
 
+const delay = async( ms ) => {
+    return new Promise( ( r ) => setTimeout( r, ms ) )
+}
+
 export default function useFetch() {
     /** @type {[Record<string, any>, (prev) => prev ]} */
     const [ results, setResults ] = useState()
@@ -89,6 +93,14 @@ export default function useFetch() {
 
             updateFetchStatus( { status: 'isFetching' } )
 
+            // if ( requestData.current.options?.body || requestData.current.url === '/loans' ) {
+            //     await delay( 1000 )
+            // }
+
+            // ! Testing !
+            // Short delay for testing
+            await delay( 1000 )
+
             try {
                 const request = await fetch( requestUrl, requestData.current.options )
                 const json = await request.json()
@@ -138,7 +150,12 @@ export default function useFetch() {
             triggerFetch()
         },
         refetch() {
-            triggerFetch()
+            console.log( 'REFETCH???', fetchStatus.isInitialized, requestData.current )
+            if ( fetchStatus.isInitialized ) {
+                console.log( 'REFETCH!!!!!!!!!!!!!!!!!!!!', requestData.current )
+                prevQuery.current = undefined
+                triggerFetch()
+            }
         },
         reset() {
             setResults( undefined )
