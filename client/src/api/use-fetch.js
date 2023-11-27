@@ -101,17 +101,17 @@ export default function useFetch() {
 
             const queryParams = new URLSearchParams( query )
             const queryString = queryParams.size ? `?${ queryParams }` : ''
-            const requestUrl = endpointUrl + requestData.current.url + queryString
+            const requestEndpointUrl = endpointUrl + requestData.current.url
+            const requestUrl = requestEndpointUrl + queryString
 
+            // Abort if query has not changed
             const stringifiedQuery = JSON.stringify( requestData.current )
-
-            // Extra check if query has changed, not sure if needed
             if ( prevQuery.current === stringifiedQuery ) {
                 return
             }
             prevQuery.current = stringifiedQuery
 
-            console.log( 'Fetching URL:', requestUrl, queryString )
+            console.log( 'Fetching URL:', requestUrl, ' Query:', query, ' Body:', requestData.current.options?.body )
 
             updateFetchStatus( { status: 'isFetching' } )
 
@@ -119,7 +119,7 @@ export default function useFetch() {
                 const request = await fetch( requestUrl, requestData.current.options )
                 const json = await request.json()
 
-                console.log( 'json', json )
+                console.log( `Fetched data for URL:`, requestUrl, '\n', json )
                 setResults( json )
             }
             catch ( e ) {
