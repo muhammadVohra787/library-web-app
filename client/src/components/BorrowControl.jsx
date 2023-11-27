@@ -7,20 +7,20 @@ import NavLink from './NavLink'
 /**
  * @param {*} props
  */
-export default function BorrowControl( { bookId, isAvailable } ) {
+export default function BorrowControl( { book, user } ) {
     const auth = useAuthentication()
     const library = useLibrary( auth.userId )
     const [ availableCopies, setAvailableCopies ] = useState( -1 )
 
     const handleBorrow = () => {
-        library.borrow( bookId )
+        library.borrow( book._id )
     }
 
     useEffect( () => {
-        if ( auth.userId && bookId ) {
-            library.getBorrowStatus( bookId )
+        if ( auth.userId && book._id ) {
+            library.getBorrowStatus( book._id )
         }
-    }, [ auth.userId, bookId ] )
+    }, [ auth.userId, book._id ] )
 
     return (
         <Stack>
