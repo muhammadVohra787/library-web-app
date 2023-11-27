@@ -13,13 +13,7 @@ import {
     CardMedia,
 } from '@mui/material'
 
-import dummyLibraryData from '@/assets/dummydata'
 import useBookData from '@/api/use-book-data'
-
-// Temporary solution in lieu of a database API
-function getBookFromJson( bookId ) {
-    return dummyLibraryData.find( ( b ) => b.slug === bookId )
-}
 
 const Book = () => {
     // Get the dynamic part of the URL from the router
