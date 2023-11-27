@@ -5,7 +5,10 @@ import { findBookById } from './books.controller.js'
 export const getLoans = async( req, res ) => {
     try {
         // Implementation for fetching loans
-        const { userId, bookId } = req.query
+        // Todo: split into query and filters
+        // isReturned is properly a filter
+        const { userId, bookId, isReturned: _isReturned } = req.query
+        const isReturned = _isReturned !== undefined ? JSON.parse( _isReturned ) : _isReturned
         const findParams = {}
 
         if ( userId ) {
@@ -16,7 +19,14 @@ export const getLoans = async( req, res ) => {
             findParams.bookId = bookId
         }
 
+        if ( isReturned !== undefined ) {
+            findParams.returnDate = isReturned ? { $exists: true } : { $exists: false }
+        }
+
+        // Return pure JSON objects
         const loans = await loan.find( findParams ).lean()
+
+        console.log( loans )
 
         const loanData = []
         for ( const l of loans ) {
