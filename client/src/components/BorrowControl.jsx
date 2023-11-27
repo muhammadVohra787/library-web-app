@@ -1,8 +1,7 @@
-import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { Alert, Button, Link, Stack, Typography } from '@mui/material'
 import useLibrary from '@/api/use-library'
 import useAuthentication from '@/api/use-authentication'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import NavLink from './NavLink'
 
 /**
@@ -16,12 +15,6 @@ export default function BorrowControl( { bookId, isAvailable } ) {
     const handleBorrow = () => {
         library.borrow( bookId )
     }
-
-    // useEffect( () => {
-
-    // }, [ library.request.isComplete ] )
-
-    console.log( 'BorrowControl =================>', auth )
 
     return (
         <Stack direction="row" spacing={ 5 } alignItems="center" mt={ 3 }>
