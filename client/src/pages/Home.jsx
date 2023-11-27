@@ -61,7 +61,7 @@ const Home = () => {
                         WELCOME TO OUR LIBRARY
                     </Typography>
                     <Typography variant="body1">
-                        Explore a vast collection of books and borrow your favorites
+                        Explore a vast collection of books and borrow your favourites
                         today.
                     </Typography>
                 </Box>
@@ -72,7 +72,7 @@ const Home = () => {
                     <span role="img" aria-label="Fiction Emoji">
                         📚
                     </span>{ ' ' }
-                    Fiction Favorites
+                    Fiction favourites
                 </Typography>
                 <Grid container spacing={ 4 }>
                     { Array.isArray( fictonBooks.data ) && fictonBooks.data.map( ( book, index ) => (
@@ -142,7 +142,7 @@ const Home = () => {
                     <span role="img" aria-label="Fantasy Emoji">
                         🧙‍♂️
                     </span>{ ' ' }
-                    Fantasy Favorites
+                    Fantasy favourites
                 </Typography>
                 <Grid container spacing={ 4 }>
                     { Array.isArray( fantasyBooks.data ) && fantasyBooks.data.map( ( book, index ) => (
