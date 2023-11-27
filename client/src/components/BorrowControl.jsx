@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Link, Stack, Typography } from '@mui/material'
+import { Alert, Box, Button, CircularProgress, Link, Stack, Typography } from '@mui/material'
 import useLibrary from '@/api/use-library'
 import { useEffect, useState } from 'react'
 import NavLink from './NavLink'
@@ -6,9 +6,10 @@ import NavLink from './NavLink'
 /**
  * @param {*} props
  */
-export default function BorrowControl( { book, user } ) {
-    const { bookId } = book ?? {}
-    const library = useLibrary( user.userId )
+export default function BorrowControl( { book, userId, isSignedIn } ) {
+    const { _id: bookId, stock } = book ?? {}
+
+    const library = useLibrary( userId )
     const [ availableCopies, setAvailableCopies ] = useState( -1 )
 
     const handleBorrow = () => {
@@ -16,10 +17,23 @@ export default function BorrowControl( { book, user } ) {
     }
 
     useEffect( () => {
-        if ( user.userId && bookId ) {
+        if ( bookId ) {
+            library.getBookCheckouts( bookId )
+        }
+        if ( userId && bookId ) {
             library.getBorrowStatus( bookId )
         }
-    }, [ user.userId, bookId ] )
+    }, [ userId, bookId ] )
+
+    useEffect( () => {
+        if ( library.bookCheckoutCount !== -1 ) {
+            setAvailableCopies( stock - library.bookCheckoutCount )
+        }
+    }, [ stock, library.bookCheckoutCount ] )
+
+    if ( availableCopies === -1 || library.isCheckoutStatusChangePending || library.isCheckoutStatusCheckPending ) {
+        return <CircularProgress />
+    }
 
     return (
         <Stack>
@@ -30,36 +44,31 @@ export default function BorrowControl( { book, user } ) {
             </Box>
             <Stack direction="row" spacing={ 5 } alignItems="center" mt={ 3 }>
                 {
-                    library.request.isComplete && <>
-                        <Alert severity='success' >You have checked out this book :)</Alert>
-                    </>
-                }
-                {
                     library.isCheckedOutByUser && <>
-                        <Alert severity='info' >Currently checked out</Alert>
+                        <Alert severity='success' >Currently checked out</Alert>
                     </>
                 }
                 {
-                    ! library.isCheckedOutByUser && isAvailable && <>
+                    ! library.isCheckedOutByUser && ! availableCopies && <>
+                        <Alert severity="warning">No copies available.</Alert>
+                    </>
+                }
+                {
+                    ! library.isCheckedOutByUser && availableCopies > 0 && <>
                         <Button
                             variant="contained"
                             color="primary"
                             onClick={ handleBorrow }
                             size="large"
-                            { ...{ disabled: ! user.isSignedIn } }
+                            { ...{ disabled: ! isSignedIn } }
                         >
                             Borrow this book
                         </Button>
-                        { ! user.isSignedIn && <>
+                        { ! isSignedIn && <>
                             <Typography fontSize="0.9em important">
                                 <NavLink to="/signin">Sign in</NavLink> or <NavLink to="/signup">sign up</NavLink> to borrow this book.
                             </Typography>
                         </> }
-                    </>
-                }
-                {
-                    ! availableCopies && ! isAvailable && <>
-                        <Alert severity="warning">No copies available.</Alert>
                     </>
                 }
             </Stack>
