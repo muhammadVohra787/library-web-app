@@ -4,6 +4,7 @@ import HeroImg from '@/assets/hero_img.jpg'
 import HeroImg2 from '@/assets/hero_img_2.jpg'
 import useBookData from '@/api/use-book-data.js'
 import { useEffect } from 'react'
+import NavLink from '@/components/NavLink'
 
 const Home = () => {
     const imageFolder = '/book-cover/'
@@ -78,7 +79,8 @@ const Home = () => {
                         <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
                             <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
                                 <Typography variant="h6">{ book.title }</Typography>
-                                <a href={ `/book/${book.slug}` }>
+
+                                <NavLink to={ `/book/${book.slug}` }>
                                     <img
                                         height={ '100%' }
                                         width={ 'auto' }
@@ -86,7 +88,7 @@ const Home = () => {
                                         alt="bookImage"
                                         style={ { display: 'block', margin: 'auto', marginTop: '15px', marginBottom: '15px' } }
                                     />
-                                </a>
+                                </NavLink>
                                 <Typography variant="body2">Author: { book.author }</Typography>
                                 <Typography variant="body2">Available: { book.stock }</Typography>
                             </Paper>
@@ -112,7 +114,7 @@ const Home = () => {
                         <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
                             <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
                                 <Typography variant="h6">{ book.title }</Typography>
-                                <a href={ `/book/${book.slug}` }>
+                                <NavLink to={ `/book/${book.slug}` }>
                                     <img
                                         height={ '100%' }
                                         width={ 'auto' }
@@ -120,7 +122,7 @@ const Home = () => {
                                         alt="bookImage"
                                         style={ { display: 'block', margin: 'auto', marginTop: '15px', marginBottom: '15px' } }
                                     />
-                                </a>
+                                </NavLink>
                                 <Typography variant="body2">Author: { book.author }</Typography>
                                 <Typography variant="body2">Available: { book.stock }</Typography>
                             </Paper>
@@ -147,7 +149,7 @@ const Home = () => {
                         <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
                             <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
                                 <Typography variant="h6">{ book.title }</Typography>
-                                <a href={ `/book/${book.slug}` }>
+                                <NavLink to={ `/book/${book.slug}` }>
                                     <img
                                         height={ '100%' }
                                         width={ 'auto' }
@@ -155,7 +157,7 @@ const Home = () => {
                                         alt="bookImage"
                                         style={ { display: 'block', margin: 'auto', marginTop: '15px', marginBottom: '15px' } }
                                     />
-                                </a>
+                                </NavLink>
                                 <Typography variant="body2">Author: { book.author }</Typography>
                                 <Typography variant="body2">Available: { book.stock }</Typography>
                             </Paper>
@@ -176,9 +178,9 @@ const Home = () => {
                     justifyContent="center"
                 >
                     <Stack alignItems="center" spacing={ 1 }>
-                        <Button variant="contained" color="secondary" href="/explore">
+                        <NavLink asButton variant="contained" color="secondary" to="/explore">
                             Explore more books
-                        </Button>
+                        </NavLink>
                     </Stack>
                 </Grid>
             </Box>
