@@ -26,6 +26,8 @@ export default function useAuthentication() {
     }, [ user.userId ] )
 
     useEffect( () => {
+        console.log( 'Current user: ', userData.data )
+
         if ( userData.status.isComplete && ! user.userId ) {
             if ( userData.data ) {
                 user.setUserId( userData.data._id )
