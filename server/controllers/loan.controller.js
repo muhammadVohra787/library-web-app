@@ -4,7 +4,14 @@ import loan from '../models/loan.model.js'
 export const getLoans = async( req, res ) => {
     try {
         // Implementation for fetching loans
-        const loans = await loan.find( {} )
+        const { userId } = req.query
+        const findParams = {}
+
+        if ( userId ) {
+            findParams.userId = userId
+        }
+
+        const loans = await loan.find( findParams )
         res.json( loans )
     }
     catch ( error ) {
