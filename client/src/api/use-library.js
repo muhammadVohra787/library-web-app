@@ -1,21 +1,46 @@
+import { useEffect, useState } from 'react'
 import useFetch from './use-fetch'
 
 export default function useLibrary( userId ) {
+    const [ currentBookBorrowStatus, setCurrentBookBorrowStatus ] = useState( false )
+    const loanHistory = useFetch()
+    const loanDetails = useFetch()
     const loanControl = useFetch()
+
+    useEffect( () => {
+        if ( loanControl.isComplete ) {
+            loanHistory.refetch()
+        }
+    }, [ loanControl.isComplete ] )
+
+    useEffect( () => {
+        if ( loanControl.isComplete ) {
+            loanHistory.refetch()
+        }
+    }, [ loanControl.isComplete ] )
+
+    useEffect( () => {
+        if ( loanDetails.isComplete ) {
+            loanDetails.data.returnDate
+            setCurrentBookBorrowStatus( ! loanDetails.data.returnDate )
+        }
+    }, [ loanDetails.isComplete ] )
 
     return {
         request: {},
         get loans() {
-            return ( loanControl.data && [ ...loanControl.data ].reverse() ) || []
+            return ( loanHistory.isInitialized && loanHistory.data && [ ...loanHistory.data ].reverse() ) || []
         },
+
+        get currentBookBorrowStatus() {
+            return currentBookBorrowStatus
+        },
+
         getLoans() {
-            loanControl.fetch( '/loans', { query: { userId } } )
+            loanHistory.fetch( '/loans', { query: { userId } } )
         },
-        getLoanDetails( bookId ) {
-
-        },
-        getBorrowStatus( bookId ) {
-
+        getBorrowStatus( loanId ) {
+            loanDetails.fetch( `/loans/${ loanId}` )
         },
         borrow( bookId ) {
             const dueDate = new Date()
@@ -38,8 +63,17 @@ export default function useLibrary( userId ) {
 
             loanControl.fetch( '/loans', { options } )
         },
-        return( bookId ) {
-            // returnDate: Date.now(),
+        return( loanId ) {
+            const options = {
+                method: 'PUT',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify( { returnDate: Date.now() } ),
+            }
+
+            loanControl.fetch( `/loans/${ loanId}`, { options } )
         },
     }
 }
