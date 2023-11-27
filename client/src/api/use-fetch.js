@@ -1,33 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
-import dataArray from '@/assets/dummydata.js'
 
+// TODO: Get endpoint from configuration/env
 const endpointUrl = 'http://localhost:3000/api'
-
-/**
- * Fake Fetch API for testing
- */
-async function getDataFromJsonAsync( url ) {
-    const endpointRx = /\/([\w\d]*)(\/([\w]*))?([?].*)?$/i
-    console.log( { url } )
-
-    const m = url.match( endpointRx )
-
-    const [ , endpoint, , param, query ] = m
-
-    console.log( { m, endpoint, param, query } )
-
-    // const searchParams = new URLSearchParams( url )
-
-    const data = dataArray.find( ( x ) => x.slug === param )
-
-    return {
-        async json() {
-            return data
-        },
-    }
-}
-
-// window.fetch = getDataFromJsonAsync
 
 export default function useFetch() {
     /** @type {[Record<string, any>, (prev) => prev ]} */
