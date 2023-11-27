@@ -29,7 +29,7 @@ export const getBooks = async(req, res) => {
         }
 
         if(sortBy || sortOrder) {
-            let _sortOrder = '+'
+            let _sortOrder = ''
             if(sortOrder === 'desc') {
                 _sortOrder = '-'
             }
