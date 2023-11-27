@@ -1,12 +1,10 @@
 import useFetch from './use-fetch'
-import { useEffect, useReducer, useRef, useState } from 'react'
 
 export default function useAccount() {
     const userData = useFetch()
 
     return {
         get data() {
-            console.log( 'useaccount', userData?.data )
             return Array.isArray( userData.data ) ? userData.data[ 0 ] : userData.data
         },
         get status() {
