@@ -17,15 +17,26 @@ import {
     FormHelperText,
     Alert,
     CircularProgress,
+    List,
+    ListItem,
+    IconButton,
+    ListItemText,
 } from '@mui/material'
+import FolderIcon from '@mui/icons-material/Folder'
+import DeleteIcon from '@mui/icons-material/Delete'
+import InputIcon from '@mui/icons-material/Input'
+
 import useAuthentication from '@/api/use-authentication'
 import Authorized from '@/components/Authorized'
 import useAccount from '@/api/use-account'
 import useValidation from '@/api/use-validation'
+import useLibrary from '@/api/use-library'
+import NavLink from '@/components/NavLink'
 
 export default function Account() {
     const user = useAuthentication()
     const account = useAccount()
+    const library = useLibrary( user.userId )
     const { validate, errors } = useValidation()
 
     const [ name, setName ] = useState( '' )
@@ -64,6 +75,13 @@ export default function Account() {
     }
 
     useEffect( () => {
+        // Get user's loans on first load
+        if ( user.userId ) {
+            library.getLoans()
+        }
+    }, [ user.userId ] )
+
+    useEffect( () => {
         console.log( 'ACCOUNT ==> ', user )
 
         if ( user.userData ) {
@@ -88,7 +106,7 @@ export default function Account() {
             </Stack>
 
             <Authorized>
-                <Grid container spacing={ 10 }>
+                <Grid container spacing={ 6 }>
                     <Grid item xs={ 12 } md={ 6 }>
                         <Paper>
                             <Box p={ 5 }>
@@ -170,13 +188,78 @@ export default function Account() {
                         <Paper>
                             <Box p={ 5 }>
                                 <Typography variant="h5" component="h3" mb={ 4 }>
-                                    Checked-out Books
+                                    Borrow History
                                 </Typography>
+                                <Box>
+                                    {
+                                        ( ! library.loans || ! library.loans.length ) && <Alert severity="info">Nothing here... Go find something to read!</Alert>
+                                    }
+                                    <List>
+                                        { library.loans.map( ( item ) =>
+                                            <BookHistoryItem item={ item } key={ item._id } />,
+                                        ) }
+
+                                    </List>
+                                </Box>
                             </Box>
+
                         </Paper>
                     </Grid>
                 </Grid>
             </Authorized>
         </Container>
+    )
+}
+
+function BookHistoryItem( { item } ) {
+    const loanDateInt = Date.parse( item.loanDate )
+    const loanDate = new Date( loanDateInt ).toDateString()
+    const dueDateInt = Date.parse( item.dueDate )
+    const dueDate = new Date( dueDateInt ).toDateString()
+    const returnDateInt = Date.parse( item.returnDate )
+    const returnDate = new Date( returnDateInt ).toDateString()
+
+    const isOverdue = dueDateInt < Date.now()
+    const status = returnDateInt ? 'Returned' : ( isOverdue ? 'Overdue!' : `Checked Out` )
+    const statusColour = returnDateInt ? 'info' : ( isOverdue ? 'error' : `success` )
+
+    return (
+        <ListItem
+            key={ item._id }
+            sx={ {
+                background: '#eee',
+                marginBottom: '10px',
+            } }
+            secondaryAction={
+                ! returnDateInt && <Button variant="contained" endIcon={ <InputIcon /> }>
+                    Return
+                </Button>
+            }
+        >
+            <Stack spacing={ 1 } alignContent="stretch">
+                <Chip label={ status } color={ statusColour } size="small" />
+                <Stack>
+                    <ListItemText
+                        primary={ <NavLink to={ `/book/${ item.book?.slug}` }>{ item.book?.title }</NavLink> }
+                    />
+
+                    <ListItemText
+                        secondary={ `Borrowed: ${ loanDate }` }
+                    />
+                    {
+                        !! returnDateInt &&
+                            <ListItemText
+                                secondary={ `Returned: ${ returnDate }` }
+                            />
+                    }
+                    {
+                        ! returnDateInt &&
+                            <ListItemText
+                                secondary={ `Due: ${ dueDate }` }
+                            />
+                    }
+                </Stack>
+            </Stack>
+        </ListItem>
     )
 }
