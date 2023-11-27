@@ -18,6 +18,8 @@ export const getBooks = async(req, res) => {
         if (author) dbFilter.author = { $regex: new RegExp(author, 'i') };
         if (slug) dbFilter.slug = { $regex: new RegExp(slug, 'i') };
         if (year) dbFilter.year = year;
+
+        //Todo: case insensitive compare
         if (tags) dbFilter.tags = { $in: tags.split(',') };
 
         const books = Book.find(dbFilter);
