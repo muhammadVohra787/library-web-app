@@ -70,7 +70,7 @@ const Book = () => {
                             height={ '750px' }
                             width={ 'auto' }
                             image={ thumbnailUrl }
-                            alt={ title }
+                            alt={ `Book cover for '${ title}'` }
                         />
                     </Card>
                 </Grid>
