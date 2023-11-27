@@ -10,7 +10,7 @@ import NavLink from './NavLink'
 export default function BorrowControl( { bookId, isAvailable } ) {
     const auth = useAuthentication()
     const library = useLibrary( auth.userId )
-    const [ isCheckedOut, setIsCheckedOut ] = useState( false )
+    const [ availableCopies, setAvailableCopies ] = useState( -1 )
 
     const handleBorrow = () => {
         library.borrow( bookId )
@@ -26,7 +26,7 @@ export default function BorrowControl( { bookId, isAvailable } ) {
         <Stack>
             <Box>
                 <Typography variant="subtitle1" gutterBottom>
-                    Available: { 0 }
+                    Available: { availableCopies === -1 ? 'n/a' : availableCopies }
                 </Typography>
             </Box>
             <Stack direction="row" spacing={ 5 } alignItems="center" mt={ 3 }>
@@ -59,7 +59,7 @@ export default function BorrowControl( { bookId, isAvailable } ) {
                     </>
                 }
                 {
-                    ! isCheckedOut && ! isAvailable && <>
+                    ! availableCopies && ! isAvailable && <>
                         <Alert severity="warning">No copies available.</Alert>
                     </>
                 }
