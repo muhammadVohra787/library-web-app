@@ -13,3 +13,5 @@ router.put('/books/:bookid', updateBook);
 router.delete('/books/:bookid', deleteBook);
 
 export default router;
+
+// Path: server/routes/books.routes.js
