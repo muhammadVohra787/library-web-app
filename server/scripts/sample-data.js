@@ -1,5 +1,6 @@
 const sampleData = [
     {
+        id: 1,
         title: 'To Kill a Mockingbird',
         slug: 'to-kill-a-mockingbird',
         description: 'A classic novel by Harper Lee',
@@ -9,6 +10,7 @@ const sampleData = [
         thumbnail: 'mockingbird.jpg',
     },
     {
+        id: 2,
         title: '1984',
         slug: '1984',
         description: 'A dystopian novel by George Orwell',
@@ -18,6 +20,7 @@ const sampleData = [
         thumbnail: '1984.jpg',
     },
     {
+        id: 3,
         title: 'The Great Gatsby',
         slug: 'the-great-gatsby',
         description: 'A novel by F. Scott Fitzgerald',
@@ -26,7 +29,7 @@ const sampleData = [
         tags: [ 'Classic', 'Fiction', 'Romance' ],
         thumbnail: 'gatsby.jpg',
     },
-    {
+    {   id: 4,
         title: 'Pride and Prejudice',
         slug: 'pride-and-prejudice',
         description: 'A romantic novel by Jane Austen',
@@ -35,7 +38,7 @@ const sampleData = [
         tags: [ 'Classic', 'Romance', 'Satire' ],
         thumbnail: 'pride_prejudice.jpg',
     },
-    {
+    {   id: 5,
         title: 'The Catcher in the Rye',
         slug: 'the-catcher-in-the-rye',
         description: 'A novel by J.D. Salinger',
@@ -44,7 +47,7 @@ const sampleData = [
         tags: [ 'Coming of Age', 'Fiction' ],
         thumbnail: 'catcher_in_the_rye.jpg',
     },
-    {
+    {   id: 6,
         title: 'The Hobbit',
         slug: 'the-hobbit',
         description: 'A fantasy novel by J.R.R. Tolkien',
@@ -53,7 +56,7 @@ const sampleData = [
         tags: [ 'Adventure', 'Fantasy' ],
         thumbnail: 'the_hobbit.jpg',
     },
-    {
+    {   id: 7,
         title: "Harry Potter & Sorcerer's Stone",
         slug: 'harry-potter-sorcerers-stone',
         description: 'A fantasy novel by J.K. Rowling',
@@ -62,7 +65,7 @@ const sampleData = [
         tags: [ 'Fantasy', 'Magic' ],
         thumbnail: 'harry_potter_sorcerers_stone.jpg',
     },
-    {
+    {   id: 8,
         title: 'The Lord of the Rings',
         slug: 'the-lord-of-the-rings',
         description: 'A fantasy novel by J.R.R. Tolkien',
@@ -71,7 +74,7 @@ const sampleData = [
         tags: [ 'Fantasy', 'Adventure' ],
         thumbnail: 'lord_of_the_rings.jpg',
     },
-    {
+    {   id: 9,
         title: 'The Da Vinci Code',
         slug: 'the-da_vinci-code',
         description: 'A mystery thriller by Dan Brown',
@@ -80,7 +83,7 @@ const sampleData = [
         tags: [ 'Mystery', 'Thriller' ],
         thumbnail: 'da_vinci_code.jpg',
     },
-    {
+    {    id: 10,    
         title: 'The Shining',
         slug: 'the-shining',
         description: 'A horror novel by Stephen King',
@@ -89,7 +92,7 @@ const sampleData = [
         tags: [ 'Horror' ],
         thumbnail: 'the_shining.jpg',
     },
-    {
+    {   id: 11,
         title: 'Hunger Games',
         slug: 'hunger_games',
         description: 'A thriller novel by Suzanne Collins',
@@ -98,7 +101,7 @@ const sampleData = [
         tags: [ 'Thriller' ],
         thumbnail: 'HungerGames.jpg',
     },
-    {
+    {   id: 12,
         title: 'Star Wars: Ashoka',
         slug: 'star-wars-:-ashoka',
         description: 'A Sci-fi novel by E.K. Johnston',
@@ -107,7 +110,7 @@ const sampleData = [
         tags: [ 'Sci-fi' ],
         thumbnail: 'Ashoka.jpg',
     },
-    {
+    {   id: 13,
         title: 'Shadow and Bone',
         slug: 'shadow_and-bone',
         description: 'A Fantasy Fiction novel by Leigh Bardugo',
@@ -116,7 +119,7 @@ const sampleData = [
         tags: [ 'Fantasy Fiction' ],
         thumbnail: 'Shadow.jpg',
     },
-    {
+    {   id: 14,
         title: 'Hatchet',
         slug: 'hatchet',
         description: 'An Adventure novel by Gary Paulsen',
@@ -125,7 +128,7 @@ const sampleData = [
         tags: [ 'Adventure' ],
         thumbnail: 'Hatchet.jpg',
     },
-    {
+    {   id: 15,
         title: 'Diary of the Wimpy Kid',
         slug: 'diary-of-the-wimpy_kid',
         description: 'A Humor novel by Jeff Kinney',
@@ -134,7 +137,7 @@ const sampleData = [
         tags: [ 'Humor' ],
         thumbnail: 'Diary.jpg',
     },
-    {
+    {   id: 16,
         title: 'FullMetal Alchemist',
         slug: 'fullmetal-alchemist',
         description: 'A Manga novel by Hiromu Arakawa',
@@ -143,7 +146,7 @@ const sampleData = [
         tags: [ 'Manga' ],
         thumbnail: 'FullMetal.jpg',
     },
-    {
+    {   id: 17,
         title: 'Blood, Sweat, and Pixels',
         slug: 'blood-sweat-and-pixels',
         description: 'A Gaming novel by Jason Schreier',
@@ -152,7 +155,7 @@ const sampleData = [
         tags: [ 'Gaming' ],
         thumbnail: 'Games.jpg',
     },
-    {
+    {   id: 18,
         title: 'The Alchemist',
         slug: 'the-alchemist',
         description: 'A philosophical novel by Paulo Coelho',
@@ -161,7 +164,7 @@ const sampleData = [
         tags: [ 'Philosophical', 'Fiction' ],
         thumbnail: 'alchemist.jpg',
     },
-    {
+    {   id: 19,
         title: 'Dune',
         slug: 'dune',
         description: 'A science fiction novel by Frank Herbert',

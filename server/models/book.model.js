@@ -1,6 +1,12 @@
 import mongoose from "mongoose"
 
+// book.model.js server\models\book.model.js
+
+
 const bookSchema = new mongoose.Schema({
+    id : {
+        type: Number,
+    },
     title: {
         type: String,
     },
