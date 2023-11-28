@@ -1,9 +1,9 @@
-import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Grid, Paper, Stack, Typography } from '@mui/material'
 
 import HeroImg from '@/assets/hero_img.jpg'
 import HeroImg2 from '@/assets/hero_img_2.jpg'
 import useBookData from '@/api/use-book-data.js'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import NavLink from '@/components/NavLink'
 
 const Home = () => {
@@ -14,6 +14,29 @@ const Home = () => {
     const fictonBooks = useBookData()
     const fantasyBooks = useBookData()
     const adventureBooks = useBookData()
+
+    const [ isLoading, setIsLoading ] = useState( { fiction: true, fantasy: true, adventure: true } )
+
+    const cancelIsLoading = ( key ) => {
+        setIsLoading( ( prev )=> {
+            return {
+                ...prev,
+                [ key ]: false,
+            }
+        } )
+    }
+
+    useEffect( () => {
+        if ( isLoading.fiction && ( fictonBooks.status.isComplete || fictonBooks.status.isError ) ) {
+            cancelIsLoading( 'fiction' )
+        }
+        if ( isLoading.fantasy && ( fantasyBooks.status.isComplete || fantasyBooks.status.isError ) ) {
+            cancelIsLoading( 'fantasy' )
+        }
+        if ( isLoading.adventure && ( adventureBooks.status.isComplete || adventureBooks.status.isError ) ) {
+            cancelIsLoading( 'adventure' )
+        }
+    }, [ isLoading.fiction, isLoading.fantasy, isLoading.adventure, fictonBooks.status.isComplete, fantasyBooks.status.isComplete, adventureBooks.status.isComplete, fictonBooks.status.isError, fantasyBooks.status.isError, adventureBooks.status.isError ] )
 
     useEffect( () => {
         fictonBooks.getBooks( { filter: { tags: 'Fiction' }, limit: 3 } )
@@ -74,27 +97,34 @@ const Home = () => {
                     </span>{ ' ' }
                     Fiction favourites
                 </Typography>
-                <Grid container spacing={ 4 }>
-                    { Array.isArray( fictonBooks.data ) && fictonBooks.data.map( ( book, index ) => (
-                        <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
-                            <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
-                                <Typography variant="h6">{ book.title }</Typography>
+                {
 
-                                <NavLink to={ `/book/${book.slug}` }>
-                                    <img
-                                        height={ '100%' }
-                                        width={ 'auto' }
-                                        src={ imageFolder + book.thumbnail }
-                                        alt="bookImage"
-                                        style={ { display: 'block', margin: 'auto', marginTop: '15px', marginBottom: '15px' } }
-                                    />
-                                </NavLink>
-                                <Typography variant="body2">Author: { book.author }</Typography>
-                                <Typography variant="body2">Available: { book.stock }</Typography>
-                            </Paper>
+                    isLoading.fiction && <CircularProgress />
+                }
+                {
+                    ! isLoading.fiction &&
+                        <Grid container spacing={ 4 }>
+                            { Array.isArray( fictonBooks.data ) && fictonBooks.data.map( ( book, index ) => (
+                                <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
+                                    <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
+                                        <Typography variant="h6">{ book.title }</Typography>
+
+                                        <NavLink to={ `/book/${book.slug}` }>
+                                            <img
+                                                height={ '100%' }
+                                                width={ 'auto' }
+                                                src={ imageFolder + book.thumbnail }
+                                                alt="bookImage"
+                                                style={ { display: 'block', margin: 'auto', marginTop: '15px', marginBottom: '15px' } }
+                                            />
+                                        </NavLink>
+                                        <Typography variant="body2">Author: { book.author }</Typography>
+                                        <Typography variant="body2">Available: { book.stock }</Typography>
+                                    </Paper>
+                                </Grid>
+                            ) ) }
                         </Grid>
-                    ) ) }
-                </Grid>
+                }
             </Stack>
             <Stack component="section" spacing={ 5 }>
                 { /* Adventure Books Section */ }
@@ -109,26 +139,33 @@ const Home = () => {
                     </span>{ ' ' }
                     Adventure Escapes
                 </Typography>
-                <Grid container spacing={ 4 }>
-                    { Array.isArray( adventureBooks.data ) && adventureBooks.data.map( ( book, index ) => (
-                        <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
-                            <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
-                                <Typography variant="h6">{ book.title }</Typography>
-                                <NavLink to={ `/book/${book.slug}` }>
-                                    <img
-                                        height={ '100%' }
-                                        width={ 'auto' }
-                                        src={ imageFolder + book.thumbnail }
-                                        alt="bookImage"
-                                        style={ { display: 'block', margin: 'auto', marginTop: '15px', marginBottom: '15px' } }
-                                    />
-                                </NavLink>
-                                <Typography variant="body2">Author: { book.author }</Typography>
-                                <Typography variant="body2">Available: { book.stock }</Typography>
-                            </Paper>
+                {
+
+                    isLoading.adventure && <CircularProgress />
+                }
+                {
+                    ! isLoading.adventure &&
+                        <Grid container spacing={ 4 }>
+                            { Array.isArray( adventureBooks.data ) && adventureBooks.data.map( ( book, index ) => (
+                                <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
+                                    <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
+                                        <Typography variant="h6">{ book.title }</Typography>
+                                        <NavLink to={ `/book/${book.slug}` }>
+                                            <img
+                                                height={ '100%' }
+                                                width={ 'auto' }
+                                                src={ imageFolder + book.thumbnail }
+                                                alt="bookImage"
+                                                style={ { display: 'block', margin: 'auto', marginTop: '15px', marginBottom: '15px' } }
+                                            />
+                                        </NavLink>
+                                        <Typography variant="body2">Author: { book.author }</Typography>
+                                        <Typography variant="body2">Available: { book.stock }</Typography>
+                                    </Paper>
+                                </Grid>
+                            ) ) }
                         </Grid>
-                    ) ) }
-                </Grid>
+                }
             </Stack>
 
             <Stack component="section" spacing={ 5 }>
@@ -144,26 +181,33 @@ const Home = () => {
                     </span>{ ' ' }
                     Fantasy favourites
                 </Typography>
-                <Grid container spacing={ 4 }>
-                    { Array.isArray( fantasyBooks.data ) && fantasyBooks.data.map( ( book, index ) => (
-                        <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
-                            <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
-                                <Typography variant="h6">{ book.title }</Typography>
-                                <NavLink to={ `/book/${book.slug}` }>
-                                    <img
-                                        height={ '100%' }
-                                        width={ 'auto' }
-                                        src={ imageFolder + book.thumbnail }
-                                        alt="bookImage"
-                                        style={ { display: 'block', margin: 'auto', marginTop: '15px', marginBottom: '15px' } }
-                                    />
-                                </NavLink>
-                                <Typography variant="body2">Author: { book.author }</Typography>
-                                <Typography variant="body2">Available: { book.stock }</Typography>
-                            </Paper>
+                {
+
+                    isLoading.fantasy && <CircularProgress />
+                }
+                {
+                    ! isLoading.fantasy &&
+                        <Grid container spacing={ 4 }>
+                            { Array.isArray( fantasyBooks.data ) && fantasyBooks.data.map( ( book, index ) => (
+                                <Grid item xs={ 12 } sm={ 6 } md={ 4 } key={ index }>
+                                    <Paper elevation={ 3 } sx={ { p: '20px', borderRadius: '10px' } }>
+                                        <Typography variant="h6">{ book.title }</Typography>
+                                        <NavLink to={ `/book/${book.slug}` }>
+                                            <img
+                                                height={ '100%' }
+                                                width={ 'auto' }
+                                                src={ imageFolder + book.thumbnail }
+                                                alt="bookImage"
+                                                style={ { display: 'block', margin: 'auto', marginTop: '15px', marginBottom: '15px' } }
+                                            />
+                                        </NavLink>
+                                        <Typography variant="body2">Author: { book.author }</Typography>
+                                        <Typography variant="body2">Available: { book.stock }</Typography>
+                                    </Paper>
+                                </Grid>
+                            ) ) }
                         </Grid>
-                    ) ) }
-                </Grid>
+                }
             </Stack>
 
             <Box className='hero-container'>
