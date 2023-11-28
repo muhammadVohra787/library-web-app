@@ -63,7 +63,7 @@ const Home = () => {
                             Welcome to the Ethereal e-book library
                         </Typography>
                         <Typography className="hero-cta" >Start reading today</Typography>
-                        <Button className="hero-button" href="/signup">Sign up now!</Button>
+                        <NavLink asButton className="hero-button" href="/signup">Sign up now!</NavLink>
                     </Stack>
                 </Grid>
             </Box>
