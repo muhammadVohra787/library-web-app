@@ -28,12 +28,13 @@ export const createUser = async( req, res ) => {
 
     try {
         // Hash the password before saving it to the database
-        const hashedPassword = await bcrypt.hash( password, 10 )
+        // Todo: password
+        // const hashedPassword = await bcrypt.hash( password, 10 )
 
         const newUser = new User( {
             name,
             email,
-            password: hashedPassword, // Save the hashed password
+            // password: hashedPassword, // Save the hashed password
         } )
 
         const userSaved = await newUser.save()
