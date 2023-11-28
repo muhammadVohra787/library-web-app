@@ -79,7 +79,7 @@ export default function SignUp() {
                     <Alert severity="success">
                         <Typography fontSize="1.5rem">Account created!</Typography>
                     </Alert>
-                    <Button variant="contained" href="/signin">Sign in</Button>
+                    <NavLink asButton variant="contained" href="/signin">Sign in</NavLink>
                 </Stack>
             }
             {

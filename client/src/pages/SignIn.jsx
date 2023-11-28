@@ -16,6 +16,7 @@ import Container from '@mui/material/Container'
 import useAuthentication from '../api/use-authentication'
 import { Alert, CircularProgress, Stack } from '@mui/material'
 import useValidation from '@/api/use-validation'
+import NavLink from '@/components/NavLink'
 
 export default function SignIn() {
     const [ formData, setFormData ] = useState( {
@@ -78,8 +79,8 @@ export default function SignIn() {
                         <Typography component="h2">Signed in</Typography>
                     </Alert>
                     <Stack direction="row" justifyContent="center" spacing={ 3 }>
-                        <Button variant="contained" href="/">Front Page</Button>
-                        <Button variant="contained" href="/account">My Account</Button>
+                        <NavLink asButton variant="contained" to="/">Front Page</NavLink>
+                        <NavLink asButton variant="contained" to="/account">My Account</NavLink>
                     </Stack>
                 </Stack>
             }
@@ -164,9 +165,9 @@ export default function SignIn() {
                                     </Link>
                                 </Grid> */ }
                                 <Grid item>
-                                    <Link href="/signup" variant="body2">
+                                    <NavLink to="/signup" variant="body2">
                                         Don't have an account? Sign Up
-                                    </Link>
+                                    </NavLink>
                                 </Grid>
                             </Grid>
                         </Box>

@@ -18,6 +18,7 @@ import {
     CircularProgress,
 } from '@mui/material'
 import useAuthentication from '@/api/use-authentication'
+import NavLink from './NavLink'
 
 export default function Authorized( { children, title = undefined, defaultContent = undefined } ) {
     const auth = useAuthentication()
@@ -39,8 +40,8 @@ export default function Authorized( { children, title = undefined, defaultConten
                                         <Typography component="h3">{ title ? title : 'Sign-in required.' }</Typography>
                                     </Alert>
                                     <Stack direction="row" justifyContent="center" spacing={ 3 }>
-                                        <Button variant="contained" href="/signin">Sign in</Button>
-                                        <Button variant="contained" href="/signup">Sign up</Button>
+                                        <NavLink asButton variant="contained" to="/signin">Sign in</NavLink>
+                                        <NavLink asButton variant="contained" to="/signup">Sign up</NavLink>
                                     </Stack>
                                 </Stack>
                             </Container>
