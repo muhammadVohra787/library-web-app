@@ -26,6 +26,8 @@ export default function SignIn() {
     const auth = useAuthentication()
     const { validate, errors } = useValidation()
 
+    console.log( auth )
+
     const handleChange = ( e ) => {
         const { name, value } = e.target
         setFormData( ( prevData ) => ( {
@@ -66,7 +68,7 @@ export default function SignIn() {
     return (
         <Container component="main" maxWidth="xs">
             {
-                auth.isGettingStatus && <Box sx={ { display: 'flex' } }>
+                auth.isGettingStatus && ! auth.isSignedIn && <Box sx={ { display: 'flex' } }>
                     <CircularProgress />
                 </Box>
             }
@@ -140,14 +142,21 @@ export default function SignIn() {
                                 }
                                 label="Remember me"
                             /> */ }
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={ { mt: 3, mb: 2 } }
-                            >
-                                Sign In
-                            </Button>
+                            {
+                                auth._status.isFetching && <CircularProgress />
+                            }
+                            {
+                                ! auth._status.isFetching &&
+
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        sx={ { mt: 3, mb: 2 } }
+                                    >
+                                        Sign In
+                                    </Button>
+                            }
                             <Grid container>
                                 { /* <Grid item xs>
                                     <Link href="#" variant="body2">
