@@ -3,7 +3,7 @@ import Book from '../models/book.model.js'
 
 export const getBooks = async(req, res) => {
     try {
-        const { filter, limit, sortBy, sortOrder = '' } = req.query;
+        const { filter, search, limit, sortBy, sortOrder = '' } = req.query;
         const { id, title, author, slug, year, tags} = filter ? JSON.parse(filter) : {};
 
         // We need to build the filter dynamically depending on the selected query parameters
@@ -18,6 +18,13 @@ export const getBooks = async(req, res) => {
         if (author) dbFilter.author = { $regex: new RegExp(author, 'i') };
         if (slug) dbFilter.slug = { $regex: new RegExp(slug, 'i') };
         if (year) dbFilter.year = year;
+
+        if(search) {
+            dbFilter["$or"] = [
+                {"author" : { $regex: new RegExp(search, 'i')}},
+                {"title" : { $regex: new RegExp(search, 'i')}}
+            ]
+        }
 
         //Todo: case insensitive compare
         if (tags) dbFilter.tags = { $in: tags.split(',') };
