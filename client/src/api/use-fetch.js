@@ -105,6 +105,10 @@ export default function useFetch() {
                 const request = await fetch( requestUrl, requestData.current.options )
                 const json = await request.json()
 
+                if ( ! request.ok ) {
+                    throw new Error( `${request.status } ${ request.statusText }.\nResponse body:\n${ JSON.stringify( json )}` )
+                }
+
                 console.log( `Fetched data for URL:`, requestUrl, '\n', json )
                 setResults( json )
             }
