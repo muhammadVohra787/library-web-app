@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
     Box,
     Container,
@@ -43,6 +43,7 @@ export default function Account() {
     const [ password, setPassword ] = useState( '' )
 
     const resetHandler = () => {
+        console.log( ' resetHandler ===>', user.userData.name )
         setName( user.userData.name )
         setEmail( user.userData.email )
         // setPassword( user.userData.password )
@@ -81,16 +82,12 @@ export default function Account() {
     }, [ user.userId ] )
 
     useEffect( () => {
-        console.log( 'ACCOUNT ==> ', user )
-
         if ( user.userData ) {
             resetHandler()
         }
     }, [ user.isGettingStatus ] )
 
     useEffect( () => {
-        console.log( 'account.status.isComplete ==> ', user )
-
         if ( account.status.isComplete ) {
             user.refresh()
         }
