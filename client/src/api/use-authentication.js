@@ -11,6 +11,8 @@ export default function useAuthentication() {
     const userData = useAccount()
     const [ persistedUserId, setPersistedUserId ] = useLocalStorage( 'userId', '' )
 
+    console.log( 'user', user )
+
     useEffect( () => {
         if ( ! isMounted ) {
             setIsMounted( true )
@@ -37,7 +39,8 @@ export default function useAuthentication() {
     }, [ user.userId ] )
 
     useEffect( () => {
-        if ( userData.status.isComplete && ! user.userId ) {
+        if ( userData.status.isComplete && ! user.userId && userData.data ) {
+            console.log( ' userData.data userData.data userData.data', userData, userData.data )
             user.setUserId( userData.data._id )
         }
 
