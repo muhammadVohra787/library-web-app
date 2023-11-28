@@ -75,16 +75,16 @@ export const signIn = async( req, res ) => {
             return res.status( 401 ).json( { error: 'Invalid email' } )
         }
 
-        const isPasswordValid = await bcrypt.compare( password, user.password )
+        // const isPasswordValid = await bcrypt.compare( password, user.password )
 
-        if ( ! isPasswordValid ) {
-            return res.status( 401 ).json( { error: 'Invalid password' } )
-        }
-        const token = jwt.sign( { userId: user._id }, 'your-secret-key', {
-            expiresIn: '1h',
-        } )
+        // if ( ! isPasswordValid ) {
+        //     return res.status( 401 ).json( { error: 'Invalid password' } )
+        // }
+        // const token = jwt.sign( { userId: user._id }, 'your-secret-key', {
+        //     expiresIn: '1h',
+        // } )
 
-        res.json( { success: true, token } )
+        res.json( { success: true } )
     }
     catch ( error ) {
         console.error( 'Error signing in:', error )
