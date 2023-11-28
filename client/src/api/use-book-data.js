@@ -25,7 +25,7 @@ export default function useBookData() {
         getBookById( bookId ) {
             bookData.fetch( `/books/id/${ bookId}` )
         },
-        getBooks( { filter = undefined, sortBy = undefined, sortOrder = undefined, limit = undefined } = {} ) {
+        getBooks( { filter = undefined, sortBy = undefined, sortOrder = undefined, limit = undefined, search = undefined } = {} ) {
             const query = {}
 
             if ( filter ) {
@@ -42,6 +42,10 @@ export default function useBookData() {
 
             if ( limit ) {
                 query.limit = limit
+            }
+
+            if ( search ) {
+                query.search = search
             }
 
             bookData.fetch( '/books', { query } )
