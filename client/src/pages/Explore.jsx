@@ -14,10 +14,13 @@ import {
     MenuItem,
     Stack,
     CircularProgress,
+    IconButton,
 } from '@mui/material'
 import dataArray from '../assets/dummydata.js'
 import useBookData from '@/api/use-book-data.js'
 import NavLink from '@/components/NavLink.jsx'
+
+import SearchIcon from '@mui/icons-material/Search'
 
 const ExplorePage = () => {
     // Image folder is relative to /public
@@ -31,15 +34,9 @@ const ExplorePage = () => {
 
     const bookRequest = useBookData()
 
-    useEffect( () => {
-        bookRequest.getBooks( { sortBy, sortOrder } )
-        console.log( 'bookRequest', bookRequest, { sortBy, sortOrder, searchValue } )
-        setIsLoading( true )
-    }, [ sortBy, sortOrder, searchValue ] )
-
-    console.log( ' bookRequest.status.isFetching', bookRequest.status.isFetching )
-
-    const options = dataArray.flatMap( ( book ) => [ book.title, book.author ] )
+    const handleSearchChange = ( e ) => {
+        setSearchValue( e.target.value )
+    }
 
     const handleSortToggle = () => {
         // Toggle between ascending and descending order
@@ -49,6 +46,16 @@ const ExplorePage = () => {
     const handleSortTypeChange = ( event ) => {
         setSortBy( event.target.value )
     }
+
+    const handleSearch = () => {
+        bookRequest.getBooks( { sortBy, sortOrder, search: searchValue } )
+        setIsLoading( true )
+    }
+
+    useEffect( () => {
+        bookRequest.getBooks( { sortBy, sortOrder, search: searchValue } )
+        setIsLoading( true )
+    }, [ sortBy, sortOrder ] )
 
     useEffect( () => {
         if ( bookRequest.status.isComplete || bookRequest.status.isError ) {
@@ -63,54 +70,57 @@ const ExplorePage = () => {
             </Container>
             {
                 bookRequest.status.isError &&
-                    <Paper><Box p={ 3 }>Book not found.</Box></Paper>
+                    <Paper><Box p={ 3 }>An error occurred</Box></Paper>
             }
             {
                 ! bookRequest.status.isError && Array.isArray( bookRequest.data ) && <>
                     <Container>
-                        <Stack direction="row" alignItems='center' mb={ 5 }>
-                            <Autocomplete
-                                style={ { flex: 1 } }
-                                disablePortal
-                                disabled={ isLoading }
-                                id="combo-box-demo"
-                                options={ options }
-                                sx={ { width: 400 } }
+                        <Stack direction="row" justifyContent="space-between" alignItems='center' mb={ 5 }>
+                            <TextField
+                                id="standard-name"
+                                label="Search by Author Or Title"
                                 value={ searchValue }
-                                freeSolo // Add the freeSolo prop
-                                onChange={ ( event, newValue ) => setSearchValue( newValue ) }
-                                renderInput={ ( params ) => (
-                                    <TextField
-                                        { ...params }
-                                        label="Search by Author Or Title"
-                                    />
-                                ) }
+                                onChange={ handleSearchChange }
+                                InputProps={ { endAdornment: <IconButton edge="end" color="primary" onClick={ handleSearch } disabled={ isLoading }>
+                                    <SearchIcon />
+                                </IconButton>,
+                                } }
+                                sx={ { width: 400 } }
+                                disabled={ isLoading }
                             />
-                            <Button disabled={ isLoading } onClick={ handleSortToggle } sx={ { marginLeft: '20px' } }>
-                                { sortOrder === 'asc' ? 'Sort Descending' : 'Sort Ascending' }
-                            </Button>
-                            <FormControl sx={ { marginLeft: '10px', minWidth: '120px' } }>
-                                <InputLabel id="sort-type-label">Sort Type</InputLabel>
-                                <Select
-                                    labelId="sort-type-label"
-                                    id="sort-type"
-                                    value={ sortBy }
-                                    label="Sort Type"
-                                    onChange={ handleSortTypeChange }
-                                    disabled={ isLoading }
-                                >
-                                    <MenuItem value="title">Title</MenuItem>
-                                    <MenuItem value="author">Author</MenuItem>
-                                </Select>
-                            </FormControl>
+
+                            <Stack direction="row" justifyContent="end" alignItems='center'>
+                                <Button disabled={ isLoading } onClick={ handleSortToggle } sx={ { marginLeft: '20px' } }>
+                                    { sortOrder === 'asc' ? 'Sort Descending' : 'Sort Ascending' }
+                                </Button>
+                                <FormControl sx={ { marginLeft: '10px', minWidth: '120px' } }>
+                                    <InputLabel id="sort-type-label">Sort Type</InputLabel>
+                                    <Select
+                                        labelId="sort-type-label"
+                                        id="sort-type"
+                                        value={ sortBy }
+                                        label="Sort Type"
+                                        onChange={ handleSortTypeChange }
+                                        disabled={ isLoading }
+                                    >
+                                        <MenuItem value="title">Title</MenuItem>
+                                        <MenuItem value="author">Author</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Stack>
                         </Stack>
                     </Container>
                     {
                         isLoading && <Container><CircularProgress /></Container>
                     }
-                    {
-                        ! isLoading &&
-                            <Container>
+                    <Container>
+                        {
+                            ! isLoading && ! bookRequest.data.length && <>
+                                <Box bgcolor="#eee" p={ 2 }><Typography fontSize="1.2em !important">No books matched your query.</Typography></Box>
+                            </>
+                        }
+                        {
+                            ! isLoading && !! bookRequest.data.length &&
                                 <Grid
                                     container
                                     spacing={ 4 }
@@ -159,8 +169,9 @@ const ExplorePage = () => {
                                         </Grid>
                                     ) ) }
                                 </Grid>
-                            </Container>
-                    }
+                        }
+                    </Container>
+
                 </>
             }
         </Container>
