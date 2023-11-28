@@ -10,10 +10,11 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { Alert, Stack } from '@mui/material'
+import { Alert, CircularProgress, Stack } from '@mui/material'
 
 import useAccount from '../api/use-account'
 import useValidation from '@/api/use-validation'
+import NavLink from '@/components/NavLink'
 
 export default function SignUp() {
     const [ formData, setFormData ] = useState( {
@@ -28,10 +29,13 @@ export default function SignUp() {
     const { validate, errors } = useValidation()
 
     useEffect( () => {
-        if ( accounts.data ) {
+        if ( accounts.status.isError ) {
+            window.scrollTo( { top: 0, behavior: 'smooth' } )
+        }
+        else if ( accounts.data ) {
             setAccount( accounts.data )
         }
-    }, [ accounts.status.isComplete ] )
+    }, [ accounts.status.isComplete, accounts.status.isError ] )
 
     const handleChange = ( e ) => {
         const { name, value } = e.target
@@ -56,15 +60,15 @@ export default function SignUp() {
             // passwordValidation.isValid &&
             nameValidation
         ) {
-            accounts.createAccount( { name: formData.name, email: formData.email } )
+            accounts.createUser( { name: formData.name, email: formData.email } )
         }
     }
 
     return (
         <Container component="main" maxWidth="xs">
-            { /* {
-                accountCreateError && <Alert severity="error">Something went wrong.</Alert>
-            } */ }
+            {
+                accounts.status.isError && <Alert severity="error">Something went wrong.</Alert>
+            }
             {
                 account && <Stack
                     alignItems='center'
@@ -136,23 +140,30 @@ export default function SignUp() {
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
+                                    disabled
                                 />
                             </Grid>
                             <Grid item xs={ 12 }></Grid>
                         </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={ { mt: 3, mb: 2 } }
-                        >
-                            Sign Up
-                        </Button>
+                        {
+                            accounts.status.isFetching && <CircularProgress />
+                        }
+                        {
+                            ! accounts.status.isFetching && <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={ { mt: 3, mb: 2 } }
+                            >
+                                Sign Up
+                            </Button>
+                        }
+
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="/signin" variant="body2">
+                                <NavLink to="/signin" variant="body2">
                                     Already have an account? Sign in
-                                </Link>
+                                </NavLink>
                             </Grid>
                         </Grid>
                     </Box>
