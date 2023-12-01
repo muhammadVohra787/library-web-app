@@ -10,9 +10,10 @@
     "start": "node server",
     "dev": "concurrently \"nodemon server.js\" \"npm run client:dev\"",
     "client:dev": "cd client && npx vite",
-    "client:build": "cd client && npx vite",
+    "client:build": "cd client && npx vite build",
     "client:preview": "cd client && npx vite preview",
     "server:dev": "nodemon server.js",
+    "server:init_db": "npm run postinstall",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "postinstall": "node ./server/scripts/import-books.js"
   },
