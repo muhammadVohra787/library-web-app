@@ -32,9 +32,11 @@ export default function useValidation() {
                 return isValid
             }
 
-            // if ( field === 'password' ) {
-            // 'Password must have at least 8 characters'
-            // }
+            if ( field === 'password' ) {
+                const isValid = value.length >= 1
+                updateErrors( 'password', isValid ? undefined : 'Password must have at least 8 characters')
+                return isValid
+            }
 
             return { isValid: true, errorMessage: '' }
         },
