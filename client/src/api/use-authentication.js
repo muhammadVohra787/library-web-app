@@ -1,3 +1,4 @@
+//api/use-authentication.js
 import authContext from './auth-context'
 import { useLocalStorage } from './local-storage'
 import useAccount from './use-account'
@@ -49,11 +50,12 @@ export default function useAuthentication() {
         }
     }, [ userData.status.isComplete, user.userId, isLoading ] )
 
-    useEffect( () => {
-        if ( isMounted && userData.status.isError ) {
-            user.setUserId( null )
+    useEffect(() => {
+        if ( isMounted && userData.status.isError) {
+            console.error('Error fetching user data:', userData.error);
+            user.setUserId( null );
         }
-    }, [ isMounted, userData.status.isError ] )
+    }, [isMounted, userData.status.isError, userData.error]);
 
     return {
         _data: userData.data,
@@ -82,13 +84,17 @@ export default function useAuthentication() {
         refresh() {
             userData.refetch()
         },
-        signIn( email ) {
-            userData.getUserByEmail( email )
+        signIn( email, password ) {
+            userData.signIn( email, password )
         },
         signOut() {
-            user.setUserId( null )
-            setPersistedUserId( null )
-            userData.clear()
+            try {
+                user.setUserId(null)
+                setPersistedUserId(null)
+                userData.clear()
+            } catch ( error ) {
+                console.error('Error during sign-out:', error)
+            }
         },
     }
 }
