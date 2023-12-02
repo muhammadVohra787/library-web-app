@@ -31,67 +31,62 @@ import NavLink from '@/components/NavLink'
 export default function Account() {
     const user = useAuthentication()
     const account = useAccount()
-    const library = useLibrary( user.userId )
+    const library = useLibrary(user.userId)
     const { validate, errors } = useValidation()
 
-    // Keep track of books that are returned
-    // Status can't live in subcomponent because it's rerendered
-    const [ checkoutStatus, setCheckoutStatus ] = useState( {} )
+    const [checkoutStatus, setCheckoutStatus] = useState([])
 
-    const [ name, setName ] = useState( '' )
-    const [ email, setEmail ] = useState( '' )
-    const [ password, setPassword ] = useState( '' )
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     const resetHandler = () => {
-        console.log( ' resetHandler ===>', user.userData.name )
-        setName( user.userData.name )
-        setEmail( user.userData.email )
-        // setPassword( user.userData.password )
+        setName(user.userData.name)
+        setEmail(user.userData.email)
+        setPassword(user.userData.password)
     }
 
-    const saveHandler = ( e ) =>{
+    const saveHandler = (e) => {
         e.preventDefault()
-        const nameValidation = validate( 'name', email )
-        const emailValidation = validate( 'email', email )
-        console.log( user )
+        const nameValidation = validate('name', name)
+        const emailValidation = validate('email', email)
 
-        if ( emailValidation && nameValidation ) {
-            account.updateUser( user.userId, { name, email } )
+        if (emailValidation && nameValidation) {
+            account.updateUser(user.userId, { name, email, password })
         }
     }
 
-    const onNameChange = ( event ) => {
-        setName( event.target.value )
-        validate( 'name', event.target.value )
+    const onNameChange = (event) => {
+        setName(event.target.value)
+        validate('name', event.target.value)
     }
 
-    const onEmailChange = ( event ) => {
-        setEmail( event.target.value )
-        validate( 'email', event.target.value )
+    const onEmailChange = (event) => {
+        setEmail(event.target.value)
+        validate('email', event.target.value)
     }
 
-    const onPasswordChange = ( event ) =>{
-        // setPassword( event.target.value )
+    const onPasswordChange = (event) => {
+        setPassword(event.target.value)
     }
 
-    useEffect( () => {
-        // Get user's loans on first load
-        if ( user.userId ) {
+    useEffect(() => {
+        if (user.userId) {
             library.getLoans()
         }
-    }, [ user.userId ] )
+    }, [user.userId])
 
-    useEffect( () => {
-        if ( user.userData ) {
+    useEffect(() => {
+        if (user.userData) {
             resetHandler()
         }
-    }, [ user.isGettingStatus ] )
+    }, [user.isGettingStatus])
 
-    useEffect( () => {
-        if ( account.status.isComplete ) {
+    useEffect(() => {
+        if (account.status.isComplete) {
             user.refresh()
         }
-    }, [ account.status.isComplete ] )
+    }, [account.status.isComplete])
 
     return (
         <Container style={ { marginTop: '20px' } }>
@@ -153,7 +148,11 @@ export default function Account() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={ 12 } md={ 8 }>
-                                        <TextField id="password" fullWidth required value={ password } onChange={ onPasswordChange } disabled />
+                                        <TextField id="password"
+                                            fullWidth
+                                            required
+                                            value={ password }
+                                            onChange={ onPasswordChange }/>
                                         <FormHelperText>(Enter new password -- not implemented)</FormHelperText>
                                     </Grid>
                                 </Grid>
