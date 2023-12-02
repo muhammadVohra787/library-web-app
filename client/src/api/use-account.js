@@ -1,3 +1,4 @@
+//api/use-account.js
 import useFetch from './use-fetch'
 
 export default function useAccount() {
@@ -20,11 +21,11 @@ export default function useAccount() {
         getUserById( userId ) {
             userData.fetch( `/user/id/${ userId}` )
         },
-        getUserByEmail( email ) {
-            userData.fetch( `/users`, { query: { email } } )
+        getUserByEmail( email, password ) {
+            userData.fetch( `/users`, { query: { email, password } } )
         },
-        createUser( { name, email } ) {
-            console.log( { name, email } )
+        createUser( { name, email, password } ) {
+            console.log( { name, email,password } )
 
             const options = {
                 method: 'POST',
@@ -32,22 +33,34 @@ export default function useAccount() {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify( { name, email } ),
+                body: JSON.stringify( { name, email, password } ),
             }
 
             userData.fetch( `/user`, { options } )
         },
-        updateUser( userId, { name, email } ) {
+        updateUser( userId, { name, email, password } ) {
             const options = {
                 method: 'PUT',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify( { name, email } ),
+                body: JSON.stringify( { name, email, password } ),
             }
 
             userData.fetch( `/user/${ userId}`, { options } )
+        },
+        signIn(email, password) {
+            const options = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            };
+
+            userData.fetch( `/users`, { query: { email, password } } )
         },
 
     }
