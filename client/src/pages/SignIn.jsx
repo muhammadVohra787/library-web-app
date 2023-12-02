@@ -21,7 +21,7 @@ import NavLink from '@/components/NavLink'
 export default function SignIn() {
     const [ formData, setFormData ] = useState( {
         email: '',
-        // password: '',
+        password: '',
     } )
 
     const auth = useAuthentication()
@@ -47,10 +47,10 @@ export default function SignIn() {
     const handleSubmit = ( event ) => {
         event.preventDefault()
 
-        const { email } = formData
+        const { email, password } = formData
 
         const emailValidation = validate( 'email', email )
-        // const passwordValidation = auth.validate( 'password', password )
+        const passwordValidation = validate( 'password', password )
 
         // setErrors( {
         //     email: emailValidation.isValid ? '' : emailValidation.errorMessage,
@@ -59,10 +59,10 @@ export default function SignIn() {
         //     //     : passwordValidation.errorMessage,
         // } )
 
-        if ( emailValidation ) {
+        if ( emailValidation && passwordValidation ) {
             // !! Note - no authentication at this time
             // Just a check if the email exists
-            auth.signIn( email )
+            auth.signIn( email, password )
         }
     }
 
@@ -128,14 +128,17 @@ export default function SignIn() {
                                 helperText={ errors.email }
                             />
                             <TextField
-                                disabled
                                 margin="normal"
                                 fullWidth
                                 name="password"
-                                label="Password (not implemented)"
+                                label="Password*"
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                value={ formData.password }
+                                onChange={ handleChange }
+                                error={ !! errors.password }
+                                helperText={ errors.password }
                             />
                             { /* <FormControlLabel
                                 control={
