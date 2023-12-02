@@ -15,12 +15,13 @@ import { Alert, CircularProgress, Stack } from '@mui/material'
 import useAccount from '../api/use-account'
 import useValidation from '@/api/use-validation'
 import NavLink from '@/components/NavLink'
+import { Password } from '@mui/icons-material'
 
 export default function SignUp() {
     const [ formData, setFormData ] = useState( {
         name: '',
         email: '',
-        // password: '',
+        password: '',
     } )
 
     // const [ accountCreateError, setAccountCreateError ] = useState()
@@ -44,23 +45,24 @@ export default function SignUp() {
             [ name ]: value,
         } ) )
         validate( name, value )
+        console.log( name, value )
     }
 
     const handleSubmit = ( event ) => {
         event.preventDefault()
 
-        const { name, email } = formData
+        const { name, email, password } = formData
 
         const nameValidation = validate( 'name', name )
         const emailValidation = validate( 'email', email )
-        // const passwordValidation = validate( 'password', password )
+        const passwordValidation = validate( 'password', password )
 
         if (
             emailValidation &&
-            // passwordValidation.isValid &&
+            passwordValidation &&
             nameValidation
         ) {
-            accounts.createUser( { name: formData.name, email: formData.email } )
+            accounts.createUser( { name: formData.name, email: formData.email, password: formData.password } )
         }
     }
 
@@ -136,11 +138,14 @@ export default function SignUp() {
                                 <TextField
                                     fullWidth
                                     name="password"
-                                    label="Password (not implemented)"
+                                    label="Password"
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
-                                    disabled
+                                    value={ formData.password }
+                                    onChange={ handleChange }
+                                    error={ !! errors.password }
+                                    helperText={ errors.password }
                                 />
                             </Grid>
                             <Grid item xs={ 12 }></Grid>
