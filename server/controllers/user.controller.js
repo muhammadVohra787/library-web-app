@@ -23,28 +23,26 @@ export const getUserByID = async( req, res ) => {
     res.json( user )
 }
 
-export const createUser = async( req, res ) => {
+export const createUser = async (req, res) => {
     const { name, email, password } = req.body
 
     try {
         // Hash the password before saving it to the database
-        // Todo: password
-        // const hashedPassword = await bcrypt.hash( password, 10 )
+        const hashedPassword = await bcrypt.hash(password, 10)
 
-        const newUser = new User( {
+        const newUser = new User({
             name,
             email,
-            // password: hashedPassword, // Save the hashed password
-        } )
+            password: hashedPassword, // Save the hashed password
+        })
 
         const userSaved = await newUser.save()
-        res.json( userSaved )
-        console.log( 'user-reached controller' )
-    }
-    catch ( error ) {
-        console.log( error )
-        console.log( 'user-reached controller- Unsuccessful' )
-        res.status( 500 ).json( { error: error.message } )
+        res.json(userSaved)
+        console.log('user-reached controller')
+    } catch (error) {
+        console.log(error)
+        console.log('user-reached controller- Unsuccessful')
+        res.status(500).json({ error: error.message })
     }
 }
 export const updateUser = async( req, res ) => {
@@ -70,20 +68,11 @@ export const signIn = async( req, res ) => {
 
     try {
         const user = await User.findOne( { email } )
+        const isPasswordValid = await bcrypt.compare( password, user.password )
 
-        if ( ! user ) {
-            return res.status( 401 ).json( { error: 'Invalid email' } )
+        if ( ! user || ! isPasswordValid) {
+            return res.status( 401 ).json( { error: 'Invalid email or password' } )
         }
-
-        // const isPasswordValid = await bcrypt.compare( password, user.password )
-
-        // if ( ! isPasswordValid ) {
-        //     return res.status( 401 ).json( { error: 'Invalid password' } )
-        // }
-        // const token = jwt.sign( { userId: user._id }, 'your-secret-key', {
-        //     expiresIn: '1h',
-        // } )
-
         res.json( { success: true } )
     }
     catch ( error ) {
