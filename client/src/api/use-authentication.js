@@ -12,31 +12,6 @@ export default function useAuthentication() {
     const userData = useAccount()
     const userAuth = useFetch()
 
-    // useEffect( () => {
-    //     if ( ! isMounted ) {
-    //         setIsMounted( true )
-    //     }
-
-    //     if ( auth.userId == null ) {
-    //         setIsLoading( false )
-    //     }
-
-    //     if ( ( persistedUserId && ! auth.userId ) || ! userData.status.isInitialized ) {
-    //         auth.setUserId( persistedUserId )
-    //         userData.getUserById( persistedUserId )
-    //     }
-    // }, [ isMounted, auth.userId, userData.status.isInitialized ] )
-
-    // useEffect( () => {
-    //     if ( auth.userId && auth.userId !== persistedUserId ) {
-    //         setPersistedUserId( auth.userId )
-
-    //         if ( ! userData.data ) {
-    //             userData.getUserById( auth.userId )
-    //         }
-    //     }
-    // }, [ auth.userId ] )
-
     useEffect( () => {
         if ( userAuth.userId !== null ) {
             setIsLoading( false )
