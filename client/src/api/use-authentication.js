@@ -3,8 +3,10 @@ import authContext from './auth-context'
 import { useLocalStorage } from './local-storage'
 import useAccount from './use-account'
 import { useContext, useEffect, useState } from 'react'
+import useFetch from './use-fetch';
 
 export default function useAuthentication() {
+    const userData1 = useFetch();
     const [ isMounted, setIsMounted ] = useState( false )
     const [ isLoading, setIsLoading ] = useState( true )
 
@@ -12,7 +14,6 @@ export default function useAuthentication() {
     const userData = useAccount()
     const [ persistedUserId, setPersistedUserId ] = useLocalStorage( 'userId', '' )
 
-    console.log( 'user', user )
 
     useEffect( () => {
         if ( ! isMounted ) {
@@ -41,7 +42,6 @@ export default function useAuthentication() {
 
     useEffect( () => {
         if ( userData.status.isComplete && ! user.userId && userData.data ) {
-            console.log( ' userData.data userData.data userData.data', userData, userData.data )
             user.setUserId( userData.data._id )
         }
 
@@ -52,7 +52,6 @@ export default function useAuthentication() {
 
     useEffect(() => {
         if ( isMounted && userData.status.isError) {
-            console.error('Error fetching user data:', userData.error);
             user.setUserId( null );
         }
     }, [isMounted, userData.status.isError, userData.error]);
@@ -98,3 +97,18 @@ export default function useAuthentication() {
         },
     }
 }
+// signIn(email, password) {
+//     return new Promise((resolve, reject) => {
+//         userData.signIn(email, password)
+//             .then(response => {
+//                 if (response.status === 200) {
+//                    resolve(response.data);
+//                 } else {
+//                    reject(new Error('Sign-in failed'));
+//                 }
+//             })
+//             .catch(error => {
+//                 reject(error);
+//             });
+//     });
+//  }
