@@ -1,6 +1,5 @@
 // api/use-authentication.js
 import authContext from './auth-context'
-import { useLocalStorage } from './local-storage'
 import useAccount from './use-account'
 import { useContext, useEffect, useState } from 'react'
 import useFetch from './use-fetch'
@@ -39,6 +38,12 @@ export default function useAuthentication() {
     // }, [ auth.userId ] )
 
     useEffect( () => {
+        if ( userAuth.userId !== null ) {
+            setIsLoading( false )
+        }
+    }, [ auth.userId ] )
+
+    useEffect( () => {
         if ( userAuth.isComplete ) {
             if ( isLoading ) {
                 setIsLoading( false )
@@ -67,7 +72,7 @@ export default function useAuthentication() {
             return ! isLoading
         },
         get isSignedIn() {
-            return !! auth.userId
+            return auth.checkToken()
         },
         get signInStatusChange() {
             return userData.status.isComplete
@@ -111,8 +116,8 @@ export default function useAuthentication() {
         },
         signOut() {
             try {
-                auth.setUserId( null )
-                auth.setToken( null )
+                auth.setUserId( '' )
+                auth.setToken( '' )
                 userData.clear()
             }
             catch ( error ) {
