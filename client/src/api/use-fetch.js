@@ -67,6 +67,7 @@ export default function useFetch() {
         }
 
         const fetchData = async() => {
+            console.log( 'Fetchsignal = ', fetchSignal )
             if ( fetchStatus.isFetching ) {
                 return
             }
@@ -92,10 +93,6 @@ export default function useFetch() {
             console.log( 'Fetching URL:', requestUrl, ' Query:', query, ' Body:', requestData.current.options?.body )
 
             updateFetchStatus( { status: 'isFetching' } )
-
-            // if ( requestData.current.options?.body || requestData.current.url === '/loans' ) {
-            //     await delay( 1000 )
-            // }
 
             // ! Testing !
             // Short delay for testing
@@ -142,7 +139,7 @@ export default function useFetch() {
         get isInitialized() {
             return fetchStatus.isInitialized
         },
-        fetch( fetchUrl, params = {} ) {
+        fetch( fetchUrl, params = {}, forceFetch = false ) {
             updateFetchStatus()
 
             requestData.current = {
@@ -151,6 +148,12 @@ export default function useFetch() {
                 body: params.body,
                 query: params.query,
             }
+
+            // Invalidate previous query
+            if ( forceFetch ) {
+                prevQuery.current = ''
+            }
+
             triggerFetch()
         },
         refetch() {
