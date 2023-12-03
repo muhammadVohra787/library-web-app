@@ -2,6 +2,7 @@
 import User from '../models/user.model.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+console.log('server reached');
 export const getUsers = async( req, res ) => {
     const { email } = req.query
 
@@ -13,6 +14,7 @@ export const getUsers = async( req, res ) => {
         const users = await User.find()
         res.json( users )
     }
+    console.log('server reached1');
 }
 
 export const getUserByID = async( req, res ) => {
@@ -21,6 +23,7 @@ export const getUserByID = async( req, res ) => {
         return res.status( 404 ).json( { message: 'User not found' } )
     }
     res.json( user )
+    console.log('server reached2');
 }
 
 export const createUser = async (req, res) => {
@@ -28,7 +31,7 @@ export const createUser = async (req, res) => {
 
     try {
         // Hash the password before saving it to the database
-        const hashedPassword = await bcrypt.hash(password, 10)
+        const hashedPassword = await bcrypt.hash( password, 10 )
 
         const newUser = new User({
             name,
@@ -44,6 +47,7 @@ export const createUser = async (req, res) => {
         console.log('user-reached controller- Unsuccessful')
         res.status(500).json({ error: error.message })
     }
+    console.log('server reached4');
 }
 export const updateUser = async( req, res ) => {
     const user = await User.findByIdAndUpdate( req.params.userid, req.body, {
@@ -53,6 +57,7 @@ export const updateUser = async( req, res ) => {
         return res.status( 404 ).json( { message: 'User not found' } )
     }
     res.json( user )
+    console.log('server reached5');
 }
 
 export const deleteUser = async( req, res ) => {
@@ -61,22 +66,31 @@ export const deleteUser = async( req, res ) => {
         return res.status( 404 ).json( { message: 'User not found' } )
     }
     res.json( user )
+    console.log('server reached6');
 }
 
-export const signIn = async( req, res ) => {
-    const { email, password } = req.body
+export const signIn = async (req, res) => {
+
+    console.log('server reached 7');
+    const { email, password } = req.body;
+    console.log('Trying to sign in server reached');
 
     try {
-        const user = await User.findOne( { email } )
-        const isPasswordValid = await bcrypt.compare( password, user.password )
+        const user = await User.findOne({ email });
 
-        if ( ! user || ! isPasswordValid) {
-            return res.status( 401 ).json( { error: 'Invalid email or password' } )
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid email or password' });
         }
-        res.json( { success: true } )
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error signing in:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
-    catch ( error ) {
-        console.error( 'Error signing in:', error )
-        res.status( 500 ).json( { success: false, error: 'Internal Server Error' } )
-    }
-}
+};
