@@ -101,18 +101,3 @@ export default function useAuthentication() {
         },
     }
 }
-// signIn(email, password) {
-//     return new Promise((resolve, reject) => {
-//         userData.signIn(email, password)
-//             .then(response => {
-//                 if (response.status === 200) {
-//                    resolve(response.data);
-//                 } else {
-//                    reject(new Error('Sign-in failed'));
-//                 }
-//             })
-//             .catch(error => {
-//                 reject(error);
-//             });
-//     });
-//  }
