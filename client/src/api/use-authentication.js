@@ -1,19 +1,20 @@
-//api/use-authentication.js
+// api/use-authentication.js
 import authContext from './auth-context'
 import { useLocalStorage } from './local-storage'
 import useAccount from './use-account'
 import { useContext, useEffect, useState } from 'react'
-import useFetch from './use-fetch';
+import useFetch from './use-fetch'
 
 export default function useAuthentication() {
-    const userData1 = useFetch();
     const [ isMounted, setIsMounted ] = useState( false )
     const [ isLoading, setIsLoading ] = useState( true )
 
     const user = useContext( authContext )
     const userData = useAccount()
-    const [ persistedUserId, setPersistedUserId ] = useLocalStorage( 'userId', '' )
+    const userAuth = useFetch()
 
+    const [ persistedUserId, setPersistedUserId ] = useLocalStorage( 'userId', '' )
+    const [ persistedToken, setPersistedToken ] = useLocalStorage( 'token', '' )
 
     useEffect( () => {
         if ( ! isMounted ) {
@@ -41,20 +42,25 @@ export default function useAuthentication() {
     }, [ user.userId ] )
 
     useEffect( () => {
-        if ( userData.status.isComplete && ! user.userId && userData.data ) {
-            user.setUserId( userData.data._id )
-        }
+        if ( userAuth.isComplete ) {
+            if ( isLoading ) {
+                setIsLoading( false )
+            }
 
-        if ( userData.status.isComplete && isLoading ) {
-            setIsLoading( false )
-        }
-    }, [ userData.status.isComplete, user.userId, isLoading ] )
+            if ( userAuth.data.success ) {
+                console.log( 'Signed in!' )
 
-    useEffect(() => {
-        if ( isMounted && userData.status.isError) {
-            user.setUserId( null );
+                user.setUserId( userAuth.data.user._id )
+                setPersistedToken( userAuth.data.token )
+            }
         }
-    }, [isMounted, userData.status.isError, userData.error]);
+    }, [ userAuth.isComplete, isLoading ] )
+
+    useEffect( () => {
+        if ( isMounted && userAuth.isError ) {
+            user.setUserId( null )
+        }
+    }, [ isMounted, userAuth.isError, userData.error ] )
 
     return {
         _data: userData.data,
@@ -66,13 +72,13 @@ export default function useAuthentication() {
             return userData.status.isComplete
         },
         get signInError() {
-            return userData.status.isError
+            return userAuth.isError
         },
         get isSignInFailed() {
-            return userData.status.isComplete && ( ! userData.data || ! Object.keys( userData.data ).length )
+            return userAuth.isComplete && ( ! userData.data || ! userAuth.data.success )
         },
         get isGettingStatus() {
-            return isLoading// userData.status.isFetching || ! isMounted
+            return isLoading// userAuth.isFetching || ! isMounted
         },
         get userId() {
             return user.userId
@@ -84,15 +90,27 @@ export default function useAuthentication() {
             userData.refetch()
         },
         signIn( email, password ) {
-            userData.signIn( email, password )
+            // userData.signIn( email, password )
+
+            console.log( 'Signing in with email and password:', email, password )
+            const options = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify( { email, password } ),
+            }
+            userAuth.fetch( `/auth/login`, { options } )
         },
         signOut() {
             try {
-                user.setUserId(null)
-                setPersistedUserId(null)
+                user.setUserId( null )
+                setPersistedUserId( null )
                 userData.clear()
-            } catch ( error ) {
-                console.error('Error during sign-out:', error)
+            }
+            catch ( error ) {
+                console.error( 'Error during sign-out:', error )
             }
         },
     }
