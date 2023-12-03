@@ -9,37 +9,34 @@ export default function useAuthentication() {
     const [ isMounted, setIsMounted ] = useState( false )
     const [ isLoading, setIsLoading ] = useState( true )
 
-    const user = useContext( authContext )
+    const auth = useContext( authContext )
     const userData = useAccount()
     const userAuth = useFetch()
 
-    const [ persistedUserId, setPersistedUserId ] = useLocalStorage( 'userId', '' )
-    const [ persistedToken, setPersistedToken ] = useLocalStorage( 'token', '' )
+    // useEffect( () => {
+    //     if ( ! isMounted ) {
+    //         setIsMounted( true )
+    //     }
 
-    useEffect( () => {
-        if ( ! isMounted ) {
-            setIsMounted( true )
-        }
+    //     if ( auth.userId == null ) {
+    //         setIsLoading( false )
+    //     }
 
-        if ( ! persistedUserId && ! user.userId ) {
-            setIsLoading( false )
-        }
+    //     if ( ( persistedUserId && ! auth.userId ) || ! userData.status.isInitialized ) {
+    //         auth.setUserId( persistedUserId )
+    //         userData.getUserById( persistedUserId )
+    //     }
+    // }, [ isMounted, auth.userId, userData.status.isInitialized ] )
 
-        if ( ( persistedUserId && ! user.userId ) || ( ! userData.status.isInitialized && persistedUserId ) ) {
-            user.setUserId( persistedUserId )
-            userData.getUserById( persistedUserId )
-        }
-    }, [ isMounted, persistedUserId, user.userId, userData.status.isInitialized ] )
+    // useEffect( () => {
+    //     if ( auth.userId && auth.userId !== persistedUserId ) {
+    //         setPersistedUserId( auth.userId )
 
-    useEffect( () => {
-        if ( user.userId && user.userId !== persistedUserId ) {
-            setPersistedUserId( user.userId )
-
-            if ( ! userData.data ) {
-                userData.getUserById( user.userId )
-            }
-        }
-    }, [ user.userId ] )
+    //         if ( ! userData.data ) {
+    //             userData.getUserById( auth.userId )
+    //         }
+    //     }
+    // }, [ auth.userId ] )
 
     useEffect( () => {
         if ( userAuth.isComplete ) {
@@ -50,23 +47,27 @@ export default function useAuthentication() {
             if ( userAuth.data.success ) {
                 console.log( 'Signed in!' )
 
-                user.setUserId( userAuth.data.user._id )
-                setPersistedToken( userAuth.data.token )
+                auth.setUserId( userAuth.data.user._id )
+                auth.setToken( userAuth.data.token )
             }
         }
     }, [ userAuth.isComplete, isLoading ] )
 
     useEffect( () => {
         if ( isMounted && userAuth.isError ) {
-            user.setUserId( null )
+            auth.setUserId( null )
         }
     }, [ isMounted, userAuth.isError, userData.error ] )
 
     return {
-        _data: userData.data,
-        _status: userData.status,
+        _data: userAuth.data,
+        _status: userAuth.status,
+
+        get isReady() {
+            return ! isLoading
+        },
         get isSignedIn() {
-            return !! user.userId
+            return !! auth.userId
         },
         get signInStatusChange() {
             return userData.status.isComplete
@@ -75,24 +76,29 @@ export default function useAuthentication() {
             return userAuth.isError
         },
         get isSignInFailed() {
-            return userAuth.isComplete && ( ! userData.data || ! userAuth.data.success )
+            return userAuth.isError // && ( ! userData.data || userAuth.data.error )
+        },
+        get isSigningIn() {
+            return userAuth.isFetching
         },
         get isGettingStatus() {
-            return isLoading// userAuth.isFetching || ! isMounted
+            return isLoading // userAuth.isFetching || ! isMounted
         },
         get userId() {
-            return user.userId
+            return auth.userId
         },
         get userData() {
+            if ( ! userData.status.isInitialized && auth.userId ) {
+                userData.getUserById( auth.userId )
+            }
             return userData?.data
         },
         refresh() {
             userData.refetch()
         },
         signIn( email, password ) {
-            // userData.signIn( email, password )
-
             console.log( 'Signing in with email and password:', email, password )
+
             const options = {
                 method: 'POST',
                 headers: {
@@ -101,12 +107,12 @@ export default function useAuthentication() {
                 },
                 body: JSON.stringify( { email, password } ),
             }
-            userAuth.fetch( `/auth/login`, { options } )
+            userAuth.fetch( `/auth/login`, { options }, true )
         },
         signOut() {
             try {
-                user.setUserId( null )
-                setPersistedUserId( null )
+                auth.setUserId( null )
+                auth.setToken( null )
                 userData.clear()
             }
             catch ( error ) {
