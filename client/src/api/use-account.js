@@ -53,24 +53,5 @@ export default function useAccount() {
 
             userData.fetch( `/user/${userId}`, { options } )
         },
-        signIn( email, password ) {
-            console.log( 'Signing in with email and password:', email, password )
-            const options = {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            }
-            userData.fetch(`/auth/login`, { options })
-                .then(response => {
-                    // Save the token in local storage
-                    localStorage.setItem('token', response.data.token )
-                })
-                .catch(error => {
-                    console.error('Error during sign-in:', error )
-                });
-         },
-    };
+    }
 }
