@@ -27,8 +27,6 @@ export default function SignIn() {
     const auth = useAuthentication()
     const { validate, errors } = useValidation()
 
-    console.log( auth )
-
     const handleChange = ( e ) => {
         const { name, value } = e.target
         setFormData( ( prevData ) => ( {
@@ -63,6 +61,7 @@ export default function SignIn() {
             // !! Note - no authentication at this time
             // Just a check if the email exists
             auth.signIn( email, password )
+            
         }
     }
 
@@ -73,6 +72,7 @@ export default function SignIn() {
                     <CircularProgress />
                 </Box>
             }
+
             {
                 auth.isSignedIn && <Stack spacing={ 3 } mt={ 10 } mb={ 10 } alignItems="stretch">
                     <Alert severity="success">
