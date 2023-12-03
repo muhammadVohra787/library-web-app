@@ -1,33 +1,33 @@
 // client/src/api/use-account.js
-import useFetch from './use-fetch';
+import useFetch from './use-fetch'
 
 export default function useAccount() {
-    const userData = useFetch();
+    const userData = useFetch()
 
     return {
         get data() {
-            return Array.isArray(userData.data) ? userData.data[0] : userData.data;
+            return Array.isArray( userData.data ) ? userData.data[ 0 ] : userData.data
         },
         get status() {
-            const { isFetching, isComplete, isError, isInitialized, ...rest } = userData;
-            return { isFetching, isComplete, isError, isInitialized };
+            const { isFetching, isComplete, isError, isInitialized, ...rest } = userData
+            return { isFetching, isComplete, isError, isInitialized }
         },
         clear() {
-            userData.reset();
+            userData.reset()
         },
         refetch() {
-            userData.refetch();
+            userData.refetch()
         },
-        getUserById(userId) {
-            userData.fetch(`/user/id/${userId}`);
-            console.log(`/user/id/${userId}` );
+        getUserById( userId ) {
+            userData.fetch( `/user/id/${userId}` )
+            console.log( `/user/id/${userId}` )
         },
-        getUserByEmail(email, password) {
-            console.log('Fetching data for /users with email and password:', email, password);
-            userData.fetch(`/users`, { query: { email, password } });
+        getUserByEmail( email, password ) {
+            console.log( 'Fetching data for /users with email and password:', email, password )
+            userData.fetch( `/users`, { query: { email, password } } )
         },
-        createUser({ name, email, password }) {
-            console.log('Creating user with:', { name, email, password });
+        createUser( { name, email, password } ) {
+            console.log( 'Creating user with:', { name, email, password } )
 
             const options = {
                 method: 'POST',
@@ -35,26 +35,26 @@ export default function useAccount() {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, email, password }),
-            };
+                body: JSON.stringify( { name, email, password } ),
+            }
 
-            userData.fetch(`/user`, { options });
+            userData.fetch( `/user`, { options } )
         },
-        updateUser(userId, { name, email, password }) {
-            console.log('Updating user with userId:', userId);
+        updateUser( userId, { name, email, password } ) {
+            console.log( 'Updating user with userId:', userId )
             const options = {
                 method: 'PUT',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, email, password }),
-            };
+                body: JSON.stringify( { name, email, password } ),
+            }
 
-            userData.fetch(`/user/${userId}`, { options });
+            userData.fetch( `/user/${userId}`, { options } )
         },
-        signIn(email, password) {
-            console.log('Signing in with email and password:', email, password);
+        signIn( email, password ) {
+            console.log( 'Signing in with email and password:', email, password )
             const options = {
                 method: 'POST',
                 headers: {
