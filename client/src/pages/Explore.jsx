@@ -16,7 +16,6 @@ import {
     CircularProgress,
     IconButton,
 } from '@mui/material'
-import dataArray from '../assets/dummydata.js'
 import useBookData from '@/api/use-book-data.js'
 import NavLink from '@/components/NavLink.jsx'
 
