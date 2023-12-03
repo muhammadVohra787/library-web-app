@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react'
 import useFetch from './use-fetch'
 
 export default function useAuthentication() {
-    const [ isMounted, setIsMounted ] = useState( false )
+    // const [ isMounted, setIsMounted ] = useState( false )
     const [ isLoading, setIsLoading ] = useState( true )
 
     const auth = useContext( authContext )
@@ -34,10 +34,10 @@ export default function useAuthentication() {
     }, [ userAuth.isComplete, isLoading ] )
 
     useEffect( () => {
-        if ( isMounted && userAuth.isError ) {
+        if ( userAuth.isError ) {
             auth.setUserId( null )
         }
-    }, [ isMounted, userAuth.isError, userData.error ] )
+    }, [ userAuth.isError ] )
 
     return {
         _data: userAuth.data,
