@@ -61,14 +61,13 @@ export default function SignIn() {
             // !! Note - no authentication at this time
             // Just a check if the email exists
             auth.signIn( email, password )
-            
         }
     }
 
     return (
         <Container component="main" maxWidth="xs">
             {
-                auth.isGettingStatus && ! auth.isSignedIn && <Box sx={ { display: 'flex' } }>
+                ! auth.isReady && <Box sx={ { display: 'flex' } }>
                     <CircularProgress />
                 </Box>
             }
@@ -85,7 +84,7 @@ export default function SignIn() {
                 </Stack>
             }
             {
-                ! auth.isGettingStatus && ! auth.isSignedIn &&
+                auth.isReady && ! auth.isSignedIn &&
                     <Box
                         sx={ {
                             marginTop: 8,
@@ -147,10 +146,10 @@ export default function SignIn() {
                                 label="Remember me"
                             /> */ }
                             {
-                                auth._status.isFetching && <CircularProgress />
+                                auth.isSigningIn && <CircularProgress />
                             }
                             {
-                                ! auth._status.isFetching &&
+                                ! auth.isSigningIn && <>
 
                                     <Button
                                         type="submit"
@@ -160,19 +159,21 @@ export default function SignIn() {
                                     >
                                         Sign In
                                     </Button>
-                            }
-                            <Grid container>
-                                { /* <Grid item xs>
+                                    <Grid container>
+                                        { /* <Grid item xs>
                                     <Link href="#" variant="body2">
                                         Forgot password?
                                     </Link>
                                 </Grid> */ }
-                                <Grid item>
-                                    <NavLink to="/signup" variant="body2">
-                                        Don't have an account? Sign Up
-                                    </NavLink>
-                                </Grid>
-                            </Grid>
+                                        <Grid item>
+                                            <NavLink to="/signup" variant="body2">
+                                                Don't have an account? Sign Up
+                                            </NavLink>
+                                        </Grid>
+                                    </Grid>
+                                </>
+                            }
+
                         </Box>
                     </Box>
             }
