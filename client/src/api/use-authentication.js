@@ -1,103 +1,127 @@
 // api/use-authentication.js
-import authContext from './auth-context'
-import useAccount from './use-account'
-import { useContext, useEffect, useState } from 'react'
-import useFetch from './use-fetch'
+import authContext from "./auth-context";
+import useAccount from "./use-account";
+import { useContext, useEffect, useState } from "react";
+import useFetch from "./use-fetch";
+import { AuthContextProvider } from "../components/AuthContextProvider";
 
 export default function useAuthentication() {
     // const [ isMounted, setIsMounted ] = useState( false )
-    const [ isLoading, setIsLoading ] = useState( true )
-
-    const auth = useContext( authContext )
-    const userData = useAccount()
-    const userAuth = useFetch()
-
-    useEffect( () => {
-        if ( userAuth.userId !== null ) {
-            setIsLoading( false )
-        }
-    }, [ auth.userId ] )
-
-    useEffect( () => {
-        if ( userAuth.isComplete ) {
-            if ( isLoading ) {
-                setIsLoading( false )
-            }
-
-            if ( userAuth.data.success ) {
-                console.log( 'Signed in!' )
-
-                auth.setUserId( userAuth.data.user._id )
-                auth.setToken( userAuth.data.token )
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSigningOut, setIsSigningOut] = useState(false);
+    const auth = useContext(authContext);
+    const userData = useAccount();
+    const userAuth = useFetch();
+    useEffect(() => {
+        if (userAuth.isError) {
+            if (!isSigningOut) {
+                // Add this condition
+                auth.setUserId(null);
             }
         }
-    }, [ userAuth.isComplete, isLoading ] )
+    }, [userAuth.isError, isSigningOut]);
 
-    useEffect( () => {
-        if ( userAuth.isError ) {
-            auth.setUserId( null )
+    useEffect(() => {
+        if (userAuth.userId !== null) {
+            setIsLoading(false);
         }
-    }, [ userAuth.isError ] )
+    }, [auth.userId]);
+
+    useEffect(() => {
+        if (userAuth.isComplete) {
+            if (isLoading) {
+                setIsLoading(false);
+            }
+
+            if (userAuth.data.success) {
+                console.log("Signed in!");
+                auth.setUserId(userAuth.data.user._id);
+                auth.setToken(userAuth.data.jwtDecoded);
+                console.log(userAuth.data.jwtDecoded);
+            }
+        }
+    }, [userAuth.isComplete, isLoading]);
+
+    useEffect(() => {
+        if (userAuth.isError) {
+            auth.setUserId(null);
+        }
+    }, [userAuth.isError]);
 
     return {
         _data: userAuth.data,
         _status: userAuth.status,
 
         get isReady() {
-            return ! isLoading
+            return !isLoading;
         },
         get isSignedIn() {
-            return auth.checkToken()
+            return auth.checkToken();
         },
         get signInStatusChange() {
-            return userData.status.isComplete
+            return userData.status.isComplete;
         },
         get signInError() {
-            return userAuth.isError
+            return userAuth.isError;
         },
         get isSignInFailed() {
-            return userAuth.isError // && ( ! userData.data || userAuth.data.error )
+            return userAuth.isError; // && ( ! userData.data || userAuth.data.error )
         },
         get isSigningIn() {
-            return userAuth.isFetching
+            return userAuth.isFetching;
         },
         get isGettingStatus() {
-            return isLoading // userAuth.isFetching || ! isMounted
+            return isLoading; // userAuth.isFetching || ! isMounted
         },
         get userId() {
-            return auth.userId
+            return auth.userId;
         },
         get userData() {
-            if ( ! userData.status.isInitialized && auth.userId ) {
-                userData.getUserById( auth.userId )
+            if (!userData.status.isInitialized && auth.userId) {
+                userData.getUserById(auth.userId);
             }
-            return userData?.data
+            return userData?.data;
         },
         refresh() {
-            userData.refetch()
+            console.log("refresh , use-auth");
+            userData.refetch();
         },
-        signIn( email, password ) {
-            console.log( 'Signing in with email and password:', email, password )
-
+        signIn(email, password) {
+            console.log("Signing in with email and password:", email, password);
             const options = {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify( { email, password } ),
+                body: JSON.stringify({ email, password }),
+            };
+            userAuth.fetch(`/auth/login`, { options }, true);
+        },
+        sessionSignOut() {
+            if (isSigningOut) {
+                return false;
             }
-            userAuth.fetch( `/auth/login`, { options }, true )
+            try {
+                auth.setUserId("");
+                auth.setToken("");
+                userData.clear();
+                window.alert('Session Expired'); //not working
+                console.log('Session expired');//not working
+            } catch (error) {
+                console.error("Error during sign-out:", error);
+            }
+
+            setIsSigningOut(true);
         },
         signOut() {
             try {
-                auth.setUserId( '' )
-                auth.setToken( '' )
-                userData.clear()
-            }
-            catch ( error ) {
-                console.error( 'Error during sign-out:', error )
+                auth.setUserId("");
+                auth.setToken("");
+                userData.clear();
+            } catch (error) {
+                console.error("Error during sign-out:", error);
             }
         },
-    }
+    };
 }
