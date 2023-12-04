@@ -1,127 +1,129 @@
 // api/use-authentication.js
-import authContext from "./auth-context";
-import useAccount from "./use-account";
-import { useContext, useEffect, useState } from "react";
-import useFetch from "./use-fetch";
-import { AuthContextProvider } from "../components/AuthContextProvider";
+import authContext from './auth-context'
+import useAccount from './use-account'
+import { useContext, useEffect, useState } from 'react'
+import useFetch from './use-fetch'
+import { AuthContextProvider } from '../components/AuthContextProvider'
 
 export default function useAuthentication() {
     // const [ isMounted, setIsMounted ] = useState( false )
-    const [isLoading, setIsLoading] = useState(true);
-    const [isSigningOut, setIsSigningOut] = useState(false);
-    const auth = useContext(authContext);
-    const userData = useAccount();
-    const userAuth = useFetch();
-    useEffect(() => {
-        if (userAuth.isError) {
-            if (!isSigningOut) {
+    const [ isLoading, setIsLoading ] = useState( true )
+    const [ isSigningOut, setIsSigningOut ] = useState( false )
+    const auth = useContext( authContext )
+    const userData = useAccount()
+    const userAuth = useFetch()
+    useEffect( () => {
+        if ( userAuth.isError ) {
+            if ( ! isSigningOut ) {
                 // Add this condition
-                auth.setUserId(null);
+                auth.setUserId( null )
             }
         }
-    }, [userAuth.isError, isSigningOut]);
+    }, [ userAuth.isError, isSigningOut ] )
 
-    useEffect(() => {
-        if (userAuth.userId !== null) {
-            setIsLoading(false);
+    useEffect( () => {
+        if ( userAuth.userId !== null ) {
+            setIsLoading( false )
         }
-    }, [auth.userId]);
+    }, [ auth.userId ] )
 
-    useEffect(() => {
-        if (userAuth.isComplete) {
-            if (isLoading) {
-                setIsLoading(false);
+    useEffect( () => {
+        if ( userAuth.isComplete ) {
+            if ( isLoading ) {
+                setIsLoading( false )
             }
 
-            if (userAuth.data.success) {
-                console.log("Signed in!");
-                auth.setUserId(userAuth.data.user._id);
-                auth.setToken(userAuth.data.jwtDecoded);
-                console.log(userAuth.data.jwtDecoded);
+            if ( userAuth.data.success ) {
+                console.log( 'Signed in!' )
+                auth.setUserId( userAuth.data.user._id )
+                auth.setToken( userAuth.data.jwtDecoded )
+                console.log( userAuth.data.jwtDecoded )
             }
         }
-    }, [userAuth.isComplete, isLoading]);
+    }, [ userAuth.isComplete, isLoading ] )
 
-    useEffect(() => {
-        if (userAuth.isError) {
-            auth.setUserId(null);
+    useEffect( () => {
+        if ( userAuth.isError ) {
+            auth.setUserId( null )
         }
-    }, [userAuth.isError]);
+    }, [ userAuth.isError ] )
 
     return {
         _data: userAuth.data,
         _status: userAuth.status,
 
         get isReady() {
-            return !isLoading;
+            return ! isLoading
         },
         get isSignedIn() {
-            return auth.checkToken();
+            return auth.checkToken()
         },
         get signInStatusChange() {
-            return userData.status.isComplete;
+            return userData.status.isComplete
         },
         get signInError() {
-            return userAuth.isError;
+            return userAuth.isError
         },
         get isSignInFailed() {
-            return userAuth.isError; // && ( ! userData.data || userAuth.data.error )
+            return userAuth.isError // && ( ! userData.data || userAuth.data.error )
         },
         get isSigningIn() {
-            return userAuth.isFetching;
+            return userAuth.isFetching
         },
         get isGettingStatus() {
-            return isLoading; // userAuth.isFetching || ! isMounted
+            return isLoading // userAuth.isFetching || ! isMounted
         },
         get userId() {
-            return auth.userId;
+            return auth.userId
         },
         get userData() {
-            if (!userData.status.isInitialized && auth.userId) {
-                userData.getUserById(auth.userId);
+            if ( ! userData.status.isInitialized && auth.userId ) {
+                userData.getUserById( auth.userId )
             }
-            return userData?.data;
+            return userData?.data
         },
         refresh() {
-            console.log("refresh , use-auth");
-            userData.refetch();
+            console.log( 'refresh , use-auth' )
+            userData.refetch()
         },
-        signIn(email, password) {
-            console.log("Signing in with email and password:", email, password);
+        signIn( email, password ) {
+            console.log( 'Signing in with email and password:', email, password )
             const options = {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
-            };
-            userAuth.fetch(`/auth/login`, { options }, true);
+                body: JSON.stringify( { email, password } ),
+            }
+            userAuth.fetch( `/auth/login`, { options }, true )
         },
         sessionSignOut() {
-            if (isSigningOut) {
-                return false;
+            if ( isSigningOut ) {
+                return false
             }
             try {
-                auth.setUserId("");
-                auth.setToken("");
-                userData.clear();
-                window.alert('Session Expired'); //not workin
-                console.log('Session expired');//not working
-            } catch (error) {
-                console.error("Error during sign-out:", error);
+                auth.setUserId( '' )
+                auth.setToken( '' )
+                userData.clear()
+                window.alert( 'Session Expired' ) // not workin
+                console.log( 'Session expired' )// not working
+            }
+            catch ( error ) {
+                console.error( 'Error during sign-out:', error )
             }
 
-            setIsSigningOut(true);
+            setIsSigningOut( true )
         },
         signOut() {
             try {
-                auth.setUserId("");
-                auth.setToken("");
-                userData.clear();
-            } catch (error) {
-                console.error("Error during sign-out:", error);
+                auth.setUserId( '' )
+                auth.setToken( '' )
+                userData.clear()
+            }
+            catch ( error ) {
+                console.error( 'Error during sign-out:', error )
             }
         },
-    };
+    }
 }
