@@ -46,6 +46,7 @@ export default function Account() {
         setPassword(user.userData.password)
     }
 
+
     const saveHandler = (e) => {
         e.preventDefault()
         const nameValidation = validate('name', name)
@@ -80,13 +81,13 @@ export default function Account() {
         if (user.userData) {
             resetHandler()
         }
-    }, [user.isGettingStatus])
+    }, [user.isGettingStatus ])
 
     useEffect(() => {
         if (account.status.isComplete) {
             user.refresh()
         }
-    }, [account.status.isComplete])
+     }, [account.status.isComplete]);
 
     return (
         <Container style={ { marginTop: '20px' } }>

@@ -1,7 +1,10 @@
-//server/controller/auth.controller
-import User from "../models/user.model.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+// server/controller/auth.controller
+import User from "../models/user.model.js"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export const signIn = async (req, res) => {
     const { email, password } = req.body;
@@ -13,22 +16,24 @@ export const signIn = async (req, res) => {
         if (!user || !passwordsMatch) {
             return res.status(401).json({ error: "Invalid credentials" });
         }
-
         const token = jwt.sign(
             {
                 userId: user._id,
                 userEmail: user.email,
             },
-            "RANDOM-TOKEN",
-            { expiresIn: "24h" }
-        );
-
-        res.status(200).json({ success: true, user, token });
+            process.env.SECRET_KEY,
+            { expiresIn: "10s" }
+        )
+        const jwtDecoded = jwt.decode( token )
+        console.log(jwtDecoded)
+        // Send the response back to the client with the token
+        return res.status(200).json({ success: true, user, jwtDecoded});
     } catch (error) {
         console.error("Error signing in:", error);
-        res.status(500).json({
+        // Handle errors and send an appropriate response
+        return res.status(500).json({
             success: false,
-            error: "x1Internal Server Error",
+            error: "Internal Server Error",
         });
     }
 };
