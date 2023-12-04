@@ -106,7 +106,7 @@ export default function useAuthentication() {
                 auth.setUserId("");
                 auth.setToken("");
                 userData.clear();
-                window.alert('Session Expired'); //not working
+                window.alert('Session Expired'); //not workin
                 console.log('Session expired');//not working
             } catch (error) {
                 console.error("Error during sign-out:", error);
