@@ -139,23 +139,25 @@ export default function useFetch() {
         get isInitialized() {
             return fetchStatus.isInitialized
         },
-        fetch( fetchUrl, params = {}, forceFetch = false ) {
-            updateFetchStatus()
+        fetch(fetchUrl, params = {}, forceFetch = false) {
+            return new Promise((resolve, reject) => {
+                updateFetchStatus();
 
-            requestData.current = {
-                url: fetchUrl,
-                options: params.options,
-                body: params.body,
-                query: params.query,
-            }
+                requestData.current = {
+                    url: fetchUrl,
+                    options: params.options,
+                    body: params.body,
+                    query: params.query,
+                };
 
-            // Invalidate previous query
-            if ( forceFetch ) {
-                prevQuery.current = ''
-            }
+                // Invalidate previous query
+                if (forceFetch) {
+                    prevQuery.current = '';
+                }
 
             triggerFetch()
-        },
+        });
+    },
         refetch() {
             console.log( 'REFETCH???', fetchStatus.isInitialized, requestData.current )
             if ( fetchStatus.isInitialized ) {
