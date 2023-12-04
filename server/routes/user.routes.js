@@ -1,15 +1,15 @@
-import { Router } from "express";
-import { getUsers, getUserByID, createUser, updateUser, deleteUser } from '../controllers/user.controller.js';
-import { signIn } from '../controllers/auth.controller.js';
+import { Router } from 'express'
+import { getUsers, getUserByID, createUser, updateUser, deleteUser } from '../controllers/user.controller.js'
+import { signIn } from '../controllers/auth.controller.js'
 
-const router = Router();
-router.get('/users', getUsers);
-router.get('/user/id/:userid', getUserByID);
+const router = Router()
+router.get( '/users', getUsers )
+router.get( '/user/id/:userid', getUserByID )
 
-router.post('/user', createUser);
+router.post( '/user', createUser )
 
-router.put('/user/:userid', updateUser);
+router.put( '/user/:userid', updateUser )
 
-router.delete('/user/:userid', deleteUser);
-router.post('/auth/login', signIn);
-export default router;
+router.delete( '/user/:userid', deleteUser )
+router.post( '/auth/login', signIn )
+export default router
