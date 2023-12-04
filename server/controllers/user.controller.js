@@ -14,7 +14,7 @@ export const getUsers = async( req, res ) => {
         const users = await User.find()
         res.json( users )
     }
-    console.log('server reached1');
+
 }
 
 export const getUserByID = async( req, res ) => {
@@ -23,7 +23,7 @@ export const getUserByID = async( req, res ) => {
         return res.status( 404 ).json( { message: 'User not found' } )
     }
     res.json( user )
-    console.log('server reached2');
+
 }
 
 export const createUser = async (req, res) => {
@@ -47,7 +47,6 @@ export const createUser = async (req, res) => {
         console.log('user-reached controller- Unsuccessful')
         res.status(500).json({ error: error.message })
     }
-    console.log('server reached4');
 }
 export const updateUser = async( req, res ) => {
     const user = await User.findByIdAndUpdate( req.params.userid, req.body, {
@@ -57,7 +56,6 @@ export const updateUser = async( req, res ) => {
         return res.status( 404 ).json( { message: 'User not found' } )
     }
     res.json( user )
-    console.log('server reached5');
 }
 
 export const deleteUser = async( req, res ) => {
@@ -66,12 +64,10 @@ export const deleteUser = async( req, res ) => {
         return res.status( 404 ).json( { message: 'User not found' } )
     }
     res.json( user )
-    console.log('server reached6');
 }
 
 export const signIn = async (req, res) => {
 
-    console.log('server reached 7');
     const { email, password } = req.body;
     console.log('Trying to sign in server reached');
 
