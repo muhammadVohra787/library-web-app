@@ -46,12 +46,7 @@ export default function useFetch() {
                     isInitialized: true,
                 }
             default:
-                return {
-                    isFetching: false,
-                    isComplete: false,
-                    isError: false,
-                    isInitialized: true,
-                }
+                return state
         }
     }
 
@@ -144,23 +139,21 @@ export default function useFetch() {
          * @param {boolean} forceFetch
          */
         fetch( fetchUrl, params = {}, forceFetch = false ) {
-            return new Promise( ( resolve, reject ) => {
-                updateFetchStatus()
+            updateFetchStatus()
 
-                requestData.current = {
-                    url: fetchUrl,
-                    options: params.options,
-                    body: params.body,
-                    query: params.query,
-                }
+            requestData.current = {
+                url: fetchUrl,
+                options: params.options,
+                body: params.body,
+                query: params.query,
+            }
 
-                // Invalidate previous query
-                if ( forceFetch ) {
-                    prevQuery.current = ''
-                }
+            // Invalidate previous query
+            if ( forceFetch ) {
+                prevQuery.current = ''
+            }
 
-                triggerFetch()
-            } )
+            triggerFetch()
         },
         refetch() {
             console.log( 'REFETCH???', fetchStatus.isInitialized, requestData.current )
