@@ -138,6 +138,11 @@ export default function useFetch() {
         get isInitialized() {
             return fetchStatus.isInitialized
         },
+        /**
+         * @param {string} fetchUrl
+         * @param {{options?: {}, body?: {}, query?: {}}} params
+         * @param {boolean} forceFetch
+         */
         fetch( fetchUrl, params = {}, forceFetch = false ) {
             return new Promise( ( resolve, reject ) => {
                 updateFetchStatus()
