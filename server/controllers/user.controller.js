@@ -3,28 +3,41 @@ import extend from 'lodash/extend.js'
 import User from '../models/user.model.js'
 import errorHandler from './error.controller.js'
 
-// import bcrypt from 'bcrypt'
-// import jwt from 'jsonwebtoken'
-console.log( 'server reached' )
 export const getUsers = async( req, res ) => {
     const { email } = req.query
+    const query = {}
 
     if ( email ) {
-        const userByEmail = await User.find( { email } )
-        res.json( userByEmail )
+        query.email = email
     }
-    else {
-        const users = await User.find()
-        res.json( users )
-    }
+
+    // Exclude hashed_password and salt
+    const users = User.find( query ) // .select( [ '-hashed_password', '-salt' ] )
+    const results = await users
+    res.json( results )
 }
 
 export const getUserByID = async( req, res ) => {
-    const user = await User.findById( req.params.userid )
-    if ( ! user ) {
-        return res.status( 404 ).json( { message: 'User not found' } )
+    // Exclude hashed_password and salt
+    const user = User.findById( req.params.userid )
+
+    // TODO: Exclude hashed_password and salt from results
+    // This works once, then crashes
+    // const user = User.findById( req.params.userid ).select( '-hashed_password' )
+
+    try {
+        const results = await user
+        res.json( results )
+
+        if ( ! user ) {
+            return res.status( 404 ).json( { message: 'User not found' } )
+        }
+
+        res.json( user )
     }
-    res.json( user )
+    catch ( e ) {
+        console.log( 'ERROR!', e )
+    }
 }
 
 export const createUser = async( req, res ) => {
