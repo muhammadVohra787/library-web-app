@@ -1,9 +1,19 @@
 import { createContext } from 'react'
 const authContext = createContext( {
-    userId: null,
-    token: null,
-    setUserId: null,
-    setToken: null,
-    // checkToken: null,
+    // Auth info
+    userId: undefined,
+    token: undefined,
+    setUserId: undefined,
+    setToken: undefined,
+
+    // Flags
+    flags: {
+        isSessionValid: false,
+        isTokenExpired: false,
+        isUserSignedOut: false,
+        setIsTokenExpired: undefined,
+        setIsSessionValid: undefined,
+    },
+
 } )
 export default authContext
