@@ -3,7 +3,6 @@ import authContext from './auth-context'
 import useAccount from './use-account'
 import { useContext, useEffect, useState } from 'react'
 import useFetch from './use-fetch'
-import { AuthContextProvider } from '../components/AuthContextProvider'
 
 export default function useAuthentication() {
     // const [ isMounted, setIsMounted ] = useState( false )
