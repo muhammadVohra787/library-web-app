@@ -8,17 +8,7 @@ import SessionTimeoutWarningModal from './SessionOut'
 export function AuthContextProvider( { children } ) {
     const [ persistedUserId, setPersistedUserId ] = useLocalStorage( 'userId', '' )
     const [ persistedToken, setPersistedToken ] = useLocalStorage( 'token', '' )
-    const auth = useAuthentication()
-    const expiryDate = new Date( persistedToken.exp * 1000 )
+    // const auth = useAuthentication()
 
-    const checkToken = () => {
-        if ( ! persistedToken || new Date() > expiryDate ) {
-            auth.sessionSignOut()
-            return false
-        }
-        console.log( 'Token is available' )
-        return true
-    }
-
-    return <AuthContext.Provider value={ { userId: persistedUserId, checkToken, setToken: setPersistedToken, setUserId: setPersistedUserId } }>{ children }</AuthContext.Provider>
+    return <AuthContext.Provider value={ {
 }
