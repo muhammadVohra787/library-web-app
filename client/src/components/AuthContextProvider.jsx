@@ -11,4 +11,9 @@ export function AuthContextProvider( { children } ) {
     // const auth = useAuthentication()
 
     return <AuthContext.Provider value={ {
+        userId: persistedUserId,
+        token: persistedToken,
+        setToken: setPersistedToken,
+        setUserId: setPersistedUserId,
+    } }>{ children }</AuthContext.Provider>
 }
