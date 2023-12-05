@@ -159,6 +159,15 @@ export default function SignIn() {
                                     >
                                         Sign In
                                     </Button>
+                                    { /* !! Short session for testing !! */ }
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        sx={ { mt: 3, mb: 2 } }
+                                    >
+                                        Sign In (10 sec. session)
+                                    </Button>
                                     <Grid container>
                                         { /* <Grid item xs>
                                     <Link href="#" variant="body2">
