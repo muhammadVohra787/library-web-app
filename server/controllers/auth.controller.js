@@ -2,10 +2,7 @@
 import User from '../models/user.model.js'
 import config from '../config/config.js'
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
 import { expressjwt } from 'express-jwt'
-
-dotenv.config()
 
 export const signIn = async( req, res ) => {
     const { email, password } = req.body
@@ -15,7 +12,6 @@ export const signIn = async( req, res ) => {
         const user = await User.findOne( { email } )
         console.log( 'signin Reached -auth.controller' )
         console.log( password )
-        // const passwordsMatch = await bcrypt.compare( password, user.password )
 
         if ( ! user.authenticate( password ) ) {
             return res
@@ -23,12 +19,14 @@ export const signIn = async( req, res ) => {
                 .send( { error: "Email or password don't match." } )
         }
 
-        const expiry = new Date() + 9999
-        const token = jwt.sign( {
-            _id: user._id,
-            expiry,
-        }, config.jwtSecret )
+        const token = jwt.sign(
+            { _id: user._id },
+            config.jwtSecret,
+            { expiresIn: '5s' },
+        )
 
+        // ??
+        const expiry = Date.now() + ( 1000 * 10 ) // ( 1000 * 3600 * 24 ) // 24h
         res.cookie( 't', token, { expire: expiry } )
 
         // const token = jwt.sign(
