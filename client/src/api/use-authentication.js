@@ -1,26 +1,21 @@
 // api/use-authentication.js
 import authContext from './auth-context'
-import useAccount from './use-account'
 import { useContext, useEffect, useState } from 'react'
 import useFetch from './use-fetch'
 
 export default function useAuthentication() {
-    // const [ isMounted, setIsMounted ] = useState( false )
     const [ isLoading, setIsLoading ] = useState( true )
-    const [ isSigningOut, setIsSigningOut ] = useState( false )
-
     const auth = useContext( authContext )
-    const userData = useAccount()
+    const userData = useFetch()
     const userAuth = useFetch()
+
+    const { isTokenValid, isSessionValid, setIsSessionValid, isTokenExpired, setIsTokenExpired, isUserSignedOut, setIsUserSignedOut } = auth.flags
 
     useEffect( () => {
         if ( userAuth.isError ) {
-            if ( ! isSigningOut ) {
-                // Add this condition
-                auth.setUserId( null )
-            }
+            auth.setUserId( null )
         }
-    }, [ userAuth.isError, isSigningOut ] )
+    }, [ userAuth.isError ] )
 
     useEffect( () => {
         if ( userAuth.userId !== null ) {
@@ -38,6 +33,8 @@ export default function useAuthentication() {
                 console.log( 'Signed in!' )
                 auth.setUserId( userAuth.data.user._id )
                 auth.setToken( userAuth.data.jwtDecoded )
+                setIsSessionValid( true )
+
                 console.log( userAuth.data.jwtDecoded )
             }
         }
@@ -49,6 +46,34 @@ export default function useAuthentication() {
         }
     }, [ userAuth.isError ] )
 
+    // Reset auth flags
+    useEffect( () => {
+        console.log( 'Token change?', { isTokenExpired, isSessionValid, isTokenValid: isTokenValid } )
+
+        if ( ! isTokenValid && isSessionValid ) {
+            console.log( '##### Token has expired. #####' )
+
+            console.log( '##### isUserSignedOut -->', isUserSignedOut )
+
+            setIsSessionValid( false )
+
+            if ( ! isTokenExpired ) {
+                console.log( 'setIsTokenExpired.' )
+                setIsTokenExpired( true )
+            }
+
+            return
+        }
+
+        if ( isUserSignedOut ) {
+            setIsUserSignedOut( false )
+        }
+
+        if ( isTokenExpired ) {
+            setIsTokenExpired( false )
+        }
+    }, [ isTokenValid, isSessionValid, isTokenExpired, isUserSignedOut ] )
+
     return {
         _data: userAuth.data,
         _status: userAuth.status,
@@ -56,11 +81,17 @@ export default function useAuthentication() {
         get isReady() {
             return ! isLoading
         },
+        get isTokenExpired() {
+            return isTokenExpired
+        },
+        resetIsTokenExpired() {
+            setIsTokenExpired( false )
+        },
         get isSignedIn() {
-            return this.validateSession()
+            return isTokenValid
         },
         get signInStatusChange() {
-            return userData.status.isComplete
+            return userData.isComplete
         },
         get signInError() {
             return userAuth.isError
@@ -78,14 +109,35 @@ export default function useAuthentication() {
             return auth.userId
         },
         get userData() {
-            if ( ! userData.status.isInitialized && auth.userId ) {
-                userData.getUserById( auth.userId )
+            if ( ! userData.isInitialized && auth.userId ) {
+                const headers = this.getProtectedHeader()
+                // userData.getUserById( auth.userId )
             }
             return userData?.data
         },
         refresh() {
             console.log( 'refresh , use-auth' )
             userData.refetch()
+        },
+        validateSession() {
+            if ( ! auth.token ) {
+                return false
+            }
+
+            // Calc. token expiry date
+            const expiryDate = auth?.token?.exp ? new Date( auth.token.exp * 1000 ) : null
+
+            // console.log( expiryDate, ' = = = = = = ', new Date() )
+            // console.log( 'expiryDate < new Date() ', expiryDate < new Date() )
+
+            console.log( '### CHECKING JWT ===' )
+
+            if ( ! expiryDate || expiryDate < new Date() ) {
+                console.log( 'EXPIRED!' )
+                // auth.setToken( '' )
+                return false
+            }
+            return true
         },
         signIn( email, password ) {
             console.log( 'Signing in with email and password:', email, password )
@@ -99,47 +151,41 @@ export default function useAuthentication() {
             }
             userAuth.fetch( `/auth/login`, { options }, true )
         },
-        validateSession() {
-            if ( ! auth.token ) {
-                return false
-            }
+        // sessionSignOut() {
+        //     if ( isSigningOut ) {
+        //         return false
+        //     }
+        //     try {
+        //         // debugger
+        //         auth.setUserId( '' )
+        //         auth.setToken( '' )
+        //         userData.reset()
+        //         // window.alert( 'Session Expired' ) // not workin
+        //         console.log( 'Session expired' )// not working
+        //     }
+        //     catch ( error ) {
+        //         console.error( 'Error during sign-out:', error )
+        //     }
 
-            // Calc. token expiry date
-            const expiryDate = new Date( auth.token.exp * 1000 )
-
-            if ( ! auth.token || new Date() > expiryDate ) {
-                this.sessionSignOut()
-                return false
-            }
-            console.log( 'Token is available' )
-            return true
-        },
-        sessionSignOut() {
-            if ( isSigningOut ) {
-                return false
-            }
-            try {
-                // debugger
-                auth.setUserId( '' )
-                auth.setToken( '' )
-                userData.clear()
-                // window.alert( 'Session Expired' ) // not workin
-                console.log( 'Session expired' )// not working
-            }
-            catch ( error ) {
-                console.error( 'Error during sign-out:', error )
-            }
-
-            setIsSigningOut( true )
-        },
+        //     setIsSigningOut( true )
+        // },
         signOut() {
             try {
                 auth.setUserId( '' )
                 auth.setToken( '' )
-                userData.clear()
+                setIsUserSignedOut( true )
             }
             catch ( error ) {
                 console.error( 'Error during sign-out:', error )
+            }
+        },
+        getProtectedHeader() {
+            return {
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${ auth.token }`,
+                },
             }
         },
     }
