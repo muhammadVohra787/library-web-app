@@ -8,9 +8,11 @@ export default function useAuthentication() {
     // const [ isMounted, setIsMounted ] = useState( false )
     const [ isLoading, setIsLoading ] = useState( true )
     const [ isSigningOut, setIsSigningOut ] = useState( false )
+
     const auth = useContext( authContext )
     const userData = useAccount()
     const userAuth = useFetch()
+
     useEffect( () => {
         if ( userAuth.isError ) {
             if ( ! isSigningOut ) {
@@ -55,7 +57,7 @@ export default function useAuthentication() {
             return ! isLoading
         },
         get isSignedIn() {
-            return auth.checkToken()
+            return this.validateSession()
         },
         get signInStatusChange() {
             return userData.status.isComplete
@@ -97,15 +99,31 @@ export default function useAuthentication() {
             }
             userAuth.fetch( `/auth/login`, { options }, true )
         },
+        validateSession() {
+            if ( ! auth.token ) {
+                return false
+            }
+
+            // Calc. token expiry date
+            const expiryDate = new Date( auth.token.exp * 1000 )
+
+            if ( ! auth.token || new Date() > expiryDate ) {
+                this.sessionSignOut()
+                return false
+            }
+            console.log( 'Token is available' )
+            return true
+        },
         sessionSignOut() {
             if ( isSigningOut ) {
                 return false
             }
             try {
+                // debugger
                 auth.setUserId( '' )
                 auth.setToken( '' )
                 userData.clear()
-                window.alert( 'Session Expired' ) // not workin
+                // window.alert( 'Session Expired' ) // not workin
                 console.log( 'Session expired' )// not working
             }
             catch ( error ) {
