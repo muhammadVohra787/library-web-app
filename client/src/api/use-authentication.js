@@ -6,7 +6,7 @@ import useFetch from './use-fetch'
 export default function useAuthentication() {
     const [ isLoading, setIsLoading ] = useState( true )
     const auth = useContext( authContext )
-    const userData = useFetch()
+    // const userData = useFetch()
     const userAuth = useFetch()
 
     const { isTokenValid, isSessionValid, setIsSessionValid, isTokenExpired, setIsTokenExpired, isUserSignedOut, setIsUserSignedOut } = auth.flags
@@ -48,20 +48,13 @@ export default function useAuthentication() {
 
     // Reset auth flags
     useEffect( () => {
-        console.log( 'Token change?', { isTokenExpired, isSessionValid, isTokenValid: isTokenValid } )
-
         if ( ! isTokenValid && isSessionValid ) {
-            console.log( '##### Token has expired. #####' )
-
-            console.log( '##### isUserSignedOut -->', isUserSignedOut )
-
+            console.log( 'Token has expired.' )
             setIsSessionValid( false )
 
             if ( ! isTokenExpired ) {
-                console.log( 'setIsTokenExpired.' )
                 setIsTokenExpired( true )
             }
-
             return
         }
 
@@ -90,9 +83,9 @@ export default function useAuthentication() {
         get isSignedIn() {
             return isTokenValid
         },
-        get signInStatusChange() {
-            return userData.isComplete
-        },
+        // get signInStatusChange() {
+        //     return userData.isComplete
+        // },
         get signInError() {
             return userAuth.isError
         },
@@ -108,17 +101,17 @@ export default function useAuthentication() {
         get userId() {
             return auth.userId
         },
-        get userData() {
-            if ( ! userData.isInitialized && auth.userId ) {
-                const headers = this.getProtectedHeader()
-                // userData.getUserById( auth.userId )
-            }
-            return userData?.data
-        },
-        refresh() {
-            console.log( 'refresh , use-auth' )
-            userData.refetch()
-        },
+        // get userData() {
+        //     if ( ! userData.isInitialized && auth.userId ) {
+        //         const headers = this.getProtectedHeader()
+        //         // userData.getUserById( auth.userId )
+        //     }
+        //     return userData?.data
+        // },
+        // refresh() {
+        //     console.log( 'refresh , use-auth' )
+        //     userData.refetch()
+        // },
         validateSession() {
             if ( ! auth.token ) {
                 return false
