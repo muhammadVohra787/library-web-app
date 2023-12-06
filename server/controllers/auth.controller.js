@@ -5,7 +5,8 @@ import jwt from 'jsonwebtoken'
 import { expressjwt } from 'express-jwt'
 
 export const signIn = async( req, res ) => {
-    const { email, password } = req.body
+    // !! shortSession param for testing
+    const { email, password, shortSession } = req.body
     console.log( 'auth-controller Reached' )
 
     try {
@@ -19,27 +20,22 @@ export const signIn = async( req, res ) => {
                 .send( { error: "Email or password don't match." } )
         }
 
+        // !! shortSession param for testing
+        const sessionExpiry = shortSession ? '5s' : '14d'
+
         const token = jwt.sign(
             { _id: user._id },
             config.jwtSecret,
-            { expiresIn: '5s' },
+            { expiresIn: sessionExpiry },
         )
 
-        // ??
-        const expiry = Date.now() + ( 1000 * 10 ) // ( 1000 * 3600 * 24 ) // 24h
+        // ?????
+        const expiry = Date.now() + ( 1000 * 3600 * 24 ) // 24h
         res.cookie( 't', token, { expire: expiry } )
-
-        // const token = jwt.sign(
-        //     {
-        //         userId: user._id,
-        //         userEmail: user.email,
-        //     },
-        //     process.env.SECRET_KEY,
-        //     { expiresIn: '10s' },
-        // )
 
         const jwtDecoded = jwt.decode( token )
         console.log( jwtDecoded )
+
         // Send the response back to the client with the token
         return res.status( 200 ).json( { success: true, user, jwtDecoded } )
     }
