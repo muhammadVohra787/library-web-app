@@ -12,7 +12,7 @@ export const signIn = async( req, res ) => {
     try {
         const user = await User.findOne( { email } )
         console.log( 'signin Reached -auth.controller' )
-        console.log( password )
+        console.log( 'shortSession?', shortSession )
 
         if ( ! user.authenticate( password ) ) {
             return res
@@ -29,15 +29,11 @@ export const signIn = async( req, res ) => {
             { expiresIn: sessionExpiry },
         )
 
-        // ?????
-        const expiry = Date.now() + ( 1000 * 3600 * 24 ) // 24h
-        res.cookie( 't', token, { expire: expiry } )
-
         const jwtDecoded = jwt.decode( token )
         console.log( jwtDecoded )
 
         // Send the response back to the client with the token
-        return res.status( 200 ).json( { success: true, user, jwtDecoded } )
+        return res.status( 200 ).json( { success: true, user, token, expires: jwtDecoded.exp * 1000 } )
     }
     catch ( error ) {
         console.error( 'Error signing in:', error )
@@ -49,12 +45,6 @@ export const signIn = async( req, res ) => {
     }
 }
 
-export const signout = ( req, res ) => {
-    res.clearCookie( 't' )
-    return res.status( '200' ).json( {
-        message: 'signed out',
-    } )
-}
 export const requireSignin = expressjwt( {
     secret: config.jwtSecret,
     algorithms: [ 'HS256' ],
