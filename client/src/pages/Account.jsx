@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import {
     Box,
     Container,
@@ -20,6 +20,7 @@ import {
 } from '@mui/material'
 
 import InputIcon from '@mui/icons-material/Input'
+import BookIcon from '@mui/icons-material/MenuBook'
 
 import useAuthentication from '@/api/use-authentication'
 import Authorized from '@/components/Authorized'
@@ -222,22 +223,12 @@ export default function Account() {
                                             <BookHistoryItem
                                                 key={ item._id }
                                                 item={ item }
-                                                userId={ user.userId }
-                                                checkoutStatus={ { status: checkoutStatus, set: ( loanId, status ) => {
-                                                    setCheckoutStatus( ( prev ) => {
-                                                        return {
-                                                            ...prev,
-                                                            [ loanId ]: status,
-                                                        }
-                                                    } )
-                                                } } }
+                                                userId={ auth.userId }
                                             />,
                                         ) }
-
                                     </List>
                                 </Box>
                             </Box>
-
                         </Paper>
                     </Grid>
                 </Grid>
@@ -246,56 +237,30 @@ export default function Account() {
     )
 }
 
-function BookHistoryItem( { item, userId, checkoutStatus } ) {
-    // Todo: automatic status refetch after book status update doesn't work because the component is reloaded
+function BookHistoryItem( { item: _item, userId } ) {
+    console.log( '<BookHistoryItem>', _item )
+
     const library = useLibrary( userId )
 
-    const loanDateInt = Date.parse( item.loanDate )
-    const loanDate = new Date( loanDateInt ).toDateString()
-    const dueDateInt = Date.parse( item.dueDate )
-    const dueDate = new Date( dueDateInt ).toDateString()
-    const returnDateInt = Date.parse( item.returnDate )
-    const returnDate = new Date( returnDateInt ).toDateString()
-    const isOverdue = dueDateInt < Date.now()
-
-    /** @type [any,any] */
-    const [ status, setStatus ] = useState( { text: '', colour: 'info' } )
+    const [ item, setItem ] = useState( _item )
+    const status = item.statusMeta
 
     const returnHandler = () => {
         library.return( item._id )
     }
 
-    const updateStatus = ( checkedOut, overdue ) => {
-        const text = ! checkedOut ? 'Returned' : ( overdue ? 'Overdue!' : `Checked Out` )
-        setStatus( { text, colour: checkedOut ? 'info' : ( overdue ? 'error' : `success` ) } )
-    }
-
-    // Set internal book status on load, after loan id and user id have been set
-    useEffect( () => {
-        if ( ! item._id && ! userId ) {
-            return
-        }
-
-        if ( ! returnDateInt ) {
-            checkoutStatus.set( item._id, true )
-        }
-
-        if ( ! status.text ) {
-            updateStatus( checkoutStatus.status[ item._id ], isOverdue )
-        }
-    }, [ returnDateInt, isOverdue, item._id, userId, status.text ] )
-
     // Update internal book status after book has been returned
     useEffect( () => {
-        if ( ! item._id && ! userId ) {
+        if ( ! item._id || ! userId ) {
             return
         }
 
-        if ( library.checkoutStatusChanged !== null && library.checkoutStatusChanged !== checkoutStatus.status[ item._id ] ) {
-            checkoutStatus.set( item._id, library.checkoutStatusChanged )
-            updateStatus( library.checkoutStatusChanged, isOverdue )
+        console.log( 'checkoutStatusChanged', library.checkoutDataAfterUpdate )
+
+        if ( library.isCheckoutStatusChangeComplete ) {
+            setItem( ( prev ) => ( { ...prev, ...library.checkoutDataAfterUpdate } ) )
         }
-    }, [ item._id, userId, library.checkoutStatusChanged ] )
+    }, [ item._id, userId, library.isCheckoutStatusChangeComplete ] )
 
     return (
         <Card
@@ -320,35 +285,42 @@ function BookHistoryItem( { item, userId, checkoutStatus } ) {
                 <Stack direction="row">
                     <Stack flexGrow="1">
                         {
-                            checkoutStatus.status[ item._id ] &&
+                            item.isCheckedOut &&
                                 <ListItemText
-                                    secondary={ `Due: ${ dueDate }` }
+                                    secondary={ `Due: ${ item.dueDateString }` }
                                 />
                         }
                         {
-                            ! checkoutStatus.status[ item._id ] &&
+                            ! item.isCheckedOut &&
                                 <ListItemText
-                                    secondary={ `Returned: ${ returnDateInt ? returnDate : 'pending' }` }
+                                    secondary={ `Returned: ${ item.returnDateString }` }
                                 />
                         }
                         <ListItemText
-                            secondary={ `Borrowed: ${ loanDate }` }
+                            secondary={ `Borrowed: ${ item.loanDateString }` }
                         />
                     </Stack>
                     <Box>
                         {
-                            checkoutStatus.status[ item._id ] && <>
+                            item.isCheckedOut && <>
                                 {
                                     library.isCheckoutStatusChangePending && <CircularProgress />
                                 }
                                 {
-                                    ! library.isCheckoutStatusChangePending && <Button variant="outlined" endIcon={ <InputIcon /> } onClick={ returnHandler }>
-                                        Return now
-                                    </Button>
+                                    ! library.isCheckoutStatusChangePending && <Stack spacing={ 1 }>
+                                        <Button variant="contained" endIcon={ <BookIcon /> } onClick={ () => {
+                                            // eslint-disable-next-line no-alert
+                                            alert( `You can now pretend you're reading ${item.book.title}.\n\nWhen done, click OK.` )
+                                        } } >
+                                            Read Book
+                                        </Button>
+                                        <Button variant="outlined" endIcon={ <InputIcon /> } onClick={ returnHandler }>
+                                            Return Now
+                                        </Button>
+                                    </Stack>
                                 }
                             </>
                         }
-
                     </Box>
                 </Stack>
             </CardContent>
