@@ -12,32 +12,26 @@ export const getUsers = async( req, res ) => {
     }
 
     // Exclude hashed_password and salt
-    const users = User.find( query ) // .select( [ '-hashed_password', '-salt' ] )
+    const users = User.find( query ).select( [ '-hashed_password', '-salt' ] )
     const results = await users
     res.json( results )
 }
 
 export const getUserByID = async( req, res ) => {
     // Exclude hashed_password and salt
-    const user = User.findById( req.params.userid )
+    // const user = User.findById( req.params.userid )
 
     // TODO: Exclude hashed_password and salt from results
     // This works once, then crashes
-    // const user = User.findById( req.params.userid ).select( '-hashed_password' )
+    const user = User.findById( req.params.userid ).select( [ '-hashed_password', '-salt' ] )
 
-    try {
-        const results = await user
-        res.json( results )
+    const results = await user
 
-        if ( ! user ) {
-            return res.status( 404 ).json( { message: 'User not found' } )
-        }
-
-        res.json( user )
+    if ( ! results ) {
+        return res.status( 404 ).json( { message: 'User not found' } )
     }
-    catch ( e ) {
-        console.log( 'ERROR!', e )
-    }
+
+    res.json( results )
 }
 
 export const createUser = async( req, res ) => {
