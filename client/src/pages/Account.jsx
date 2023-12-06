@@ -29,70 +29,72 @@ import useLibrary from '@/api/use-library'
 import NavLink from '@/components/NavLink'
 
 export default function Account() {
-    const user = useAuthentication()
-    const account = useAccount()
-    const library = useLibrary( user.userId )
+    const auth = useAuthentication()
+    const userData = useAccount()
+    const dispatcher = useAccount()
+    const library = useLibrary( auth.userId )
     const { validate, errors } = useValidation()
 
-    const [ checkoutStatus, setCheckoutStatus ] = useState( [] )
+    const [ formData, setFormData ] = useState( {
+        name: '',
+        email: '',
+        password: '',
+    } )
 
-    const [ name, setName ] = useState( '' )
-    const [ email, setEmail ] = useState( '' )
-    const [ password, setPassword ] = useState( '' )
-
+    // useCallback??
     const resetHandler = () => {
-        setName( user.userData.name )
-        setEmail( user.userData.email )
-        setPassword( user.userData.password )
+        setFormData( {
+            name: userData.data.name,
+            email: userData.data.email,
+            password: userData.data.password,
+        } )
     }
 
     const saveHandler = ( e ) => {
         e.preventDefault()
-        const nameValidation = validate( 'name', name )
-        const emailValidation = validate( 'email', email )
+        const nameValidation = validate( 'name', formData.name )
+        const emailValidation = validate( 'email', formData.email )
 
         if ( emailValidation && nameValidation ) {
-            account.updateUser( user.userId, { name, email, password } )
+            dispatcher.updateUser( auth.userId, formData )
         }
     }
 
-    const onNameChange = ( event ) => {
-        setName( event.target.value )
-        validate( 'name', event.target.value )
-    }
+    const changeHandler = ( e ) => {
+        const { name, value } = e.target
 
-    const onEmailChange = ( event ) => {
-        setEmail( event.target.value )
-        validate( 'email', event.target.value )
-    }
+        setFormData( ( prevData ) => ( {
+            ...prevData,
+            [ name ]: value,
+        } ) )
 
-    const onPasswordChange = ( event ) => {
-        setPassword( event.target.value )
+        // Todo: validation not working
+        // validate( name, value )
     }
 
     useEffect( () => {
-        if ( user.userId ) {
+        if ( auth.userId ) {
+            userData.getUserById( auth.userId )
             library.getLoans()
         }
-    }, [ user.userId ] )
+    }, [ auth.userId ] )
 
     useEffect( () => {
-        if ( user.userData ) {
-            resetHandler()
+        if ( userData.status.isComplete ) {
+            console.log( 'RESET form' )
+            setFormData( {
+                name: userData.data.name,
+                email: userData.data.email,
+                password: '',
+            } )
         }
-    }, [ user.isGettingStatus ] )
-
-    useEffect( () => {
-        if ( account.status.isComplete ) {
-            user.refresh()
-        }
-    }, [ account.status.isComplete ] )
+    }, [ userData.status.isComplete ] )
 
     return (
         <Container style={ { marginTop: '20px' } }>
             <Stack direction="row" justifyContent="space-between" alignItems="center" mb={ 6 }>
                 <Typography variant="h4" component="h2">
-                    User Account
+                    My Account
                 </Typography>
             </Stack>
 
@@ -104,78 +106,101 @@ export default function Account() {
                                 <Typography variant="h5" component="h3" mb={ 4 }>
                                     Account Details
                                 </Typography>
+                                {
+                                    userData.status.isFetching && <Box sx={ { display: 'flex' } }>
+                                        <CircularProgress />
+                                    </Box>
+                                }
+                                {
+                                    ! userData.status.isFetching && <>
+                                        <Grid container spacing={ 3 } direction="row">
+                                            <Grid item xs={ 12 } md={ 4 }>
+                                                <InputLabel>
+                                                    Name
+                                                </InputLabel>
+                                            </Grid>
+                                            <Grid item xs={ 12 } md={ 8 }>
+                                                <TextField
+                                                    id="name"
+                                                    name="name"
+                                                    fullWidth
+                                                    required
+                                                    value={ formData.name }
+                                                    onChange={ changeHandler }
+                                                    error={ !! errors.name }
+                                                    helperText={ errors.name }
+                                                />
+                                                <FormHelperText>(Enter Full Name)</FormHelperText>
+                                            </Grid>
 
-                                <Grid container spacing={ 3 } direction="row">
-                                    <Grid item xs={ 12 } md={ 4 }>
-                                        <InputLabel>
-                                            Name
-                                        </InputLabel>
-                                    </Grid>
-                                    <Grid item xs={ 12 } md={ 8 }>
-                                        <TextField
-                                            id="name"
-                                            fullWidth
-                                            required
-                                            value={ name }
-                                            onChange={ onNameChange }
-                                            error={ !! errors.name }
-                                            helperText={ errors.name }
-                                        />
-                                        <FormHelperText>(Enter Full Name)</FormHelperText>
-                                    </Grid>
+                                            <Grid item xs={ 12 } md={ 4 }>
+                                                <InputLabel>
+                                                    Email
+                                                </InputLabel>
+                                            </Grid>
+                                            <Grid item xs={ 12 } md={ 8 }>
+                                                <TextField
+                                                    id="email"
+                                                    name="email"
+                                                    fullWidth
+                                                    required
+                                                    value={ formData.email }
+                                                    onChange={ changeHandler }
+                                                    error={ !! errors.email }
+                                                    helperText={ errors.email }
+                                                />
+                                                <FormHelperText>(Enter email address)</FormHelperText>
+                                            </Grid>
 
-                                    <Grid item xs={ 12 } md={ 4 }>
-                                        <InputLabel>
-                                            Email
-                                        </InputLabel>
-                                    </Grid>
-                                    <Grid item xs={ 12 } md={ 8 }>
-                                        <TextField
-                                            id="email"
-                                            fullWidth
-                                            required
-                                            value={ email }
-                                            onChange={ onEmailChange }
-                                            error={ !! errors.email }
-                                            helperText={ errors.email }
-                                        />
-                                        <FormHelperText>(Enter email address)</FormHelperText>
-                                    </Grid>
-
-                                    <Grid item xs={ 12 } md={ 4 }>
-                                        <InputLabel>
-                                            Password
-                                        </InputLabel>
-                                    </Grid>
-                                    <Grid item xs={ 12 } md={ 8 }>
-                                        <TextField id="password"
-                                            fullWidth
-                                            required
-                                            value={ password }
-                                            onChange={ onPasswordChange } />
-                                        <FormHelperText>(Enter new password -- not implemented)</FormHelperText>
-                                    </Grid>
-                                </Grid>
-                                <Stack mt={ 6 } spacing={ 3 }>
-                                    {
-                                        account.status.isFetching && <Box sx={ { display: 'flex' } }>
-                                            <CircularProgress />
-                                        </Box>
-                                    }
-                                    {
-                                        account.status.isComplete &&
-                                            <Alert severity="success">
-                                                <Typography component="h2">Changes have been saved.</Typography>
-                                            </Alert>
-                                    }
-                                    {
-                                        ! account.status.isFetching &&
-                                            <Stack direction="row" spacing={ 3 }>
-                                                <Button variant='contained' onClick={ saveHandler }>Save </Button>
-                                                <Button onClick={ resetHandler }> Reset </Button>
-                                            </Stack>
-                                    }
-                                </Stack>
+                                            <Grid item xs={ 12 } md={ 4 }>
+                                                <InputLabel>
+                                                    Password
+                                                </InputLabel>
+                                            </Grid>
+                                            <Grid item xs={ 12 } md={ 8 }>
+                                                <TextField
+                                                    id="password"
+                                                    name="password"
+                                                    type="password"
+                                                    fullWidth
+                                                    value=""
+                                                    onChange={ changeHandler }
+                                                    disabled
+                                                />
+                                                <FormHelperText>(Enter new password - Not implemented)</FormHelperText>
+                                                <TextField
+                                                    id="confirm-password"
+                                                    name="confirm-password"
+                                                    type="password"
+                                                    fullWidth
+                                                    disabled
+                                                    value=""
+                                                />
+                                                <FormHelperText>(Confirm new password - Not implemented)</FormHelperText>
+                                            </Grid>
+                                        </Grid>
+                                        <Stack mt={ 6 } spacing={ 3 }>
+                                            {
+                                                dispatcher.status.isFetching && <Box sx={ { display: 'flex' } }>
+                                                    <CircularProgress />
+                                                </Box>
+                                            }
+                                            {
+                                                dispatcher.status.isComplete &&
+                                                    <Alert severity="success">
+                                                        <Typography component="h2">Changes have been saved.</Typography>
+                                                    </Alert>
+                                            }
+                                            {
+                                                ! dispatcher.status.isFetching &&
+                                                    <Stack direction="row" spacing={ 3 }>
+                                                        <Button variant='contained' onClick={ saveHandler }>Save </Button>
+                                                        <Button onClick={ resetHandler }> Reset </Button>
+                                                    </Stack>
+                                            }
+                                        </Stack>
+                                    </>
+                                }
                             </Box>
                         </Paper>
                     </Grid>
@@ -187,7 +212,10 @@ export default function Account() {
                                 </Typography>
                                 <Box>
                                     {
-                                        ( ! library.loans || ! library.loans.length ) && <Alert severity="info">Nothing here... Go find something to read!</Alert>
+                                        library.isFetchingLoanHistory && <CircularProgress />
+                                    }
+                                    {
+                                        ! library.isFetchingLoanHistory && ( ! library.loans || ! library.loans.length ) && <Alert severity="info">Nothing here... Go find something to read!</Alert>
                                     }
                                     <List>
                                         { library.loans.map( ( item ) =>
