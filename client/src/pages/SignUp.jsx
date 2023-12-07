@@ -24,6 +24,7 @@ export default function SignUp() {
         password: '',
     } )
 
+    // const [ accountCreateError, setAccountCreateError ] = useState()
     const [ account, setAccount ] = useState()
     const accounts = useAccount()
     const { validate, errors } = useValidation()
@@ -32,7 +33,7 @@ export default function SignUp() {
         if ( accounts.status.isError ) {
             window.scrollTo( { top: 0, behavior: 'smooth' } )
         }
-        else if ( accounts.status.isComplete && accounts.data ) {
+        else if ( accounts.data ) {
             setAccount( accounts.data )
         }
     }, [ accounts.status.isComplete, accounts.status.isError ] )
@@ -149,17 +150,6 @@ export default function SignUp() {
                             </Grid>
                             <Grid item xs={ 12 }></Grid>
                         </Grid>
-                        { /* !! FOR TESTING */ }
-                        <Button
-                            onClick={ () => {
-                                setFormData( {
-                                    name: 'Abc',
-                                    email: 'a@b.com',
-                                    password: 'ABC123456',
-                                } )
-                            } }
-                        >Click to fill in test account (pw = ABC123456)</Button>
-
                         {
                             accounts.status.isFetching && <CircularProgress />
                         }

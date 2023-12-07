@@ -7,9 +7,10 @@ import NavLink from './NavLink'
  * @param {*} props
  */
 export default function BorrowControl( { book, userId, isSignedIn } ) {
-    const { _id: bookId } = book ?? {}
+    const { _id: bookId, stock } = book ?? {}
 
     const library = useLibrary( userId )
+    const [ availableCopies, setAvailableCopies ] = useState( -1 )
 
     const handleBorrow = () => {
         library.borrow( bookId )
@@ -17,16 +18,20 @@ export default function BorrowControl( { book, userId, isSignedIn } ) {
 
     useEffect( () => {
         if ( bookId ) {
-            library.getBookAvailability( bookId )
+            library.getBookCheckouts( bookId )
         }
         if ( userId && bookId ) {
             library.getBorrowStatus( bookId )
         }
     }, [ userId, bookId ] )
 
-    console.log( ' library.isCheckoutStatusChangePending ', library.isCheckoutStatusChangePending )
+    useEffect( () => {
+        if ( library.bookCheckoutCount !== -1 ) {
+            setAvailableCopies( stock - library.bookCheckoutCount )
+        }
+    }, [ stock, library.bookCheckoutCount ] )
 
-    if ( library.isCheckoutStatusChangePending || library.isBookAvailabilityCheckPending ) {
+    if ( availableCopies === -1 || library.isCheckoutStatusChangePending || library.isCheckoutStatusCheckPending ) {
         return <CircularProgress />
     }
 
@@ -34,7 +39,7 @@ export default function BorrowControl( { book, userId, isSignedIn } ) {
         <Stack>
             <Box>
                 <Typography variant="subtitle1" gutterBottom>
-                    Available: { library.bookAvailability === -1 ? 'n/a' : library.bookAvailability }
+                    Available: { availableCopies === -1 ? 'n/a' : availableCopies }
                 </Typography>
             </Box>
             <Stack direction="row" spacing={ 5 } alignItems="center" mt={ 3 }>
@@ -44,12 +49,12 @@ export default function BorrowControl( { book, userId, isSignedIn } ) {
                     </>
                 }
                 {
-                    ! library.isCheckedOutByUser && library.bookAvailability === 0 && <>
+                    ! library.isCheckedOutByUser && ! availableCopies && <>
                         <Alert severity="warning">No copies available.</Alert>
                     </>
                 }
                 {
-                    ! library.isCheckedOutByUser && library.bookAvailability > 0 && <>
+                    ! library.isCheckedOutByUser && availableCopies > 0 && <>
                         <Button
                             variant="contained"
                             color="primary"

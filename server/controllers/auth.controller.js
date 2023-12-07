@@ -1,65 +1,39 @@
 // server/controller/auth.controller
-import User from '../models/user.model.js'
-import config from '../config/config.js'
-import jwt from 'jsonwebtoken'
-import { expressjwt } from 'express-jwt'
+import User from "../models/user.model.js"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import dotenv from 'dotenv'
 
-export const signIn = async( req, res ) => {
-    // !! shortSession param for testing
-    const { email, password, shortSession } = req.body
-    console.log( 'auth-controller Reached' )
+dotenv.config()
 
+export const signIn = async (req, res) => {
+    const { email, password } = req.body;
+    console.log("auth-controller Reached");
     try {
-        const user = await User.findOne( { email } )
-        console.log( 'signin Reached -auth.controller' )
-        console.log( 'shortSession?', shortSession )
-
-        if ( ! user.authenticate( password ) ) {
-            return res
-                .status( '401' )
-                .send( { error: "Email or password don't match." } )
+        const user = await User.findOne({ email });
+        console.log("signin Reached -auth.controller");
+        const passwordsMatch = await bcrypt.compare(password, user.password);
+        if (!user || !passwordsMatch) {
+            return res.status(401).json({ error: "Invalid credentials" });
         }
-
-        // !! shortSession param for testing
-        const sessionExpiry = shortSession ? '10s' : '14d'
-
         const token = jwt.sign(
-            { _id: user._id },
-            config.jwtSecret,
-            { expiresIn: sessionExpiry },
+            {
+                userId: user._id,
+                userEmail: user.email,
+            },
+            process.env.SECRET_KEY,
+            { expiresIn: "10s" }
         )
-
         const jwtDecoded = jwt.decode( token )
-        console.log( jwtDecoded )
-
+        console.log(jwtDecoded)
         // Send the response back to the client with the token
-        return res.status( 200 ).json( { success: true, user, token, expires: jwtDecoded.exp * 1000 } )
-    }
-    catch ( error ) {
-        console.error( 'Error signing in:', error )
+        return res.status(200).json({ success: true, user, jwtDecoded});
+    } catch (error) {
+        console.error("Error signing in:", error);
         // Handle errors and send an appropriate response
-        return res.status( 500 ).json( {
+        return res.status(500).json({
             success: false,
-            error: 'Internal Server Error',
-        } )
+            error: "Internal Server Error",
+        });
     }
-}
-
-export const requireSignin = expressjwt( {
-    secret: config.jwtSecret,
-    algorithms: [ 'HS256' ],
-    userProperty: 'auth',
-} )
-
-export const hasAuthorization = ( req, res, next ) => {
-    const authorized = req.user && req.auth && req.user._id.toString() === req.auth._id
-
-    console.log( 'hasAuthorization', authorized )
-
-    if ( ! authorized ) {
-        return res.status( '403' ).json( {
-            error: 'User is not authorized',
-        } )
-    }
-    next()
-}
+};

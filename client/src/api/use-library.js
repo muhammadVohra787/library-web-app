@@ -1,24 +1,21 @@
 import { useEffect, useState } from 'react'
 import useFetch from './use-fetch'
-import useSecureFetch from './use-secure-fetch'
 
 export default function useLibrary( userId ) {
-    const [ isCheckedOutByUser, setisCheckedOutByUser ] = useState( false )
-
-    /** Get user's borrow history */
-    const loanHistory = useSecureFetch()
-    /** Get status of a loan */
-    const loanStatus = useSecureFetch()
-    /** Borrow/return book */
-    const loanControl = useSecureFetch()
-    /** Check status of a book */
-    const bookCheckouts = useSecureFetch()
-    /** Check status of a book */
-    const bookAvailability = useFetch()
+    const [ isCheckedOutByUser, setIsCheckedOutByUser ] = useState( false )
+    const loanHistory = useFetch()
+    const loanStatus = useFetch()
+    const loanControl = useFetch()
+    const bookCheckouts = useFetch()
 
     useEffect( () => {
         if ( loanControl.isComplete ) {
-            // Todo - reconsider this
+            loanHistory.refetch()
+        }
+    }, [ loanControl.isComplete ] )
+
+    useEffect( () => {
+        if ( loanControl.isComplete ) {
             // Refetch loan data (fetch is only executed if it has already been used)
             loanStatus.refetch()
             loanHistory.refetch()
@@ -29,59 +26,14 @@ export default function useLibrary( userId ) {
     useEffect( () => {
         if ( loanStatus.isComplete ) {
             const loanItem = loanStatus.data.length ? loanStatus.data[ 0 ] : null
-            setisCheckedOutByUser( !! loanItem )
+            setIsCheckedOutByUser( !! loanItem )
         }
     }, [ loanStatus.isComplete ] )
-
-    const computeVirtualFields = ( item ) => {
-        const loanDateInt = Date.parse( item.loanDate )
-        const loanDate = new Date( loanDateInt ).toDateString()
-        const dueDateInt = Date.parse( item.dueDate )
-        const dueDate = new Date( dueDateInt ).toDateString()
-        const returnDateInt = Date.parse( item.returnDate )
-        const returnDate = returnDateInt ? new Date( returnDateInt ).toDateString() : ''
-        const isOverdue = dueDateInt < Date.now()
-        const isCheckedOut = ! returnDateInt
-
-        const text = ! isCheckedOut ? 'Returned' : (
-            isOverdue ? 'Overdue!' : `Checked Out`
-        )
-
-        const colour = ! isCheckedOut ? 'info' : (
-            isOverdue ? 'error' : 'success'
-        )
-
-        const statusMeta = {
-            text,
-            colour,
-        }
-
-        const statusFields = {
-            returnDateString: returnDate,
-            dueDateString: dueDate,
-            loanDateString: loanDate,
-            isCheckedOut,
-            isOverdue,
-        }
-
-        return {
-            ...statusFields,
-            statusMeta,
-        }
-    }
 
     return {
         request: {},
         get loans() {
-            const data = ( loanHistory.isInitialized && loanHistory.data && [ ...loanHistory.data ] ) || []
-
-            data.reverse().reduce( ( result, item ) => {
-                const virtual = computeVirtualFields( item )
-                Object.assign( item, virtual )
-                return result
-            }, data )
-
-            return data
+            return ( loanHistory.isInitialized && loanHistory.data && [ ...loanHistory.data ].reverse() ) || []
         },
 
         get isCheckedOutByUser() {
@@ -93,40 +45,21 @@ export default function useLibrary( userId ) {
         get bookCheckoutCount() {
             return bookCheckouts.isComplete ? bookCheckouts.data.length : -1
         },
-        get isFetchingLoanHistory() {
-            return loanHistory.isFetching
-        },
-        get checkoutDataAfterUpdate() {
+        get checkoutStatusChanged() {
             console.log( 'loanControl.data', loanControl.data )
-
-            const data = loanControl.isComplete && loanControl.data
-            const virtual = computeVirtualFields( data )
-            Object.assign( data, virtual )
-            return data
+            return loanControl.isComplete && loanControl.data && loanControl.data._id ? ! loanControl.data.returnDate : null
         },
         get isCheckoutStatusChangePending() {
             return loanControl.isFetching
         },
-        get isCheckoutStatusChangeComplete() {
-            return loanControl.isComplete
-        },
         get isCheckoutStatusCheckPending() {
             return loanStatus.isFetching
-        },
-        get isBookAvailabilityCheckPending() {
-            return bookAvailability.isFetching
-        },
-        get bookAvailability() {
-            return bookAvailability.isComplete ? bookAvailability.data.available : -1
-        },
-        getBookAvailability( bookId ) {
-            bookAvailability.fetch( `/loans/availability/${ bookId}` )
         },
         getBookCheckouts( bookId ) {
             bookCheckouts.fetch( '/loans', { query: { bookId, isReturned: false } } )
         },
-        getLoans( refetch = false ) {
-            loanHistory.fetch( '/loans', { query: { userId } }, refetch )
+        getLoans() {
+            loanHistory.fetch( '/loans', { query: { userId } } )
         },
         getBorrowStatus( bookId ) {
             console.log( 'getBorrowStatus\n\n', { userId, bookId, isReturned: false } )

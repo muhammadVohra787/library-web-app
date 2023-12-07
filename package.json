@@ -7,7 +7,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "start": "node server",
+    "start": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "dev": "concurrently \"nodemon server.js\" \"npm run client:dev\"",
     "client:dev": "cd client && npx vite",
     "client:build": "cd client && npx vite build",
@@ -34,7 +34,8 @@
     "method-override": "^3.0.0",
     "mongod": "^2.0.0",
     "mongoose": "^7.6.5",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "concurrently": "^8.2.2"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
