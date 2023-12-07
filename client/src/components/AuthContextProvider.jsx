@@ -4,10 +4,8 @@ import { useLocalStorage } from '@/api/local-storage'
 import { useRef, useState } from 'react'
 
 export function AuthContextProvider( { children } ) {
-    const [ persistedUserId, setPersistedUserId ] = useLocalStorage( 'userId', '' )
-    const [ persistedToken, setPersistedToken ] = useLocalStorage( 'token', '' )
-
-    const [ isSessionValid, setIsSessionValid ] = useState( false )
+    const [ session, setSession ] = useLocalStorage( 'session', { userId: '', token: '', expires: '' } )
+    // const [ isSessionValid, setIsSessionValid ] = useState( false )
 
     const _flags = useRef( {
         isTokenExpired: false,
@@ -16,15 +14,16 @@ export function AuthContextProvider( { children } ) {
 
     const flags = {
         get isTokenExpired() {
+            console.log( 'Token expires:', new Date( session.expires ) )
             return _flags.current.isTokenExpired
         },
         get isUserSignedOut() {
             return _flags.current.isUserSignedOut
         },
-        get isSessionValid() {
-            return isSessionValid
-        },
-        setIsSessionValid,
+        // get isSessionValid() {
+        //     return isSessionValid
+        // },
+        // setIsSessionValid,
         setIsTokenExpired( value ) {
             _flags.current.isTokenExpired = !! value
         },
@@ -32,11 +31,11 @@ export function AuthContextProvider( { children } ) {
             _flags.current.isUserSignedOut = !! value
         },
         get isTokenValid() {
-            if ( ! persistedToken ) {
+            if ( ! session.token ) {
                 return false
             }
 
-            const expiryDate = new Date( persistedToken?.exp * 1000 )
+            const expiryDate = new Date( session.expires )
             if ( expiryDate < new Date() ) {
                 return false
             }
@@ -47,9 +46,8 @@ export function AuthContextProvider( { children } ) {
 
     return <AuthContext.Provider value={ {
         flags,
-        userId: persistedUserId,
-        token: persistedToken,
-        setToken: setPersistedToken,
-        setUserId: setPersistedUserId,
+        userId: session.userId,
+        token: session.token,
+        setSession,
     } }>{ children }</AuthContext.Provider>
 }

@@ -3,8 +3,7 @@ const authContext = createContext( {
     // Auth info
     userId: undefined,
     token: undefined,
-    setUserId: undefined,
-    setToken: undefined,
+    setSession: undefined,
 
     // Flags
     flags: {
