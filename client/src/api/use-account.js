@@ -1,8 +1,11 @@
 // client/src/api/use-account.js
-import useFetch from './use-fetch'
+import { useContext } from 'react'
+import useSecureFetch from './use-secure-fetch'
+import authContext from './auth-context'
 
 export default function useAccount() {
-    const userData = useFetch()
+    const auth = useContext( authContext )
+    const userData = useSecureFetch()
 
     return {
         get data() {
