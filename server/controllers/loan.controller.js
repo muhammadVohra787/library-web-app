@@ -60,6 +60,23 @@ export const getLoanByID = async( req, res ) => {
         res.status( 500 ).json( { message: 'Internal Server Error' } )
     }
 }
+export const getBookAvailability = async( req, res ) => {
+    // Get checked out books (books without a return date)
+    const findParams = {
+        bookId: req.params.bookid,
+        returnDate: { $exists: false },
+    }
+
+    // Return pure JSON objects
+    const loans = await Loan.find( findParams ).lean()
+    if ( ! loans ) {
+        return res.status( 404 ).json( { message: 'Book not found' } )
+    }
+
+    // Subtract checked out from stock
+    const available = req.book.stock - loans.length
+    res.json( { available } )
+}
 
 export const createLoan = async( req, res ) => {
     try {
