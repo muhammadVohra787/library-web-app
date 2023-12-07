@@ -94,37 +94,6 @@ export default function useAuthentication() {
         get userId() {
             return auth.userId
         },
-        // get userData() {
-        //     if ( ! userData.isInitialized && auth.userId ) {
-        //         const headers = this.getProtectedHeader()
-        //         // userData.getUserById( auth.userId )
-        //     }
-        //     return userData?.data
-        // },
-        // refresh() {
-        //     console.log( 'refresh , use-auth' )
-        //     userData.refetch()
-        // },
-        // validateSession() {
-        //     if ( ! auth.token ) {
-        //         return false
-        //     }
-
-        //     // Calc. token expiry date
-        //     const expiryDate = auth?.token?.exp ? new Date( auth.token.exp * 1000 ) : null
-
-        //     // console.log( expiryDate, ' = = = = = = ', new Date() )
-        //     // console.log( 'expiryDate < new Date() ', expiryDate < new Date() )
-
-        //     console.log( '### CHECKING JWT ===' )
-
-        //     if ( ! expiryDate || expiryDate < new Date() ) {
-        //         console.log( 'EXPIRED!' )
-        //         // auth.setToken( '' )
-        //         return false
-        //     }
-        //     return true
-        // },
         signIn( email, password, shortSession = false ) {
             console.log( 'Signing in with email and password:', email, password )
             const options = {
@@ -162,15 +131,6 @@ export default function useAuthentication() {
             }
             catch ( error ) {
                 console.error( 'Error during sign-out:', error )
-            }
-        },
-        getProtectedHeader() {
-            return {
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${ auth.token }`,
-                },
             }
         },
     }
