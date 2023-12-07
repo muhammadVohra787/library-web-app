@@ -9,6 +9,9 @@ const __dirname = path.dirname( __filename )
 
 // https://vitejs.dev/config/
 export default defineConfig( {
+    build: {
+        outDir: '../client-dist/app',
+    },
     plugins: [
         react(),
         alias( {
