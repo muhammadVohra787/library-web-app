@@ -4,13 +4,11 @@ import {
     MenuItem,
     IconButton,
     Stack,
-    Typography,
     useMediaQuery,
     Link,
     Box,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-// import { Link, Stack } from '@mui/material'
 import NavLink from './NavLink'
 import useAuthentication from '@/api/use-authentication'
 
@@ -26,11 +24,6 @@ export function NavBar() {
     const handleClose = () => {
         setAnchorEl( null )
     }
-
-    const isActive =
-        window.location.pathname === window.location.pathname
-            ? 'is-active'
-            : ''
 
     return (
         <Stack
@@ -53,9 +46,7 @@ export function NavBar() {
                         <MenuIcon />
                     </IconButton>
                     <Menu
-                        id="simple-menu"
                         anchorEl={ anchorEl }
-                        keepMounted
                         open={ Boolean( anchorEl ) }
                         onClose={ handleClose }
                     >
