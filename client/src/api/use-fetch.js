@@ -7,7 +7,13 @@ const delay = async( ms ) => {
     return new Promise( ( r ) => setTimeout( r, ms ) )
 }
 
-export default function useFetch() {
+/**
+ * Wrapper for Window.fetch()
+ *
+ * @param {boolean} fetchJson Apply default headers for fetching JSON data
+ * @param {Record<string,any>} defaultHeaders Apply headers to all fetch operations.
+ */
+export default function useFetch( fetchJson = true, defaultHeaders = undefined ) {
     /** @type {[Record<string, any>, (prev) => prev ]} */
     const [ results, setResults ] = useState()
     const [ fetchSignal, setFetchSignal ] = useState( 0 )
@@ -19,6 +25,15 @@ export default function useFetch() {
         body: {},
         options: {},
     } )
+
+    defaultHeaders ??= {}
+    if ( fetchJson ) {
+        // Apply to defaultHeaders but don't overwrite
+        Object.assign( defaultHeaders, {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }, defaultHeaders )
+    }
 
     const initial = { isFetching: false, isComplete: false, isError: false, isInitialized: false }
 
@@ -66,25 +81,31 @@ export default function useFetch() {
                 return
             }
 
-            const query = { ...requestData.current.query }
+            const { current } = requestData
+
+            const query = { ...current.query }
 
             if ( query.filter ) {
-                query.filter = JSON.stringify( requestData.current.query.filter )
+                query.filter = JSON.stringify( current.query.filter )
             }
 
             const queryParams = new URLSearchParams( query )
             const queryString = queryParams.size ? `?${ queryParams }` : ''
-            const requestEndpointUrl = endpointUrl + requestData.current.url
+            const requestEndpointUrl = endpointUrl + current.url
             const requestUrl = requestEndpointUrl + queryString
 
             // Abort if query has not changed
-            const stringifiedQuery = JSON.stringify( requestData.current )
+            const stringifiedQuery = JSON.stringify( current )
             if ( prevQuery.current === stringifiedQuery ) {
                 return
             }
             prevQuery.current = stringifiedQuery
 
-            console.log( 'Fetching URL:', requestUrl, ' Query:', query, ' Body:', requestData.current.options?.body )
+            // Apply header override
+            console.log( current )
+            const { options } = current
+
+            console.log( 'Fetching URL:', requestUrl, ' Query:', query, ' Body:', options.body, ' Headers:', options.headers )
 
             updateFetchStatus( { status: 'isFetching' } )
 
@@ -93,7 +114,7 @@ export default function useFetch() {
             await delay( 1000 )
 
             try {
-                const request = await fetch( requestUrl, requestData.current.options )
+                const request = await fetch( requestUrl, current.options )
                 const json = await request.json()
 
                 if ( ! request.ok ) {
@@ -135,11 +156,17 @@ export default function useFetch() {
         },
         /**
          * @param {string} fetchUrl
-         * @param {{options?: {}, body?: {}, query?: {}}} params
+         * @param {{options?: Record<string,any>, body?: Record<string,any>, query?: Record<string,any>}} params
          * @param {boolean} forceFetch
          */
         fetch( fetchUrl, params = {}, forceFetch = false ) {
             updateFetchStatus()
+
+            params.options ??= {}
+            params.options.headers = {
+                ...defaultHeaders,
+                ...params.options.headers ?? {},
+            }
 
             requestData.current = {
                 url: fetchUrl,
