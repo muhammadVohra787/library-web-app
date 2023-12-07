@@ -1,4 +1,4 @@
- ![Ethereal logo](/client/src/assets/ethereal_logo_with_text.png)
+ ![Ethereal logo](/client/src/assets/ethereal_logo_with_text_small.png)
 
 # Ethereal E-book Library
 
@@ -41,9 +41,13 @@ A client interface for a fictional e-book library built in React , with Express+
 
 **⚠️** To build the client or run in dev: also run `npm ci` in the `client` folder
 
+**⚠️** Create a `.env` file in the root folder from the sample file. Set `STAGE` to `production` or `development`
+
+**⚠️** Note: The server will not run this!
+
 ## How to run
 
-Client address on localhost:  `http://localhost:5173/`
+Client address on localhost (development mode):  `http://localhost:5173/`
 
 ### Commands
 
