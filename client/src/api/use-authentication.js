@@ -12,17 +12,12 @@ export default function useAuthentication() {
     const { isTokenValid, isSessionValid, setIsSessionValid, isTokenExpired, setIsTokenExpired, isUserSignedOut, setIsUserSignedOut } = auth.flags
 
     useEffect( () => {
-        if ( userAuth.isError ) {
-            auth.setUserId( null )
-        }
-    }, [ userAuth.isError ] )
-
-    useEffect( () => {
         if ( userAuth.userId !== null ) {
             setIsLoading( false )
         }
     }, [ auth.userId ] )
 
+    // On sign in complete
     useEffect( () => {
         if ( userAuth.isComplete ) {
             if ( isLoading ) {
@@ -30,19 +25,17 @@ export default function useAuthentication() {
             }
 
             if ( userAuth.data.success ) {
-                console.log( 'Signed in!' )
-                auth.setUserId( userAuth.data.user._id )
-                auth.setToken( userAuth.data.jwtDecoded )
-                setIsSessionValid( true )
-
-                console.log( userAuth.data.jwtDecoded )
+                const { data } = userAuth
+                console.log( 'Signed in!', data )
+                auth.setSession( { userId: data.user._id, token: data.token, expires: data.expires } )
+                // setIsSessionValid( true )
             }
         }
     }, [ userAuth.isComplete, isLoading ] )
 
     useEffect( () => {
         if ( userAuth.isError ) {
-            auth.setUserId( null )
+            auth.setSession( {} )
         }
     }, [ userAuth.isError ] )
 
