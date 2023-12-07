@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 import config from './config/config.js'
-
-// import addBooksToDatabase from './Initializers/books.initializer.js';
+import importBooks from './scripts/import-books.js'
 
 export const connectDB = async() => {
     try {
@@ -10,8 +9,8 @@ export const connectDB = async() => {
             // useCreateIndex: true,
             useUnifiedTopology: true,
         } )
-        // await addBooksToDatabase();
         console.log( 'Connected to the database!' )
+        await importBooks()
     }
     catch ( error ) {
         console.log( 'unable to connect to database: ${config.mongoUri}' )
