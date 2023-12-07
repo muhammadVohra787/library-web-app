@@ -2,11 +2,12 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import alias from '@rollup/plugin-alias'
 import path from 'path'
+import fs from 'fs'
 import { fileURLToPath } from 'url'
 import dotenv from 'dotenv'
-const { parsed: env } = dotenv.config()
 
-// eslint-disable-next-line no-undef
+// Use root .env
+const env = fs.existsSync( '../.env' ) ? dotenv.config( { path: '../.env' } ).parsed : {}
 const { PORT = 3000 } = env
 
 const __filename = fileURLToPath( import.meta.url )
@@ -14,6 +15,7 @@ const __dirname = path.dirname( __filename )
 
 // https://vitejs.dev/config/
 export default defineConfig( {
+    // base: './',l
     build: {
         outDir: '../client-dist/app',
     },
