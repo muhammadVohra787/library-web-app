@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react'
 import useFetch from './use-fetch'
+import useSecureFetch from './use-secure-fetch'
 
 export default function useLibrary( userId ) {
     const [ isCheckedOutByUser, setisCheckedOutByUser ] = useState( false )
-    const loanHistory = useFetch()
-    const loanStatus = useFetch()
-    const loanControl = useFetch()
-    const bookCheckouts = useFetch()
+
+    /** Get user's borrow history */
+    const loanHistory = useSecureFetch()
+    /** Get status of a loan */
+    const loanStatus = useSecureFetch()
+    /** Borrow/return book */
+    const loanControl = useSecureFetch()
+    /** Check status of a book */
+    const bookCheckouts = useSecureFetch()
+    /** Check status of a book */
+    const bookAvailability = useFetch()
 
     useEffect( () => {
         if ( loanControl.isComplete ) {
@@ -104,6 +112,15 @@ export default function useLibrary( userId ) {
         },
         get isCheckoutStatusCheckPending() {
             return loanStatus.isFetching
+        },
+        get isBookAvailabilityCheckPending() {
+            return bookAvailability.isFetching
+        },
+        get bookAvailability() {
+            return bookAvailability.isComplete ? bookAvailability.data.available : -1
+        },
+        getBookAvailability( bookId ) {
+            bookAvailability.fetch( `/loans/availability/${ bookId}` )
         },
         getBookCheckouts( bookId ) {
             bookCheckouts.fetch( '/loans', { query: { bookId, isReturned: false } } )
