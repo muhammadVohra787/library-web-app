@@ -105,27 +105,27 @@ export default function useAuthentication() {
         //     console.log( 'refresh , use-auth' )
         //     userData.refetch()
         // },
-        validateSession() {
-            if ( ! auth.token ) {
-                return false
-            }
+        // validateSession() {
+        //     if ( ! auth.token ) {
+        //         return false
+        //     }
 
-            // Calc. token expiry date
-            const expiryDate = auth?.token?.exp ? new Date( auth.token.exp * 1000 ) : null
+        //     // Calc. token expiry date
+        //     const expiryDate = auth?.token?.exp ? new Date( auth.token.exp * 1000 ) : null
 
-            // console.log( expiryDate, ' = = = = = = ', new Date() )
-            // console.log( 'expiryDate < new Date() ', expiryDate < new Date() )
+        //     // console.log( expiryDate, ' = = = = = = ', new Date() )
+        //     // console.log( 'expiryDate < new Date() ', expiryDate < new Date() )
 
-            console.log( '### CHECKING JWT ===' )
+        //     console.log( '### CHECKING JWT ===' )
 
-            if ( ! expiryDate || expiryDate < new Date() ) {
-                console.log( 'EXPIRED!' )
-                // auth.setToken( '' )
-                return false
-            }
-            return true
-        },
-        signIn( email, password ) {
+        //     if ( ! expiryDate || expiryDate < new Date() ) {
+        //         console.log( 'EXPIRED!' )
+        //         // auth.setToken( '' )
+        //         return false
+        //     }
+        //     return true
+        // },
+        signIn( email, password, shortSession = false ) {
             console.log( 'Signing in with email and password:', email, password )
             const options = {
                 method: 'POST',
@@ -157,8 +157,7 @@ export default function useAuthentication() {
         // },
         signOut() {
             try {
-                auth.setUserId( '' )
-                auth.setToken( '' )
+                auth.setSession( {} )
                 setIsUserSignedOut( true )
             }
             catch ( error ) {
