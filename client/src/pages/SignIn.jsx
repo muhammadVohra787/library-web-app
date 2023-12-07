@@ -42,7 +42,7 @@ export default function SignIn() {
         // } ) )
     }
 
-    const handleSubmit = ( event ) => {
+    const handleSubmit = ( event, shortSession = false ) => {
         event.preventDefault()
 
         const { email, password } = formData
@@ -60,7 +60,7 @@ export default function SignIn() {
         if ( emailValidation && passwordValidation ) {
             // !! Note - no authentication at this time
             // Just a check if the email exists
-            auth.signIn( email, password )
+            auth.signIn( email, password, shortSession )
         }
     }
 
@@ -108,7 +108,6 @@ export default function SignIn() {
                         }
                         <Box
                             component="form"
-                            onSubmit={ handleSubmit }
                             noValidate
                             sx={ { mt: 1 } }
                         >
@@ -165,6 +164,7 @@ export default function SignIn() {
                                         fullWidth
                                         variant="contained"
                                         sx={ { mt: 3, mb: 2 } }
+                                        onClick={ handleSubmit }
                                     >
                                         Sign In
                                     </Button>
@@ -174,6 +174,7 @@ export default function SignIn() {
                                         fullWidth
                                         variant="contained"
                                         sx={ { mt: 3, mb: 2 } }
+                                        onClick={ ( e ) => handleSubmit( e, true ) }
                                     >
                                         Sign In (10 sec. session)
                                     </Button>
