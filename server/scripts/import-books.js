@@ -14,7 +14,7 @@ const importBooks = async() => {
             console.log( `Book imported: ${book.title}` )
         }
         else {
-            console.log( `Book already exist: ${book.title}. Not imported.` )
+            // console.log( `Book already exist: ${book.title}. Not imported.` )
         }
     }
 }
