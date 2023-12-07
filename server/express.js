@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser'
 import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
+import config from './config/config.js'
 
 // ### Import routes ###
 import userRoutes from './routes/user.routes.js'
@@ -16,11 +17,6 @@ import loanRoutes from './routes/loan.routes.js'
 const app = express()
 app.use( express.json() )
 app.use( express.urlencoded( { extended: true } ) )
-
-// ### Serve frontend when deployed ###
-if ( process.env.STAGE === 'PRODUCTION' ) {
-    app.use( express.static( './client-dist/app' ) )
-}
 
 // ### Middleware ###
 app.use( bodyParser.json() )
@@ -34,6 +30,19 @@ app.use( cors() )
 app.use( '/api', userRoutes )
 app.use( '/api', booksRoutes )
 app.use( '/api', loanRoutes )
+
+// ### Serve frontend when deployed ###
+if ( config.stage === 'PRODUCTION' ) {
+    console.log( 'Preparing to serve frontend' )
+    app.use( '/', express.static( './client-dist/app' ) )
+
+    // Necessary for dynamic React routing
+    // But it must not match assets
+    app.get( /\/(?<!(assets|book-cover)\/)[\w\d._-]*/ig, function( req, res ) {
+        console.log( req.url )
+        res.sendFile( 'index.html', { root: './client-dist/app' } )
+    } )
+}
 
 app.use( ( err, req, res, next ) => {
     if ( err.name === 'UnauthorizedError' ) {

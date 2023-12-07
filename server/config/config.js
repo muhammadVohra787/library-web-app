@@ -1,5 +1,5 @@
 import { configDotenv } from 'dotenv'
-configDotenv( '../' )
+configDotenv()
 
 const databaseName = process.env.MONGO_DB_NAME || 'Library'
 
