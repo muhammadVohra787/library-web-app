@@ -9,7 +9,7 @@ export default function useAccount() {
 
     return {
         get data() {
-            return Array.isArray( userData.data ) ? userData.data[ 0 ] : userData.data
+            return Array.isArray( userData.data ) ? userData.data[ 0 ] : ( userData.data ?? {} )
         },
         get status() {
             const { isFetching, isComplete, isError, isInitialized, ...rest } = userData
