@@ -54,16 +54,17 @@ export const getBooks = async(req, res) => {
       }
 };
 
-export async function findBookById(bookid) {
-    const book = await Book.findById(bookid);
-    return book;
-}
-
-export const getBookByID = async(req, res) => {
-    const book = await Book.findById(req.params.bookid); //findBookById(req.params.bookid);
+export const getBookByID = async(req, res, next) => {
+    const book = await Book.findById(req.params.bookid);
     if(!book) return res.status(404).json({message: "Book not found"});
-    res.json(book);
+    req.book = book
+    next()
+    return book
 };
+
+export const read = (req,res) =>{
+    res.json(req.book);
+}
 
 export const createBook = async (req, res) => {
     const { title, author, description, slug, year, stock, thumbnail, tags} = req.body;

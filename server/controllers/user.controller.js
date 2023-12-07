@@ -17,7 +17,7 @@ export const getUsers = async( req, res ) => {
     res.json( results )
 }
 
-export const getUserByID = async( req, res ) => {
+export const getUserByID = async( req, res, next, id ) => {
     // Exclude hashed_password and salt
     // const user = User.findById( req.params.userid )
 
@@ -25,13 +25,21 @@ export const getUserByID = async( req, res ) => {
     // This works once, then crashes
     const user = User.findById( req.params.userid ).select( [ '-hashed_password', '-salt' ] )
 
+    console.log( 'Get user:', id )
     const results = await user
 
     if ( ! results ) {
         return res.status( 404 ).json( { message: 'User not found' } )
     }
 
-    res.json( results )
+    req.user = results
+    next()
+}
+
+export const read = ( req, res ) => {
+    // req.profile.hashed_password = undefined;
+    // req.profile.salt = undefined;
+    return res.json( req.user )
 }
 
 export const createUser = async( req, res ) => {
@@ -50,6 +58,8 @@ export const createUser = async( req, res ) => {
     }
 }
 export const updateUser = async( req, res ) => {
+    console.log( 'updateUser', req.params.userid, req.body )
+
     const user = await User.findByIdAndUpdate( req.params.userid, req.body, {
         new: true,
     } )
