@@ -133,7 +133,7 @@ export default function useAuthentication() {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify( { email, password } ),
+                body: JSON.stringify( { email, password, shortSession } ),
             }
             userAuth.fetch( `/auth/login`, { options }, true )
         },
