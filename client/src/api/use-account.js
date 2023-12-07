@@ -25,22 +25,22 @@ export default function useAccount() {
             this.getUserById( auth.userId )
         },
         getUserById( userId ) {
-            userData.fetch( `/user/id/${userId}` )
+            // if ( auth.flags.isTokenValid ) {
             console.log( `/user/id/${userId}` )
+            userData.fetch( `/user/id/${userId}` )
+            // }
         },
         getUserByEmail( email, password ) {
+            // if ( auth.flags.isTokenValid ) {
             console.log( 'Fetching data for /users with email and password:', email, password )
             userData.fetch( `/users`, { query: { email, password } } )
+            // }
         },
         createUser( { name, email, password } ) {
             console.log( 'Creating user with:', { name, email, password } )
 
             const options = {
                 method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
                 body: JSON.stringify( { name, email, password } ),
             }
 
@@ -50,10 +50,6 @@ export default function useAccount() {
             console.log( 'Updating user with userId:', userId )
             const options = {
                 method: 'PUT',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
                 body: JSON.stringify( { name, email, password } ),
             }
 
