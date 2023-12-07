@@ -1,28 +1,15 @@
-import { Router } from 'express'
-import { getUsers, getUserByID, createUser, updateUser, deleteUser, read } from '../controllers/user.controller.js'
-import { signIn, requireSignin, hasAuthorization } from '../controllers/auth.controller.js'
+import { Router } from "express";
+import { getUsers, getUserByID, createUser, updateUser, deleteUser } from '../controllers/user.controller.js';
+import { signIn } from '../controllers/auth.controller.js';
 
-const router = Router()
+const router = Router();
+router.get('/users', getUsers);
+router.get('/user/id/:userid', getUserByID);
 
-router.post( '/auth/login', signIn )
+router.post('/user', createUser);
 
-router.post( '/user', createUser )
+router.put('/user/:userid', updateUser);
 
-// Called by all routes that utilize the :userid param
-router.param( 'userid', getUserByID )
-
-router
-    .route( '/user/id/:userid' )
-    .get( requireSignin, read )
-
-router
-    .route( '/user/:userid' )
-    .get( requireSignin, read )
-    .put( requireSignin, hasAuthorization, updateUser )
-    .delete( requireSignin, hasAuthorization, deleteUser )
-
-router
-    .route( '/users' )
-    .get( requireSignin, getUsers )
-
-export default router
+router.delete('/user/:userid', deleteUser);
+router.post('/auth/login', signIn);
+export default router;
