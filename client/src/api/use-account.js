@@ -21,6 +21,9 @@ export default function useAccount() {
         refetch() {
             userData.refetch()
         },
+        getCurrentUser() {
+            this.getUserById( auth.userId )
+        },
         getUserById( userId ) {
             userData.fetch( `/user/id/${userId}` )
             console.log( `/user/id/${userId}` )
