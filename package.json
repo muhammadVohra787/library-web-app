@@ -7,7 +7,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently \"nodemon server.js\" \"npm run client:dev\"",
+    "start": "concurrently \"npm run server.js\" \"npm run client:dev\"",
     "dev": "concurrently \"nodemon server.js\" \"npm run client:dev\"",
     "client:dev": "cd client && npx vite",
     "client:build": "cd client && npx vite build",
