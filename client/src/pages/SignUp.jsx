@@ -24,7 +24,6 @@ export default function SignUp() {
         password: '',
     } )
 
-    // const [ accountCreateError, setAccountCreateError ] = useState()
     const [ account, setAccount ] = useState()
     const accounts = useAccount()
     const { validate, errors } = useValidation()
@@ -33,7 +32,7 @@ export default function SignUp() {
         if ( accounts.status.isError ) {
             window.scrollTo( { top: 0, behavior: 'smooth' } )
         }
-        else if ( accounts.data ) {
+        else if ( accounts.status.isComplete && accounts.data ) {
             setAccount( accounts.data )
         }
     }, [ accounts.status.isComplete, accounts.status.isError ] )
