@@ -21,7 +21,7 @@ export const signIn = async( req, res ) => {
         }
 
         // !! shortSession param for testing
-        const sessionExpiry = shortSession ? '5s' : '14d'
+        const sessionExpiry = shortSession ? '10s' : '14d'
 
         const token = jwt.sign(
             { _id: user._id },
