@@ -52,7 +52,10 @@ export const requireSignin = expressjwt( {
 } )
 
 export const hasAuthorization = ( req, res, next ) => {
-    const authorized = req.profile && req.auth && req.profile._id === req.auth._id
+    const authorized = req.user && req.auth && req.user._id.toString() === req.auth._id
+
+    console.log( 'hasAuthorization', authorized )
+
     if ( ! authorized ) {
         return res.status( '403' ).json( {
             error: 'User is not authorized',
