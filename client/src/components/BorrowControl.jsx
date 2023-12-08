@@ -9,6 +9,8 @@ import NavLink from './NavLink'
 export default function BorrowControl( { book, userId, isSignedIn } ) {
     const { _id: bookId } = book ?? {}
 
+    const env = import.meta.env.MODE
+
     const library = useLibrary( userId )
 
     const handleBorrow = () => {
@@ -44,28 +46,34 @@ export default function BorrowControl( { book, userId, isSignedIn } ) {
                     </>
                 }
                 {
-                    ! library.isCheckedOutByUser && library.bookAvailability === 0 && <>
-                        <Alert severity="warning">No copies available.</Alert>
+                    ! library.isCheckedOutByUser && <>
+                        {
+                            library.bookAvailability === 0 && <>
+                                <Alert severity="warning">No copies available.</Alert>
+                            </>
+                        }
+                        {
+                            library.bookAvailability > 0 && <>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={ handleBorrow }
+                                    size="large"
+                                    { ...{ disabled: ! isSignedIn } }
+                                >
+                                    Borrow this book
+                                </Button>
+                            </>
+                        }
                     </>
                 }
-                {
-                    ! library.isCheckedOutByUser && library.bookAvailability > 0 && <>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={ handleBorrow }
-                            size="large"
-                            { ...{ disabled: ! isSignedIn } }
-                        >
-                            Borrow this book
-                        </Button>
-                        { ! isSignedIn && <>
-                            <Typography fontSize="0.9em important">
-                                <NavLink to="/signin">Sign in</NavLink> or <NavLink to="/signup">sign up</NavLink> to borrow this book.
-                            </Typography>
-                        </> }
-                    </>
-                }
+
+                { ! isSignedIn && <>
+                    <Typography fontSize="0.9em important">
+                        <NavLink to="/signin">Sign in</NavLink> or <NavLink to="/signup">sign up</NavLink> to borrow books!
+                    </Typography>
+                </> }
+
             </Stack>
         </Stack>
 
