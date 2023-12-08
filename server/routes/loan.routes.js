@@ -1,7 +1,7 @@
 import express from 'express'
 import { getBookAvailability, getLoans, getLoanByID, createLoan, updateLoan, deleteLoan, read } from '../controllers/loan.controller.js'
 import { getBookByID } from '../controllers/books.controller.js'
-import { requireSignin, hasAuthorization } from '../controllers/auth.controller.js'
+import { requireSignin } from '../controllers/auth.controller.js'
 
 const router = express.Router()
 
