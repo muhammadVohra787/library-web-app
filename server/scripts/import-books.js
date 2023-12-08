@@ -11,6 +11,11 @@ const importBooks = async() => {
         const existingBook = await Book.findOne( { title: book.title } )
         if ( ! existingBook ) {
             await Book.create( book )
+
+            // Todo: add overwrite/replace option
+            // await Book.deleteMany({})
+            // await Book.insertMany(dummyLibraryData)
+
             console.log( `Book imported: ${book.title}` )
         }
         else {
