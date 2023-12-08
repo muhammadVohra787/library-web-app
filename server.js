@@ -29,10 +29,10 @@ else {
     console.log( 'In development mode, STAGE=development is required, others are optional.' )
 }
 
-function main() {
+async function main() {
     app.use( express.json() )
 
-    connectDB()
+    await connectDB()
 
     // app.get( '/', ( req, res ) => {
     //     res.json( { message: 'Welcome to this application.' } )
