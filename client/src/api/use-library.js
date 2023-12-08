@@ -120,7 +120,7 @@ export default function useLibrary( userId ) {
             return bookAvailability.isComplete ? bookAvailability.data.available : -1
         },
         getBookAvailability( bookId ) {
-            bookAvailability.fetch( `/loans/availability/${ bookId}` )
+            bookAvailability.fetch( `/availability/${ bookId}` )
         },
         getBookCheckouts( bookId ) {
             bookCheckouts.fetch( '/loans', { query: { bookId, isReturned: false } } )
