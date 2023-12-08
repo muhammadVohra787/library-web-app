@@ -33,7 +33,7 @@ app.use( '/api', loanRoutes )
 
 // ### Serve frontend when deployed ###
 if ( config.stage === 'PRODUCTION' ) {
-    console.log( 'Preparing to serve frontend' )
+    console.log( 'Server is configured to deliver the frontend.' )
     app.use( '/', express.static( './client-dist/app' ) )
 
     // Necessary for dynamic React routing

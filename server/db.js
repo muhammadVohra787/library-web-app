@@ -4,6 +4,7 @@ import importBooks from './scripts/import-books.js'
 
 export const connectDB = async() => {
     try {
+        console.info( 'Waiting for DB connection...' )
         await mongoose.connect( config.mongoUri, {
             useNewUrlParser: true,
             // useCreateIndex: true,
@@ -13,7 +14,8 @@ export const connectDB = async() => {
         await importBooks()
     }
     catch ( error ) {
-        console.log( 'unable to connect to database: ${config.mongoUri}' )
+        console.log( `\nUnable to connect to database: ${config.mongoUri}\n` )
+        console.log( error )
     }
 }
 
