@@ -27,9 +27,9 @@ app.use( helmet() )
 app.use( cors() )
 
 // ### Route handlers (must be loaded after middleware) ###
-app.use( '/api', userRoutes )
-app.use( '/api', booksRoutes )
-app.use( '/api', loanRoutes )
+app.use( config.apiEndpointUrl, userRoutes )
+app.use( config.apiEndpointUrl, booksRoutes )
+app.use( config.apiEndpointUrl, loanRoutes )
 
 // ### Serve frontend when deployed ###
 if ( config.stage === 'PRODUCTION' ) {

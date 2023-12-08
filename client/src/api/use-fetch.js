@@ -1,7 +1,10 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
 
 // TODO: Get endpoint from configuration/env
-const endpointUrl = 'http://localhost:3000/api'
+
+const endpointUrl = API_ENDPOINT_URL
+
+// API_ENDPOINT_URL
 
 const delay = async( ms ) => {
     return new Promise( ( r ) => setTimeout( r, ms ) )
