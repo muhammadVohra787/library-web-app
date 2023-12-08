@@ -10,7 +10,7 @@ export default function Header() {
     const { flags } = useContext( authContext )
 
     return (
-        <Stack mb={ 10 } >
+        <Stack mb={ 10 } style={ {borderBottom: '4px solid #ccc', borderRadius: '0 0 10px 10px' } }>
             <Stack direction="row" spacing={ 10 } p={ 2 } alignItems="end">
                 <Box width={ 200 }>
                     { /* Visually hidden header for screen readers */ }
