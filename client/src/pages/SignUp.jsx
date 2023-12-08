@@ -149,17 +149,21 @@ export default function SignUp() {
                             </Grid>
                             <Grid item xs={ 12 }></Grid>
                         </Grid>
-                        { /* !! FOR TESTING */ }
-                        <Button
-                            onClick={ () => {
-                                setFormData( {
-                                    name: 'Abc',
-                                    email: 'a@b.com',
-                                    password: 'ABC123456',
-                                } )
-                            } }
-                        >Click to fill in test account (pw = ABC123456)</Button>
-
+                        {
+                            /* !! FOR TESTING */
+                            /* Don't expose in production */
+                            import.meta.env.MODE !== 'production' && <>
+                                <Button
+                                    onClick={ () => {
+                                        setFormData( {
+                                            name: 'Abc',
+                                            email: 'a@b.com',
+                                            password: 'ABC123456',
+                                        } )
+                                    } }
+                                >Click to fill in test account (pw = ABC123456)</Button>
+                            </>
+                        }
                         {
                             accounts.status.isFetching && <CircularProgress />
                         }

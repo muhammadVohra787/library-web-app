@@ -125,15 +125,20 @@ export default function SignIn() {
                                 error={ !! errors.email }
                                 helperText={ errors.email }
                             />
-                            { /* !! FOR TESTING */ }
-                            <Button
-                                onClick={ () => {
-                                    setFormData( {
-                                        email: 'a@b.com',
-                                        password: 'ABC123456',
-                                    } )
-                                } }
-                            >Click to fill in test account (pw = ABC123456)</Button>
+                            {
+                                /* !! FOR TESTING */
+                                /* Don't expose in production */
+                                import.meta.env.MODE !== 'production' && <>
+                                    <Button
+                                        onClick={ () => {
+                                            setFormData( {
+                                                email: 'a@b.com',
+                                                password: 'ABC123456',
+                                            } )
+                                        } }
+                                    >Click to fill in test account (pw = ABC123456)</Button>
+                                </>
+                            }
                             <TextField
                                 margin="normal"
                                 fullWidth
