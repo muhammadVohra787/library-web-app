@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser'
 import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
-import config from './config/config.js'
+import config from '../config/config.js'
 
 // ### Import routes ###
 import userRoutes from './routes/user.routes.js'

@@ -2,7 +2,7 @@
  * App Entrypoint
  */
 // server.js
-import config from './server/config/config.js'
+import config from './config/config.js'
 import { connectDB } from './server/db.js'
 import app from './server/express.js'
 import express from 'express'

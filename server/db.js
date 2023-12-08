@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import config from './config/config.js'
+import config from '../config/config.js'
 import importBooks from './scripts/import-books.js'
 
 export const connectDB = async() => {

@@ -1,6 +1,6 @@
 // server/controller/auth.controller
 import User from '../models/user.model.js'
-import config from '../config/config.js'
+import config from '../../config/config.js'
 import jwt from 'jsonwebtoken'
 import { expressjwt } from 'express-jwt'
 
