@@ -7,7 +7,7 @@ import Book from '@/pages/Book.jsx'
 import App from './App'
 import Error from './pages/Error'
 import Account from './pages/Account'
-import ApiTesting from './pages/ApiTesting'
+import Test from './pages/Test'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -19,7 +19,7 @@ const router = createBrowserRouter(
             <Route path="/book/:slug" element={ <Book /> } />
             <Route path="/explore" element={ <Explore /> } />
             <Route path="/account" element={ <Account /> } />
-            <Route path="/apitest" element={ <ApiTesting /> } />
+            <Route path="/test" element={ <Test /> } />
         </Route>,
     ),
 )

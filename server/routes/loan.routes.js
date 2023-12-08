@@ -21,7 +21,7 @@ router
     .delete( requireSignin, deleteLoan )
 
 router
-    .route( '/loans/availability/:bookid' )
+    .route( '/availability/:bookid' )
     .get( getBookAvailability )
 
 export default router
