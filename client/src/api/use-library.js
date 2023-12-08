@@ -19,7 +19,8 @@ export default function useLibrary( userId ) {
     useEffect( () => {
         if ( loanControl.isComplete ) {
             // Todo - reconsider this
-            // Refetch loan data (fetch is only executed if it has already been used)
+            // Refetch loan data (fetch is only executed if it has been initialized)
+            bookAvailability.refetch()
             loanStatus.refetch()
             loanHistory.refetch()
             bookCheckouts.refetch()
@@ -111,6 +112,7 @@ export default function useLibrary( userId ) {
             return loanControl.isComplete
         },
         get isCheckoutStatusCheckPending() {
+            console.log( 'loanStatus.isFetching', loanStatus.isFetching )
             return loanStatus.isFetching
         },
         get isBookAvailabilityCheckPending() {
