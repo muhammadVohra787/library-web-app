@@ -11,7 +11,7 @@
       "strict": false,
       "noErrorTruncation": true,
       "noUnusedLocals": false,
-      "baseUrl": ".",
+      "baseUrl": "https://library-web-app-ub1m.onrender.com/",
       "paths": {
         "@/*": ["./src/*"],
       },
