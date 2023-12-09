@@ -12,10 +12,7 @@ const config = {
     port: process.env.PORT || '3000',
     mongoDbName: databaseName,
     mongoUri:
-        process.env.MONGO_URI ||
-        `mongodb://${process.env.IP || '127.0.0.1'}:${
-            process.env.MONGO_PORT || '27017'
-        }/${databaseName}`,
+        process.env.MONGO_URI,
 }
 
 export default config
