@@ -28,11 +28,10 @@ export default defineConfig( {
     server: {
         proxy: {
             '/api': {
-                target: `http://localhost:${PORT}`,
+                target: apiEndpointUrl,
                 changeOrigin: true,
             },
             '/auth': {
-                target: `http://localhost:${PORT}`,
                 changeOrigin: true,
             },
 
