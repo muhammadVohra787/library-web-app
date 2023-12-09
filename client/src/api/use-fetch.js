@@ -2,7 +2,7 @@ import { useEffect, useReducer, useRef, useState } from 'react'
 
 // TODO: Get endpoint from configuration/env
 
-const endpointUrl = API_ENDPOINT_URL
+const endpointUrl = 'https://library-web-app-ub1m.onrender.com/api/'
 
 // API_ENDPOINT_URL
 
