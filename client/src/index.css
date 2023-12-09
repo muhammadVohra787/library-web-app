@@ -36,8 +36,8 @@ a:hover {
 }
 
 a.is-active {
-    color: red;
-    text-decoration: underline !important;
+    color: rgb(38, 0, 255);
+    text-decoration: none;
 }
 
 .hero-container {
@@ -95,3 +95,4 @@ a.is-active {
     overflow: visible;
     position: static;
   }
+

@@ -158,7 +158,7 @@ export default function Account() {
                                                     Password
                                                 </InputLabel>
                                             </Grid>
-                                            <Grid item xs={ 12 } md={ 8 }>
+                                            {/* <Grid item xs={ 12 } md={ 8 }>
                                                 <TextField
                                                     id="password"
                                                     name="password"
@@ -178,7 +178,7 @@ export default function Account() {
                                                     value=""
                                                 />
                                                 <FormHelperText>(Confirm new password - Not implemented)</FormHelperText>
-                                            </Grid>
+                                            </Grid> */}
                                         </Grid>
                                         <Stack mt={ 6 } spacing={ 3 }>
                                             {
