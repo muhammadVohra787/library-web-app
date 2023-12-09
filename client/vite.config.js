@@ -28,13 +28,14 @@ export default defineConfig( {
     server: {
         proxy: {
             '/api': {
-                target: `http://localhost:${PORT}`,
+                target: `https://library-web-app-one.vercel.app/`,
                 changeOrigin: true,
+                secure: false,
             },
             '/auth': {
-                target: `http://localhost:${PORT}`,
-
+                target: `https://library-web-app-one.vercel.app/api/`,
                 changeOrigin: true,
+                secure: false,
             },
 
         },
