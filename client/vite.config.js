@@ -28,11 +28,11 @@ export default defineConfig({
     server: {
         proxy: {
             "/api": {
-                target: `http://localhost:${PORT}`,
+                target: `https://library-web-app-ub1m.onrender.com/`,
                 changeOrigin: true,
             },
             "/auth": {
-                target: `http://localhost:${PORT}`,
+                target: `https://library-web-app-ub1m.onrender.com/`,
                 changeOrigin: true,
             },
         },
