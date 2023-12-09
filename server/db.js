@@ -5,7 +5,7 @@ import importBooks from './scripts/import-books.js'
 export const connectDB = async() => {
     try {
         console.info( 'Waiting for DB connection...' )
-        await mongoose.connect( process.env.mongoUri, {
+        await mongoose.connect( config.mongoUri, {
             useNewUrlParser: true,
             // useCreateIndex: true,
             useUnifiedTopology: true,
