@@ -11,8 +11,7 @@ const config = {
     jwtSecret: process.env.JWT_SECRET || 'YOUR_secret_key',
     port: process.env.PORT || '3000',
     mongoDbName: databaseName,
-    mongoUri:
-        process.env.MONGO_URI,
+    mongoUri: process.env.MONGO_URI,
 }
 
 export default config
