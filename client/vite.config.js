@@ -19,7 +19,7 @@ export default defineConfig({
     // base: './',l
 
     build: {
-        outDir: "../client-dist/app",
+        outDir: "",
     },
     // Replace variables on build
     define: {
