@@ -153,11 +153,11 @@ export default function Account() {
                                                 <FormHelperText>(Enter email address)</FormHelperText>
                                             </Grid>
 
-                                            <Grid item xs={ 12 } md={ 4 }>
+                                            { /* <Grid item xs={ 12 } md={ 4 }>
                                                 <InputLabel>
                                                     Password
                                                 </InputLabel>
-                                            </Grid>
+                                            </Grid> */ }
                                             { /* <Grid item xs={ 12 } md={ 8 }>
                                                 <TextField
                                                     id="password"
