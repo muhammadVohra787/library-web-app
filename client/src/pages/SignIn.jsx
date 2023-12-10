@@ -3,11 +3,9 @@ import { useContext, useEffect, useState } from 'react'
 
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
-import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
@@ -22,6 +20,7 @@ export default function SignIn() {
     const [ formData, setFormData ] = useState( {
         email: '',
         password: '',
+        remember: false,
     } )
 
     const auth = useAuthentication()
@@ -33,34 +32,19 @@ export default function SignIn() {
             ...prevData,
             [ name ]: value,
         } ) )
-
-        // const { isValid, errorMessage } =
         validate( name, value )
-        // setErrors( ( prevErrors ) => ( {
-        //     ...prevErrors,
-        //     [ name ]: isValid ? '' : errorMessage,
-        // } ) )
     }
 
-    const handleSubmit = ( event, shortSession = false ) => {
+    const handleSubmit = ( event ) => {
         event.preventDefault()
 
-        const { email, password } = formData
+        const { email, password, remember } = formData
 
         const emailValidation = validate( 'email', email )
         const passwordValidation = validate( 'password', password )
 
-        // setErrors( {
-        //     email: emailValidation.isValid ? '' : emailValidation.errorMessage,
-        //     // password: passwordValidation.isValid
-        //     //     ? ''
-        //     //     : passwordValidation.errorMessage,
-        // } )
-
         if ( emailValidation && passwordValidation ) {
-            // !! Note - no authentication at this time
-            // Just a check if the email exists
-            auth.signIn( email, password, shortSession )
+            auth.signIn( email, password, ! remember )
         }
     }
 
@@ -131,6 +115,7 @@ export default function SignIn() {
                                 import.meta.env.MODE !== 'production' && <>
                                     <Button
                                         onClick={ () => {
+                                            // @ts-ignore
                                             setFormData( {
                                                 email: 'a@b.com',
                                                 password: 'ABC123456',
@@ -152,18 +137,18 @@ export default function SignIn() {
                                 error={ !! errors.password }
                                 helperText={ errors.password }
                             />
-                            { /* <FormControlLabel
-                                control={
-                                    <Checkbox value="remember" color="primary" />
-                                }
-                                label="Remember me"
-                            /> */ }
                             {
                                 auth.isSigningIn && <CircularProgress />
                             }
                             {
                                 ! auth.isSigningIn && <>
 
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox value="remember" color="primary" />
+                                        }
+                                        label="Stay signed in for 14 days"
+                                    />
                                     <Button
                                         type="submit"
                                         fullWidth
@@ -173,22 +158,7 @@ export default function SignIn() {
                                     >
                                         Sign In
                                     </Button>
-                                    { /* !! Short session for testing !! */ }
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        sx={ { mt: 3, mb: 2 } }
-                                        onClick={ ( e ) => handleSubmit( e, true ) }
-                                    >
-                                        Sign In (10 sec. session)
-                                    </Button>
                                     <Grid container>
-                                        { /* <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid> */ }
                                         <Grid item>
                                             <NavLink to="/signup" variant="body2">
                                                 Don't have an account? Sign Up
