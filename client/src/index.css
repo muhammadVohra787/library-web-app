@@ -59,19 +59,19 @@ a.is-active {
     text-decoration: none !important;
 }
 
-.main-menu a.is-active:not([role="button"]),
-.main-menu a.is-active:hover:not([role="button"]) {
+.main-menu a.is-active:not(.MuiButton-root),
+.main-menu a.is-active:hover:not(.MuiButton-root) {
     color: purple;
     text-decoration: none !important;
     border-bottom: 2px soid #535bf2 ;
 }
 
-.main-menu a.is-active:hover:not([role="button"]) {
+.main-menu a.is-active:hover:not(.MuiButton-root) {
     color: purple;
 }
 
-.main-menu a:not([role="button"])::after,
-.main-menu a.is-active:not([role="button"])::after {
+.main-menu a:not(.MuiButton-root)::after,
+.main-menu a.is-active:not(.MuiButton-root)::after {
     display: block;
     content: "";
     width: 100%;
@@ -82,8 +82,8 @@ a.is-active {
 }
 
 
-.main-menu a:hover:not([role="button"])::after,
-.main-menu a.is-active:not([role="button"])::after  {
+.main-menu a:hover:not(.MuiButton-root)::after,
+.main-menu a.is-active:not(.MuiButton-root)::after  {
     content: "";
     width: 100%;
     color: purple;
