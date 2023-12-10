@@ -36,13 +36,6 @@ export default defineConfig({
                 changeOrigin: true,
             },
         },
-        // rewrites: [
-        //     {
-        //         source: "/api/:path(.*)",
-        //         destination: `http://localhost:${PORT}`,
-        //     },
-        //     { source: "/(.*)", destination: "/index.html" },
-        // ],
     },
     plugins: [
         react(),
