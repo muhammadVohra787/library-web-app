@@ -23,7 +23,7 @@ import InputIcon from '@mui/icons-material/Input'
 import BookIcon from '@mui/icons-material/MenuBook'
 
 import useAuthentication from '@/api/use-authentication'
-import Authorized from '@/components/Authorized'
+import Protected from '@/components/Protected'
 import useAccount from '@/api/use-account'
 import useValidation from '@/api/use-validation'
 import useLibrary from '@/api/use-library'
@@ -99,7 +99,7 @@ export default function Account() {
                 </Typography>
             </Stack>
 
-            <Authorized>
+            <Protected>
                 <Grid container spacing={ 6 }>
                     <Grid item xs={ 12 } md={ 6 }>
                         <Paper>
@@ -153,12 +153,12 @@ export default function Account() {
                                                 <FormHelperText>(Enter email address)</FormHelperText>
                                             </Grid>
 
-                                            <Grid item xs={ 12 } md={ 4 }>
+                                            { /* <Grid item xs={ 12 } md={ 4 }>
                                                 <InputLabel>
                                                     Password
                                                 </InputLabel>
-                                            </Grid>
-                                            {/* <Grid item xs={ 12 } md={ 8 }>
+                                            </Grid> */ }
+                                            { /* <Grid item xs={ 12 } md={ 8 }>
                                                 <TextField
                                                     id="password"
                                                     name="password"
@@ -178,7 +178,7 @@ export default function Account() {
                                                     value=""
                                                 />
                                                 <FormHelperText>(Confirm new password - Not implemented)</FormHelperText>
-                                            </Grid> */}
+                                            </Grid> */ }
                                         </Grid>
                                         <Stack mt={ 6 } spacing={ 3 }>
                                             {
@@ -232,7 +232,7 @@ export default function Account() {
                         </Paper>
                     </Grid>
                 </Grid>
-            </Authorized>
+            </Protected>
         </Container>
     )
 }

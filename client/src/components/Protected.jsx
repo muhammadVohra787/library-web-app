@@ -20,7 +20,7 @@ import {
 import useAuthentication from '@/api/use-authentication'
 import NavLink from './NavLink'
 
-export default function Authorized( { children, title = undefined, defaultContent = undefined } ) {
+export default function Protected( { children, title = undefined, defaultContent = undefined } ) {
     const auth = useAuthentication()
 
     return (

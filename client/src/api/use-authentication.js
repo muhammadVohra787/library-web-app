@@ -6,7 +6,6 @@ import useFetch from './use-fetch'
 export default function useAuthentication() {
     const [ isLoading, setIsLoading ] = useState( true )
     const auth = useContext( authContext )
-    // const userData = useFetch()
     const userAuth = useFetch()
 
     const { isTokenValid, isSessionValid, setIsSessionValid, isTokenExpired, setIsTokenExpired, isUserSignedOut, setIsUserSignedOut } = auth.flags
@@ -28,7 +27,7 @@ export default function useAuthentication() {
                 const { data } = userAuth
                 console.log( 'Signed in!', data )
                 auth.setSession( { userId: data.user._id, token: data.token, expires: data.expires } )
-                // setIsSessionValid( true )
+                setIsSessionValid( true )
             }
         }
     }, [ userAuth.isComplete, isLoading ] )
@@ -76,20 +75,17 @@ export default function useAuthentication() {
         get isSignedIn() {
             return isTokenValid
         },
-        // get signInStatusChange() {
-        //     return userData.isComplete
-        // },
         get signInError() {
             return userAuth.isError
         },
         get isSignInFailed() {
-            return userAuth.isError // && ( ! userData.data || userAuth.data.error )
+            return userAuth.isError
         },
         get isSigningIn() {
             return userAuth.isFetching
         },
         get isGettingStatus() {
-            return isLoading // userAuth.isFetching || ! isMounted
+            return isLoading
         },
         get userId() {
             return auth.userId
@@ -106,24 +102,6 @@ export default function useAuthentication() {
             }
             userAuth.fetch( `/auth/login`, { options }, true )
         },
-        // sessionSignOut() {
-        //     if ( isSigningOut ) {
-        //         return false
-        //     }
-        //     try {
-        //         // debugger
-        //         auth.setUserId( '' )
-        //         auth.setToken( '' )
-        //         userData.reset()
-        //         // window.alert( 'Session Expired' ) // not workin
-        //         console.log( 'Session expired' )// not working
-        //     }
-        //     catch ( error ) {
-        //         console.error( 'Error during sign-out:', error )
-        //     }
-
-        //     setIsSigningOut( true )
-        // },
         signOut() {
             try {
                 auth.setSession( {} )
