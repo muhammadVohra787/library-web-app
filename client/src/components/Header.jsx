@@ -37,16 +37,16 @@ export default function Header() {
                     </Stack>
                 </Stack>
                 { flags.isUserSignedOut && (
-                    <>
+                    <Box mb={ 4 }>
                         <Alert severity="info">You have been signed out.</Alert>
-                    </>
+                    </Box>
                 ) }
                 { flags.isTokenExpired && ! flags.isUserSignedOut && (
-                    <>
+                    <Box mb={ 4 }>
                         <Alert severity="warning">
                             Session has expired, please sign in again.
                         </Alert>
-                    </>
+                    </Box>
                 ) }
                 { isHome && <HeroSection /> }
             </Container>
