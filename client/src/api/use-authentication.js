@@ -27,7 +27,7 @@ export default function useAuthentication() {
                 const { data } = userAuth
                 console.log( 'Signed in!', data )
                 auth.setSession( { userId: data.user._id, token: data.token, expires: data.expires } )
-                // setIsSessionValid( true )
+                setIsSessionValid( true )
             }
         }
     }, [ userAuth.isComplete, isLoading ] )

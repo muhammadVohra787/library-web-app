@@ -5,7 +5,7 @@ import { useRef, useState } from 'react'
 
 export function AuthContextProvider( { children } ) {
     const [ session, setSession ] = useLocalStorage( 'session', { userId: '', token: '', expires: '' } )
-    // const [ isSessionValid, setIsSessionValid ] = useState( false )
+    const [ isSessionValid, setIsSessionValid ] = useState( false )
 
     const _flags = useRef( {
         isTokenExpired: false,
@@ -20,10 +20,10 @@ export function AuthContextProvider( { children } ) {
         get isUserSignedOut() {
             return _flags.current.isUserSignedOut
         },
-        // get isSessionValid() {
-        //     return isSessionValid
-        // },
-        // setIsSessionValid,
+        get isSessionValid() {
+            return isSessionValid
+        },
+        setIsSessionValid,
         setIsTokenExpired( value ) {
             _flags.current.isTokenExpired = !! value
         },
