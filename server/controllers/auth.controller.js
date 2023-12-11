@@ -6,13 +6,14 @@ import { expressjwt } from 'express-jwt'
 
 export const signIn = async( req, res ) => {
     // !! shortSession param for testing
-    const { email, password, shortSession } = req.body
+    const { email, password, remember } = req.body
     console.log( 'auth-controller Reached' )
+
 
     try {
         const user = await User.findOne( { email } )
         console.log( 'signin Reached -auth.controller' )
-        console.log( 'shortSession?', shortSession )
+        console.log( 'shortSession?', remember )
 
         if ( ! user.authenticate( password ) ) {
             return res
@@ -21,8 +22,8 @@ export const signIn = async( req, res ) => {
         }
 
         // !! shortSession param for testing
-        const sessionExpiry = shortSession ? '10s' : '14d'
-
+        const sessionExpiry = remember ? '14d' : '10s'
+        console.log(" coming from server: " + req.body + sessionExpiry);
         const token = jwt.sign(
             { _id: user._id },
             config.jwtSecret,

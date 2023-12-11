@@ -90,7 +90,7 @@ export default function useAuthentication() {
         get userId() {
             return auth.userId
         },
-        signIn( email, password, shortSession = false ) {
+        signIn( email, password, remember) {
             console.log( 'Signing in with email and password:', email, password )
             const options = {
                 method: 'POST',
@@ -98,7 +98,7 @@ export default function useAuthentication() {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify( { email, password, shortSession } ),
+                body: JSON.stringify( { email, password, remember } ),
             }
             userAuth.fetch( `/auth/login`, { options }, true )
         },

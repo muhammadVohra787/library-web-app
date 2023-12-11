@@ -13,8 +13,8 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import useAuthentication from '../api/use-authentication'
 import { Alert, CircularProgress, Stack } from '@mui/material'
-import useValidation from '@/api/use-validation'
-import NavLink from '@/components/NavLink'
+import useValidation from '../api/use-validation'
+import NavLink from '../components/NavLink'
 
 export default function SignIn() {
     const [ formData, setFormData ] = useState( {
@@ -39,12 +39,12 @@ export default function SignIn() {
         event.preventDefault()
 
         const { email, password, remember } = formData
-
+        console.log(formData)
         const emailValidation = validate( 'email', email )
         const passwordValidation = validate( 'password', password )
 
         if ( emailValidation && passwordValidation ) {
-            auth.signIn( email, password, ! remember )
+            auth.signIn( email, password, remember )
         }
     }
 
@@ -145,7 +145,14 @@ export default function SignIn() {
 
                                     <FormControlLabel
                                         control={
-                                            <Checkbox value="remember" color="primary" />
+                                            <Checkbox
+                                                checked={formData.remember}
+                                                onChange={(e) => {
+                                                    e.preventDefault();
+                                                    setFormData((prevData) => ({ ...prevData, remember: e.target.checked }))
+                                                }}
+                                                color="primary"
+                                            />
                                         }
                                         label="Stay signed in for 14 days"
                                     />
