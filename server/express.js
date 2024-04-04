@@ -43,6 +43,10 @@ if ( config.stage === 'PRODUCTION' ) {
         res.sendFile( 'index.html', { root: './client-dist/app' } )
     } )
 }
+//This is to keep a free server alive at all points.
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
 
 app.use( ( err, req, res, next ) => {
     if ( err.name === 'UnauthorizedError' ) {
